@@ -21,6 +21,7 @@ function Listing({ data }) {
       <Link to={`/${data.id}`}>
         <Card maxW="sm">
           <CardBody>
+            <Flex w={"100%"} h={"120px"}>
             <Image
               src={
                 imageUrl ||
@@ -29,7 +30,10 @@ function Listing({ data }) {
               }
               alt="Green double couch with wooden legs"
               borderRadius="lg"
+              w={"100%"}
             />
+
+            </Flex>
             <Stack mt="3" spacing="3" fontSize={"10pt"}>
               <Text color="blue.600" fontSize="xl">
                 ${data.estimated_cost}

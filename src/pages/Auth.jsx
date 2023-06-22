@@ -13,16 +13,26 @@ import {
   Tabs,
   Text,
 } from "@chakra-ui/react";
-import React from "react";
-import { Link, Outlet } from "react-router-dom";
+import React, { useEffect } from "react";
+import { Link,useNavigate} from "react-router-dom";
 import Apple from "../assets/apple.png";
 import Facebook from "../assets/face.png";
 import Google from "../assets/google.png";
 import Logo from "../assets/schrow.png";
 import SignIn from "../components/SignIn";
 import SignUp from "../components/SignUp";
+import { authSelector } from "../state/auth";
+import { useRecoilValue } from "recoil";
+
 
 function Auth() {
+  const user = useRecoilValue(authSelector)
+  const navigate = useNavigate()
+  useEffect(()=> {
+   if (user) {
+      navigate("/");
+    }
+  },[])
   return (
     <>
       <Flex
@@ -35,7 +45,7 @@ function Auth() {
         <Flex
           direction={"column"}
           bg={"body.100"}
-          w={{ base: "100vw", md: "65vw", sm: "45vw", xl: "30vw" }}
+          w={{ base: "100vw", md: "65vw", sm: "45vw", xl: "35vw" }}
           py={"10px"}
           px={{ base: "15px", sm: "30px" }}
           borderTopLeftRadius={{ base: "none", sm: "24pt" }}
@@ -64,7 +74,7 @@ function Auth() {
             <Heading as={"h2"} fontSize={"16pt"}>
               lets get started!
             </Heading>
-            <Text pt={"5pt"} fontSize={"9pt"} fontWeight={"light"}>
+            <Text pt={"5pt"} fontSize={"9pt"} fontWeight={"light"} width={{base:"100%",md:"75%"}}>
               Please use your credentials to create a new account. If you are
               already a member, please
               <Text as={"span"} color={"brand.100"}>

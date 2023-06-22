@@ -43,16 +43,17 @@ function AddListing() {
   const onSubmit = async (values) => {
     const formData = new FormData();
 
-    selectedImages.forEach((image) => {
+    selectedImages.forEach((image,index) => {
       const blob = new Blob([image], { type: image.type });
-      formData.append(`images[]`, blob);
+      formData.append(`image-${index + 1}`, blob);
     });
 
     for (const key in values) {
-      if (key !== "images") {
+      if (key.indexOf("image") === -1) {
         formData.append(key, values[key]);
       }
     }
+
     formData.append("endpoint", "create-listing");
 
     try {

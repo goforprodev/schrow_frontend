@@ -15,22 +15,22 @@ export const useListingsAction = () => {
 
     if (!data.error) {
       const listingsArr = data.data.listings;
-      setListings(listingsArr);
+      setListings(() => listingsArr);
     } else {
       throw new Error(data.data.msg);
     }
   };
 
-  const loadListingById = async ({ id }) => {
+  const loadListingById = async ({ id}) => {
     const response = await axios.post(baseUrl, {
       endpoint: "load-single-listing",
       id,
     });
     const { data } = response;
+
     if (!data.error) {
-      
-      // setSingleListing(data.data.listing[0]);
-      return data.data.listing[0];
+      const singleListing = data.data.listing[0]
+      setSingleListing(() => singleListing)
     } else {
       throw new Error(data.data.msg);
     }
