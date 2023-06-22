@@ -1,4 +1,11 @@
 import {
+  Accordion,
+  AccordionButton,
+  AccordionIcon,
+  AccordionItem,
+  AccordionPanel,
+  Box,
+  Button,
   Checkbox,
   Divider,
   Flex,
@@ -7,17 +14,10 @@ import {
   Input,
   Text,
   Textarea,
-  Accordion,
-  AccordionItem,
-  AccordionButton,
-  AccordionPanel,
-  AccordionIcon,
-  Button,
-  Box,
 } from "@chakra-ui/react";
-import { useFormik } from "formik";
-import React, { useState } from "react";
 import axios from "axios";
+import { useFormik } from "formik";
+import  { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 function AddListing() {
@@ -43,7 +43,7 @@ function AddListing() {
   const onSubmit = async (values) => {
     const formData = new FormData();
 
-    selectedImages.forEach((image, index) => {
+    selectedImages.forEach((image) => {
       const blob = new Blob([image], { type: image.type });
       formData.append(`images[]`, blob);
     });
