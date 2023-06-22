@@ -49,7 +49,19 @@ const useUserAction = () => {
     setAuth(null);
     navigate("/auth");
   };
-  const getUserById = () => {};
+
+  const getUserById = async (id) => {
+    const response = await axios.post(baseUrl, {
+      endpoint: "get-user-details",
+      id,
+    });
+    const { data } = response;
+    if (!data.error) {
+      return data.data;
+    } else {
+      throw new Error(data.data.msg);
+    }
+  };
 
   return { login, register, logout, getUserById };
 };

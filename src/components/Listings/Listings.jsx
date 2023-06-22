@@ -1,13 +1,11 @@
 import { Grid, GridItem } from "@chakra-ui/react";
-import React, { useState } from "react";
-import Listing from "./Listing";
-import { listingsAtom } from "../../state/lisitings";
+import React from "react";
 import { useRecoilValue } from "recoil";
-import { listingsSelector } from "../../state/lisitings";
+import { listingsAtom } from "../../state/lisitings";
+import Listing from "./Listing";
 
 function Listings() {
-  const listings = useRecoilValue(listingsSelector);
-
+  const listings = useRecoilValue(listingsAtom);
 
   return (
     <>

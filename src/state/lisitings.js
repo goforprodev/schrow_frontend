@@ -5,10 +5,15 @@ export const listingsAtom = atom({
   default: [],
 });
 
-export const listingsSelector = selector({
-  key: "listingsSelector",
-  get: ({ get }) => {
-    const listings = get(listingsAtom);
-    return listings;
-  },
+export const singleListingAtom = atom({
+  key: "singleListingState",
+  default: {},
 });
+
+// export const listingsSelector = selector({
+//   key: "listingsSelector",
+//   get: ({ get }) => {
+//     const listings = get(listingsAtom);
+//     return listings;
+//   },
+// });

@@ -40,6 +40,41 @@ function AddListing() {
     setSelectedImages(updatedImages);
   };
 
+  const onSubmit = async (values) => {
+    const formData = new FormData();
+
+    selectedImages.forEach((image, index) => {
+      const blob = new Blob([image], { type: image.type });
+      formData.append(`images[]`, blob);
+    });
+
+    for (const key in values) {
+      if (key !== "images") {
+        formData.append(key, values[key]);
+      }
+    }
+    formData.append("endpoint", "create-listing");
+
+    try {
+      setLoading(true);
+
+      const { data } = await axios.post("/api/users.php", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+
+      if (!data.error) {
+        setLoading(false);
+        navigate("/");
+      }
+    } catch (error) {
+      setLoading(false);
+      console.log("AddListings error Error : ", error);
+    }
+
+  };
+
   const formik = useFormik({
     initialValues: {
       name: "",
@@ -58,26 +93,7 @@ function AddListing() {
       zip_code: "",
       images: [],
     },
-    onSubmit: async (values) => {
-      //some stuff
-      const formData = { ...values, images: selectedImages };
-      console.log(selectedImages);
-      try {
-        setLoading(true);
-
-        const { data } = await axios.post("/api/users.php", {
-          endpoint: "create-listing",
-          ...formData,
-        });
-        if (!data.error) {
-          setLoading(false);
-          navigate("/");
-        }
-      } catch (error) {
-        setLoading(false);
-        console.log("AddListings error Error : ", error);
-      }
-    },
+    onSubmit: onSubmit,
   });
 
   return (

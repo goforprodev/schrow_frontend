@@ -15,7 +15,7 @@ import { Link } from "react-router-dom";
 
 function Listing({ data }) {
   const imageUrl = data.images.split(", ")[0];
-  console.log(imageUrl)
+  // console.log(imageUrl)
   return (
     <>
       <Link to={`/${data.id}`}>

@@ -1,25 +1,36 @@
-import { BellIcon } from "@chakra-ui/icons";
 import {
-  Flex,
   Avatar,
-  Icon,
-  Text,
+  Button,
+  Flex,
   IconButton,
-  MenuDivider,
   Menu,
   MenuButton,
+  MenuDivider,
   MenuItem,
   MenuList,
-  Button,
+  Text,
 } from "@chakra-ui/react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import React from "react";
+import { useRecoilState } from "recoil";
 import useUserAction from "../actions/userActions";
 import { authAtom } from "../state/auth";
-import { useRecoilState } from "recoil";
 
 function AvatarIcon() {
+  const userAction = useUserAction();
   const user = useRecoilState(authAtom);
+  const [loadedUser, setLoadedUser] = useState([]);
+
+  const getUserById = async () => {
+    const res = await userAction.getUserById(user[0].id);
+    // console.log(res);
+    setLoadedUser(res);
+    console.log(loadedUser)
+  };
+
+  useEffect(() => {
+    getUserById();
+  }, []);
 
   return (
     <>

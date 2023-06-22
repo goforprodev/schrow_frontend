@@ -3,7 +3,7 @@ import { Carousel } from "react-responsive-carousel";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { Box } from "@chakra-ui/react";
 
-function ImageCarousel() {
+function ImageCarousel({ data }) {
   const items = [
     {
       title: "Item 1",
@@ -19,6 +19,8 @@ function ImageCarousel() {
     },
   ];
 
+  // const imageUrl = data.images.split(", ");
+  // console.log(imageUrl);
   return (
     <>
       <Box w={{ base: "100%", sm: "50%" }} h={{ base: "auto", sm: "50%" }}>
@@ -26,7 +28,7 @@ function ImageCarousel() {
           {items.map((item) => (
             <div key={item.title} style={{ maxHeight: "600px" }}>
               <img
-                src={item.image}
+                src={item.image || "https://www.placehold.it/100x100"}
                 alt={item.title}
                 style={{ objectFit: "contain" }}
               />
