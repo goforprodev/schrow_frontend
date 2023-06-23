@@ -51,7 +51,7 @@ export const useListingsAction = () => {
   }
 
   const loadSavedListings = async({userId}) => {
-    const response = await axios.post(`${baseUrl}/?page=1`,  {
+    const response = await axios.post(`${baseUrl}?page=1`,  {
       endpoint: "load-saved-listings",
       id: userId,
     })
