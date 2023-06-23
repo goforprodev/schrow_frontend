@@ -20,12 +20,13 @@ import { Link } from "react-router-dom";
 import { useListingsAction } from "../actions/listingsActions";
 import { useRecoilValue } from "recoil";
 import { authAtom } from "../state/auth";
+import capitalize from "../utils/capitalize";
 
 function Dashboard() {
   const listingAction = useListingsAction();
   const [savedListings, setSavedListings] = useState([]);
   const data = null
-  const {id} = useRecoilValue(authAtom);
+  const {name,id} = useRecoilValue(authAtom);
 
 
   useEffect(() => {
@@ -40,6 +41,7 @@ function Dashboard() {
     fetchListings(id);
   }, []);
 
+  
   return (
     <>
       <Flex py={"10pt"} direction={"column"} w={"80vw"} mx={"auto"}>
@@ -49,10 +51,11 @@ function Dashboard() {
           fontSize={"25pt"}
           py={"10pt"}
           textAlign={{ base: "center", sm: "left" }}
+          fontWeight={"extrabold"}
         >
-          Welcome John
+          Welcome {capitalize(name)}
         </Heading>
-        <Flex p="10pt" justify={"center"}>
+        <Flex p="10pt" justify={"left"}>
           <Tabs position="relative" variant="unstyled">
             <TabList>
               <Tab>Saved Homes</Tab>
@@ -69,7 +72,7 @@ function Dashboard() {
             />
             <TabPanels>
               <TabPanel>
-                {savedListings ? <SavedHomes data={savedListings} /> : <Empty />}
+                {savedListings[0]?.length ? <SavedHomes data={savedListings} /> : <Empty />}
               </TabPanel>
               <TabPanel>
                 {data ? (

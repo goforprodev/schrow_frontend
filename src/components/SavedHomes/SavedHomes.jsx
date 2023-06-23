@@ -15,6 +15,7 @@ function SavedHomes({data}) {
         gap={{ base: 4, md: 4, sm: 1 }}
         py={"10pt"}
         justifyItems={"center"}
+        mx={"auto"}
       >
         {data[0]?.map((listing) => (
           <GridItem key={listing?.id} cursor={"pointer"}>

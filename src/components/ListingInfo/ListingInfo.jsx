@@ -12,6 +12,7 @@ import Aside from "./Aside";
 import Info from "./Info";
 import Stats from "./Stats";
 import OtherInfo from "./OtherInfo";
+import capitalize from "../../utils/capitalize";
 
 function ListingInfo({listing}) {
   const data = {
@@ -25,12 +26,7 @@ function ListingInfo({listing}) {
     owner: "Bimpe Azeez real estate",
   };
 
-  function capitalize(word) {
-  // Convert the first character to uppercase and concatenate it with the rest of the word
-  return word?.charAt(0).toUpperCase() + word?.slice(1);
-  }
-
-  return (
+   return (
     <>
       <Flex
         w={{ base: "100%", sm: "60%" }}

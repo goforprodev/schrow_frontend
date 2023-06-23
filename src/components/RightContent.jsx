@@ -44,6 +44,7 @@ function AvatarIcon() {
 function RightContent() {
   const user = useRecoilValue(userAtom);
   const navigate = useNavigate();
+  const userAction = useUserAction();
 
   return (
     <>
