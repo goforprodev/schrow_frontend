@@ -50,14 +50,15 @@ const useUserAction = () => {
     navigate("/auth");
   };
 
-  const getUserById = async (id) => {
+  const getUserById = async ({id}) => {
     const response = await axios.post(baseUrl, {
       endpoint: "get-user-details",
       id,
     });
     const { data } = response;
     if (!data.error) {
-      return data.data;
+      setUser(() => data.data.details[0]);
+      // return data.data;
     } else {
       throw new Error(data.data.msg);
     }

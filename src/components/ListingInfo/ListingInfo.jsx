@@ -25,7 +25,11 @@ function ListingInfo({listing}) {
     owner: "Bimpe Azeez real estate",
   };
 
-  
+  function capitalize(word) {
+  // Convert the first character to uppercase and concatenate it with the rest of the word
+  return word?.charAt(0).toUpperCase() + word?.slice(1);
+  }
+
   return (
     <>
       <Flex
@@ -52,15 +56,15 @@ function ListingInfo({listing}) {
             separator={<ChevronRightIcon color="gray.500" />}
           >
             <BreadcrumbItem>
-              <BreadcrumbLink href="#">{listing?.city}</BreadcrumbLink>
+              <BreadcrumbLink href="#">{capitalize(listing?.city)}</BreadcrumbLink>
             </BreadcrumbItem>
 
             <BreadcrumbItem>
-              <BreadcrumbLink href="#">{listing?.statex}</BreadcrumbLink>
+              <BreadcrumbLink href="#">{capitalize(listing?.statex)}</BreadcrumbLink>
             </BreadcrumbItem>
 
             <BreadcrumbItem isCurrentPage>
-              <BreadcrumbLink href="#">{listing?.street}</BreadcrumbLink>
+              <BreadcrumbLink href="#">{capitalize(listing?.street)}</BreadcrumbLink>
             </BreadcrumbItem>
           </Breadcrumb>
           <Flex fontSize={"10pt"} gap={4}>

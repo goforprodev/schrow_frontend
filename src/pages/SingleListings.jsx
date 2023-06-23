@@ -6,6 +6,7 @@ import ImageCarousel from "../components/ImageCarousel";
 import ListingInfo from "../components/ListingInfo/ListingInfo";
 import { useRecoilValue } from "recoil";
 import { singleListingAtom } from "../state/lisitings";
+import Loader from "../components/Loader";
 
 function SingleListings() {
   const { id } = useParams();
@@ -39,7 +40,7 @@ function SingleListings() {
       
 
   if (loading) {
-    return <div>Loading...</div>; // Render a loading indicator
+    return <Loader />
   }
 
    if (!listing) {
@@ -55,6 +56,8 @@ function SingleListings() {
         w={"100%"}
         h={"100vh"}
         display={{ base: "block", sm: "flex" }}
+        py={{ base: "10pt", sm: "15pt" }}
+        px={{base:"unset",md:"30pt"}}
         pb={{ base: "15pt", sm: "0" }}
       >
         <ImageCarousel images={images}/>

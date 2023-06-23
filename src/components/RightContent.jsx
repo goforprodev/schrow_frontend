@@ -12,23 +12,37 @@ import {
 } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import useUserAction from "../actions/userActions";
 import { authAtom } from "../state/auth";
+import { userAtom } from "../state/user";
 
 function AvatarIcon() {
-  const user = useRecoilState(authAtom);
- 
+  const authUser = useRecoilState(authAtom);
+  const userAction = useUserAction();
+  
+  useEffect(() => {
 
+    const loadUserById = async (authUser,userAction) => {
+      try {
+      await userAction.getUserById({id: authUser[0]?.id})
+      } catch (error) {
+       console.log(error.message) 
+      }
+    }
+
+    loadUserById(authUser,userAction)
+  }, [])
+ 
   return (
     <>
-      <Avatar name={user[0]?.name || "John Doe"} size={"sm"} />
+      <Avatar name={authUser[0]?.name || "John Doe"} size={"sm"} />
     </>
   );
 }
 
 function RightContent() {
-  const userAction = useUserAction();
+  const user = useRecoilValue(userAtom);
   const navigate = useNavigate();
 
   return (
@@ -53,8 +67,8 @@ function RightContent() {
           />
           <MenuList fontSize={"10pt"} px={"2pt"}>
             <MenuItem command="⌘T">
-              <Text>John Doe</Text>
-              <Text fontWeight="bold">name@email.com</Text>
+              <Text>{user?.names || "John Doe"}</Text>
+              <Text fontWeight="bold">{user?.email || "name@email.com"}</Text>
             </MenuItem>
             <MenuDivider />
             <Link to="/dashboard">
@@ -69,7 +83,7 @@ function RightContent() {
             <MenuItem command="⌘S" onClick={() => userAction.logout(navigate)}>
               Sign Out
             </MenuItem>
-            <Button w={"100%"} my={"5pt"}>
+            <Button w={"100%"} my={"5pt"} display={{base:"block",sm:"none"}}>
               <Link to="/message">Leave a message</Link>
             </Button>
           </MenuList>

@@ -6,35 +6,44 @@ import {
   InputGroup,
   InputLeftElement
 } from "@chakra-ui/react";
-import React, { useEffect } from "react";
+import React, {useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useRecoilValue } from "recoil";
 import { useListingsAction } from "../actions/listingsActions";
 import Filters from "../components/Filters";
 import Listings from "../components/Listings/Listings";
 import { authSelector } from "../state/auth";
+import Loader from "../components/Loader";
 
 function Home() {
   const navigate = useNavigate();
   const listingsAction = useListingsAction();
-  const user = useRecoilValue(authSelector);
+  const authUser = useRecoilValue(authSelector);
+  const [loading, setLoading] = useState(false);
 
   const fetchListings = async () => {
+    setLoading(true);
     try {
-      const res = await listingsAction.loadListings({
+      await listingsAction.loadListings({
         endpoint: "load-listing",
       });
+      setLoading(false);
     } catch (error) {
+      setLoading(false);
       console.log(error);
     }
   };
 
   useEffect(() => {
-    if (!user) {
+    if (!authUser) {
       navigate("/auth");
     }
     fetchListings();
   }, []);
+
+  if (loading) {
+    return <Loader />;
+  }
 
   return (
     <>
