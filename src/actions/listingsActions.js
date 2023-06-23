@@ -8,7 +8,7 @@ export const useListingsAction = () => {
   const setSingleListing = useSetRecoilState(singleListingAtom);
 
   const loadListings = async ({ endpoint }) => {
-    const response = await axios.post(`${baseUrl}/?page=1`, {
+    const response = await axios.post(`${baseUrl}?page=1`, {
       endpoint,
     });
     const { data } = response;
