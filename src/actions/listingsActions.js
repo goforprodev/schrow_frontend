@@ -30,9 +30,7 @@ export const useListingsAction = () => {
 
     if (!data.error) {
       const singleListing = data.data.listing[0]
-      // console.log(singleListing)
-      return singleListing
-      // setSingleListing(() => singleListing);
+      setSingleListing(() => singleListing);
     } else {
       throw new Error(data.data.msg);
     }

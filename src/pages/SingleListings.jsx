@@ -12,8 +12,7 @@ function SingleListings() {
   const navigate = useNavigate();
   const listingsAction = useListingsAction();
   const [loading, setLoading] = useState(false);
-  const [listing,setListing] = useState({})
-  // const listing = useRecoilValue(singleListingAtom) 
+  const listing = useRecoilValue(singleListingAtom) 
   
   
   useEffect(() => {
@@ -27,7 +26,6 @@ function SingleListings() {
       setLoading(true)
       try {
         const res = await listingsAction.loadListingById({id});
-        setListing(res)
         setLoading(false)
       } catch (error) {
         setLoading(false)
