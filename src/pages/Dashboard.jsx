@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState, useEffect } from "react";
 import {
   Flex,
   Tabs,
@@ -17,9 +17,29 @@ import ManageLisitings from "../components/ManageListings/ManageLisitings";
 import AccountSettings from "../components/AccountSettings/AccountSettings";
 import RecentlyViewed from "../components/RecentlyViewed/RecentlyViewed";
 import { Link } from "react-router-dom";
+import { useListingsAction } from "../actions/listingsActions";
+import { useRecoilValue } from "recoil";
+import { authAtom } from "../state/auth";
 
 function Dashboard() {
-  const data = null;
+  const listingAction = useListingsAction();
+  const [savedListings, setSavedListings] = useState([]);
+  const data = null
+  const {id} = useRecoilValue(authAtom);
+
+
+  useEffect(() => {
+    const fetchListings = async (id) => {
+      try {
+        const res = await listingAction.loadSavedListings({userId:id});
+        setSavedListings(prev => [...prev,res]);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchListings(id);
+  }, []);
+
   return (
     <>
       <Flex py={"10pt"} direction={"column"} w={"80vw"} mx={"auto"}>
@@ -49,7 +69,7 @@ function Dashboard() {
             />
             <TabPanels>
               <TabPanel>
-                {data ? <SavedHomes data={data} /> : <Empty />}
+                {savedListings ? <SavedHomes data={savedListings} /> : <Empty />}
               </TabPanel>
               <TabPanel>
                 {data ? (

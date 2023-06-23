@@ -68,9 +68,10 @@ function ListingInfo({listing}) {
             </BreadcrumbItem>
           </Breadcrumb>
           <Flex fontSize={"10pt"} gap={4}>
-            <Aside />
+            <Aside listingId={listing?.id}/>
           </Flex>
         </Flex>
+
 
         {/* Info section */}
         <Flex direction={"column"} py={"10pt"}>
@@ -84,5 +85,6 @@ function ListingInfo({listing}) {
     </>
   );
 }
+
 
 export default ListingInfo;

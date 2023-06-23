@@ -26,7 +26,7 @@ function SingleListings() {
     const fetchSingleListing = async () => {
       setLoading(true)
       try {
-        const res = await listingsAction.loadListingById({id});
+         await listingsAction.loadListingById({id});
         setLoading(false)
       } catch (error) {
         setLoading(false)

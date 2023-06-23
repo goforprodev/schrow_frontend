@@ -10,16 +10,36 @@ import {
   TagLabel,
   Flex,
   Box,
+  Icon,
+  Button,
 } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
+import {BsFillTrashFill} from "react-icons/bs";
+import { useListingsAction } from "../../actions/listingsActions";
+import { authAtom } from "../../state/auth";
+import { useRecoilValue } from "recoil";
 
-function Listing({ data }) {
-  const imageUrl = data.images.split(", ")[0];
-  // console.log(imageUrl)
+function Listing({ data ,showDel}) {
+  const {id} = useRecoilValue(authAtom);
+  const listingAction = useListingsAction();
+  const imageUrl = data?.images.split(", ")[0];
+  
   return (
     <>
+        <Card maxW="sm" position={"relative"}>
+            <Button
+            display={showDel ? "block":"none"}
+                    size="sm"
+                    onClick={async() => await listingAction.deleteSavedListing({userId:id,listingId:data?.id})}
+                    position="absolute"
+                        top={-2}
+                        right={-2}
+                        borderRadius="full"
+                        zIndex={10}
+                      >
+               <Icon as={BsFillTrashFill} size={"20pt"} />
+          </Button>
       <Link to={`/${data.id}`}>
-        <Card maxW="sm">
           <CardBody>
             <Flex w={"100%"} h={"120px"}>
             <Image
@@ -52,8 +72,8 @@ function Listing({ data }) {
               <Text>{data.title || "Bimpe Azeez real estate"}</Text>
             </Stack>
           </CardBody>
-        </Card>
       </Link>
+        </Card>
     </>
   );
 }

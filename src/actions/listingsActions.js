@@ -3,12 +3,12 @@ import { listingsAtom, singleListingAtom } from "../state/lisitings";
 import axios from "axios";
 
 export const useListingsAction = () => {
-  const baseUrl = "/api/users.php?page=1";
+  const baseUrl = "/api/users.php";
   const setListings = useSetRecoilState(listingsAtom);
   const setSingleListing = useSetRecoilState(singleListingAtom);
 
   const loadListings = async ({ endpoint }) => {
-    const response = await axios.post(baseUrl, {
+    const response = await axios.post(`${baseUrl}/?page=1`, {
       endpoint,
     });
     const { data } = response;
@@ -22,7 +22,7 @@ export const useListingsAction = () => {
   };
 
   const loadListingById = async ({id}) => {
-    const response = await axios.post("/api/users.php", {
+    const response = await axios.post(baseUrl, {
       endpoint: "load-single-listing",
       id
     });
@@ -36,5 +36,48 @@ export const useListingsAction = () => {
     }
   };
 
-  return { loadListings, loadListingById };
+  const saveListings = async({userId,listingId}) => {
+    const response = await axios.post(baseUrl, {
+      endpoint: "save-listing",
+      id: userId,
+      listing_id:listingId
+      });
+    const { data } = response;
+    if(!data.error){
+      return data.data.msg
+    }else{
+      throw new Error(data.data.msg);
+    }
+  }
+
+  const loadSavedListings = async({userId}) => {
+    const response = await axios.post(`${baseUrl}/?page=1`,  {
+      endpoint: "load-saved-listings",
+      id: userId,
+    })
+    const { data } = response;
+    if(!data.error){
+      const listingsArr = data.data.listings;
+      return listingsArr
+    }else{
+      throw new Error(data.data.msg);
+    }
+  }
+
+  const deleteSavedListing = async({userId,listingId}) => {
+    console.log(userId,listingId)
+    const response = await axios.post(baseUrl, {
+      endpoint: "del-saved-listing",
+      id: userId,
+      listing_id:listingId
+      });
+    const { data } = response;
+    if(!data.error){
+      alert(data.data.msg)
+    }else{
+      throw new Error(data.data.msg);
+    }
+  }
+
+  return { loadListings, loadListingById,saveListings ,loadSavedListings,deleteSavedListing};
 };
