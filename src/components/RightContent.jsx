@@ -17,20 +17,8 @@ import useUserAction from "../actions/userActions";
 import { authAtom } from "../state/auth";
 
 function AvatarIcon() {
-  const userAction = useUserAction();
   const user = useRecoilState(authAtom);
-  const [loadedUser, setLoadedUser] = useState([]);
-
-  const getUserById = async () => {
-    const res = await userAction.getUserById(user[0].id);
-    // console.log(res);
-    setLoadedUser(res);
-    console.log(loadedUser)
-  };
-
-  useEffect(() => {
-    getUserById();
-  }, []);
+ 
 
   return (
     <>

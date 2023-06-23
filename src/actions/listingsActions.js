@@ -21,16 +21,18 @@ export const useListingsAction = () => {
     }
   };
 
-  const loadListingById = async ({ id}) => {
-    const response = await axios.post(baseUrl, {
+  const loadListingById = async ({id}) => {
+    const response = await axios.post("/api/users.php", {
       endpoint: "load-single-listing",
-      id,
+      id
     });
     const { data } = response;
 
     if (!data.error) {
       const singleListing = data.data.listing[0]
-      setSingleListing(() => singleListing)
+      // console.log(singleListing)
+      return singleListing
+      // setSingleListing(() => singleListing);
     } else {
       throw new Error(data.data.msg);
     }

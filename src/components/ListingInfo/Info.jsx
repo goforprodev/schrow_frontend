@@ -5,16 +5,16 @@ function Info({ data }) {
   return (
     <Flex direction="column" fontSize={"10pt"} pb={"5"} gap={2}>
       <Text color="blue.600" fontSize="2xl">
-        {data.price}
+        {data?.estimated_cost}
       </Text>
       <Flex align={"center"} gap={"5pt"} fontSize={"10pt"}>
-        {data.mass}
+        {data?.no_of_units}
         <Tag size={"sm"} variant="subtle" colorScheme="blue">
-          <TagLabel>{data.status}</TagLabel>
+          <TagLabel>{data?.status || "House for sale"}</TagLabel>
         </Tag>
       </Flex>
-      <Text>{data.location} </Text>
-      <Text>{data.owner}</Text>
+      <Text>{`${data?.street},${data.city},${data?.statex}`} </Text>
+      <Text>{data?.owner}</Text>
     </Flex>
   );
 }

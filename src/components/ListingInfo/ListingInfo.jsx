@@ -13,7 +13,7 @@ import Info from "./Info";
 import Stats from "./Stats";
 import OtherInfo from "./OtherInfo";
 
-function ListingInfo() {
+function ListingInfo({listing}) {
   const data = {
     id: 4,
     imageUrl:
@@ -24,6 +24,8 @@ function ListingInfo() {
     location: "25 montgomery street akoka yaba lagos",
     owner: "Bimpe Azeez real estate",
   };
+
+  
   return (
     <>
       <Flex
@@ -50,15 +52,15 @@ function ListingInfo() {
             separator={<ChevronRightIcon color="gray.500" />}
           >
             <BreadcrumbItem>
-              <BreadcrumbLink href="#">Lagos</BreadcrumbLink>
+              <BreadcrumbLink href="#">{listing?.city}</BreadcrumbLink>
             </BreadcrumbItem>
 
             <BreadcrumbItem>
-              <BreadcrumbLink href="#">Yaba</BreadcrumbLink>
+              <BreadcrumbLink href="#">{listing?.statex}</BreadcrumbLink>
             </BreadcrumbItem>
 
             <BreadcrumbItem isCurrentPage>
-              <BreadcrumbLink href="#">25 montmogery road</BreadcrumbLink>
+              <BreadcrumbLink href="#">{listing?.street}</BreadcrumbLink>
             </BreadcrumbItem>
           </Breadcrumb>
           <Flex fontSize={"10pt"} gap={4}>
@@ -68,7 +70,7 @@ function ListingInfo() {
 
         {/* Info section */}
         <Flex direction={"column"} py={"10pt"}>
-          <Info data={data} />
+          <Info data={listing} />
           <Divider />
           <Stats />
           <Divider />

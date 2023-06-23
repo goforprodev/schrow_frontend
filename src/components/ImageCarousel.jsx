@@ -3,36 +3,20 @@ import { Carousel } from "react-responsive-carousel";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { Box } from "@chakra-ui/react";
 
-function ImageCarousel({ data }) {
-  const items = [
-    {
-      title: "Item 1",
-      image: "https://placeholder.com/100/100",
-    },
-    {
-      title: "Item 2",
-      image: "https://placeholder.com/100/100",
-    },
-    {
-      title: "Item 3",
-      image: "https://placeholder.com/100/100",
-    },
-  ];
+function ImageCarousel({ images }) {
 
-  // const imageUrl = data.images.split(", ");
-  // console.log(imageUrl);
+  const imageUrl = images?.split(", ");
   return (
     <>
       <Box w={{ base: "100%", sm: "50%" }} h={{ base: "auto", sm: "50%" }}>
         <Carousel autoplay>
-          {items.map((item) => (
-            <div key={item.title} style={{ maxHeight: "600px" }}>
+          {imageUrl?.map((item,index) => (
+            <div key={index} style={{ maxHeight: "600px" }}>
               <img
-                src={item.image || "https://www.placehold.it/100x100"}
-                alt={item.title}
+                src={item || "https://www.placehold.it/100x100"}
                 style={{ objectFit: "contain" }}
               />
-              <h4 className="legend">{item.title}</h4>
+              {/* <h4 className="legend">{item.title}</h4> */}
             </div>
           ))}
         </Carousel>
