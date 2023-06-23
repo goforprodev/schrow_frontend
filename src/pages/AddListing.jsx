@@ -19,6 +19,7 @@ import axios from "axios";
 import { useFormik } from "formik";
 import  { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import Collaborators from "../components/Collaborators";
 
 function AddListing() {
   const [selectedImages, setSelectedImages] = useState([]);
@@ -43,36 +44,40 @@ function AddListing() {
   const onSubmit = async (values) => {
     const formData = new FormData();
 
-    selectedImages.forEach((image,index) => {
-      const blob = new Blob([image], { type: image.type });
-      formData.append(`image-${index + 1}`, blob);
-    });
-
-    for (const key in values) {
-      if (key.indexOf("image") === -1) {
-        formData.append(key, values[key]);
-      }
-    }
-
-    formData.append("endpoint", "create-listing");
-
-    try {
-      setLoading(true);
-
-      const { data } = await axios.post("/api/users.php", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
+    if(values){
+      selectedImages.forEach((image,index) => {
+        const blob = new Blob([image], { type: image.type });
+        formData.append(`image-${index + 1}`, blob);
       });
-
-      if (!data.error) {
-        setLoading(false);
-        navigate("/");
+  
+      for (const key in values) {
+        if (key.indexOf("image") === -1) {
+          formData.append(key, values[key]);
+        }
       }
-    } catch (error) {
-      setLoading(false);
-      console.log("AddListings error Error : ", error);
+  
+      formData.append("endpoint", "create-listing");
+  
+      try {
+        setLoading(true);
+  
+        const { data } = await axios.post("/api/users.php", formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        });
+  
+        if (!data.error) {
+          setLoading(false);
+          navigate("/");
+        }
+      } catch (error) {
+        setLoading(false);
+        console.log("AddListings error Error : ", error);
+
     }
+    }
+    return
 
   };
 
@@ -99,7 +104,7 @@ function AddListing() {
 
   return (
     <>
-      <Flex direction="column" p={"10pt"}>
+      <Flex direction="column" px={"30pt"} py={"20pt"}>
         <Heading as={"h1"} fontWeight={"700"} fontSize={"22px"}>
           Add Listing
         </Heading>
@@ -107,7 +112,7 @@ function AddListing() {
           <Flex
             w={"100%"}
             justify={"space-between"}
-            px={"15pt"}
+            // px={"15pt"}
             direction={{ base: "column", sm: "row" }}
           >
             <Flex
@@ -574,7 +579,9 @@ function AddListing() {
                     </Box>
                   </AccordionButton>
                 </h2>
-                <AccordionPanel pb={4} fontSize={"10pt"}></AccordionPanel>
+                <AccordionPanel pb={4} fontSize={"10pt"}>
+                <Collaborators />
+                </AccordionPanel>
               </AccordionItem>
             </Accordion>
             <Divider />
