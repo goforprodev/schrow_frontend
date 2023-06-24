@@ -17,7 +17,8 @@ function Listings() {
         }}
         gap={{ base: 4, md: 4, sm: 1 }}
         py={"10pt"}
-        justifyItems={"center"}
+        w={"95%"}
+        mx={"auto"}
       >
         {listings.map((listing) => (
           <GridItem key={listing.id} cursor={"pointer"}>

@@ -1,4 +1,4 @@
-import React, {useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Flex,
   Tabs,
@@ -25,23 +25,21 @@ import capitalize from "../utils/capitalize";
 function Dashboard() {
   const listingAction = useListingsAction();
   const [savedListings, setSavedListings] = useState([]);
-  const data = null
-  const {name,id} = useRecoilValue(authAtom);
-
+  const data = null;
+  const { name, id } = useRecoilValue(authAtom);
 
   useEffect(() => {
     const fetchListings = async (id) => {
       try {
-        const res = await listingAction.loadSavedListings({userId:id});
-        setSavedListings(prev => [...prev,res]);
+        const res = await listingAction.loadSavedListings({ userId: id });
+        setSavedListings((prev) => [...prev, res]);
       } catch (error) {
         console.log(error);
       }
     };
     fetchListings(id);
-  }, []);
+  }, [savedListings]);
 
-  
   return (
     <>
       <Flex py={"10pt"} direction={"column"} w={"80vw"} mx={"auto"}>
@@ -72,7 +70,11 @@ function Dashboard() {
             />
             <TabPanels>
               <TabPanel>
-                {savedListings[0]?.length ? <SavedHomes data={savedListings} /> : <Empty />}
+                {savedListings[0]?.length ? (
+                  <SavedHomes data={savedListings} />
+                ) : (
+                  <Empty />
+                )}
               </TabPanel>
               <TabPanel>
                 {data ? (

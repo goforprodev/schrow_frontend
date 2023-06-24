@@ -4,9 +4,9 @@ import {
   Heading,
   Input,
   InputGroup,
-  InputLeftElement
+  InputLeftElement,
 } from "@chakra-ui/react";
-import React, {useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useRecoilValue } from "recoil";
 import { useListingsAction } from "../actions/listingsActions";
@@ -47,7 +47,12 @@ function Home() {
 
   return (
     <>
-      <Flex direction="column" py={"15pt"} px={"30pt"} bg={"body.100"}>
+      <Flex
+        direction="column"
+        py={"15pt"}
+        px={"30pt"}
+        bg={"body.100"}
+      >
         <Flex
           justify={{ base: "center", sm: "space-between" }}
           align={"center"}

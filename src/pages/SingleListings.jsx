@@ -12,48 +12,40 @@ function SingleListings() {
   const { id } = useParams();
   const navigate = useNavigate();
   const listingsAction = useListingsAction();
-  const [listing, setListing] = useState({});
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
+  const listing = useRecoilValue(singleListingAtom);
 
-  const fetchSingleListing = async () => {
-    try {
-      const res = await listingsAction.loadListingById({ id });
-      setListing(res);
-      console.log(listing);
-    } catch (error) {
-      navigate("/");
-      console.log(error);
-    }
-  };
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        await fetchSingleListing();
-        setLoading(false);
-      } catch (error) {
-        setLoading(false);
-      }
-    };
-
-    fetchData();
-  }, []);
   useEffect(() => {
     if (!/\d+/.test(id)) {
       navigate(-1);
     }
   }, [id, navigate]);
 
+  useEffect(() => {
+    const fetchSingleListing = async () => {
+      setLoading(true);
+      try {
+        await listingsAction.loadListingById({ id });
+        setLoading(false);
+      } catch (error) {
+        setLoading(false);
+        navigate("/");
+        console.log(error.message);
+      }
+    };
+    fetchSingleListing();
+  }, []);
+
   if (loading) {
-    return <Loader />
+    return <Loader />;
   }
 
-   if (!listing) {
+  if (!listing) {
     return <div>No listing available.</div>; // Render a message if the listing is still null
   }
-  
-  const {images} = listing
-  
+
+  const { images } = listing;
+
   return (
     <>
       <Flex
@@ -62,11 +54,11 @@ function SingleListings() {
         h={"100vh"}
         display={{ base: "block", sm: "flex" }}
         py={{ base: "10pt", sm: "15pt" }}
-        px={{base:"unset",md:"30pt"}}
+        px={{ base: "unset", md: "30pt" }}
         pb={{ base: "15pt", sm: "0" }}
       >
-        <ImageCarousel images={images}/>
-        <ListingInfo listing={listing}/>
+        <ImageCarousel images={images} />
+        <ListingInfo listing={listing} />
       </Flex>
     </>
   );

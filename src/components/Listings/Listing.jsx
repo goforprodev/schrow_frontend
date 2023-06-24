@@ -13,46 +13,51 @@ import {
   Icon,
   Button,
 } from "@chakra-ui/react";
-import { Link } from "react-router-dom";
-import {BsFillTrashFill} from "react-icons/bs";
+import { useNavigate, Link } from "react-router-dom";
+import { BsFillTrashFill } from "react-icons/bs";
 import { useListingsAction } from "../../actions/listingsActions";
 import { authAtom } from "../../state/auth";
 import { useRecoilValue } from "recoil";
 
-function Listing({ data ,showDel}) {
-  const {id} = useRecoilValue(authAtom);
+function Listing({ data, showDel }) {
+  const { id } = useRecoilValue(authAtom);
   const listingAction = useListingsAction();
   const imageUrl = data?.images.split(", ")[0];
-  
+  const navigate = useNavigate();
+
   return (
     <>
-        <Card maxW="sm" position={"relative"}>
-            <Button
-            display={showDel ? "block":"none"}
-                    size="sm"
-                    onClick={async() => await listingAction.deleteSavedListing({userId:id,listingId:data?.id})}
-                    position="absolute"
-                        top={-2}
-                        right={-2}
-                        borderRadius="full"
-                        zIndex={10}
-                      >
-               <Icon as={BsFillTrashFill} size={"20pt"} />
-          </Button>
-      <Link to={`/${data.id}`}>
+      <Card maxW="sm" position={"relative"}>
+        <Button
+          display={showDel ? "block" : "none"}
+          size="sm"
+          onClick={async () => {
+            await listingAction.deleteSavedListing({
+              userId: id,
+              listingId: data?.id,
+            });
+          }}
+          position="absolute"
+          top={-2}
+          right={-2}
+          borderRadius="full"
+          zIndex={10}
+        >
+          <Icon as={BsFillTrashFill} size={"20pt"} />
+        </Button>
+        <Link to={`/${data.id}`}>
           <CardBody>
             <Flex w={"100%"} h={"120px"}>
-            <Image
-              src={
-                imageUrl ||
-                //add placeholder image url
-                "https://www.placehold.it/300x200"
-              }
-              alt="Green double couch with wooden legs"
-              borderRadius="lg"
-              w={"100%"}
-            />
-
+              <Image
+                src={
+                  imageUrl ||
+                  //add placeholder image url
+                  "https://www.placehold.it/300x200"
+                }
+                alt="Green double couch with wooden legs"
+                borderRadius="lg"
+                w={"100%"}
+              />
             </Flex>
             <Stack mt="3" spacing="3" fontSize={"10pt"}>
               <Text color="blue.600" fontSize="xl">
@@ -72,8 +77,8 @@ function Listing({ data ,showDel}) {
               <Text>{data.title || "Bimpe Azeez real estate"}</Text>
             </Stack>
           </CardBody>
-      </Link>
-        </Card>
+        </Link>
+      </Card>
     </>
   );
 }
