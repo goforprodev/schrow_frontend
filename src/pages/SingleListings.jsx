@@ -12,32 +12,37 @@ function SingleListings() {
   const { id } = useParams();
   const navigate = useNavigate();
   const listingsAction = useListingsAction();
-  const [loading, setLoading] = useState(false);
-  const listing = useRecoilValue(singleListingAtom) 
-  
-  
-  useEffect(() => {
-    if (!/\d+/.test(id)) {
-        navigate(-1);
+  const [listing, setListing] = useState({});
+  const [loading, setLoading] = useState(true);
+
+  const fetchSingleListing = async () => {
+    try {
+      const res = await listingsAction.loadListingById({ id });
+      setListing(res);
+      console.log(listing);
+    } catch (error) {
+      navigate("/");
+      console.log(error);
     }
-  }, [id, navigate]);
-  
+  };
+
   useEffect(() => {
-    const fetchSingleListing = async () => {
-      setLoading(true)
+    const fetchData = async () => {
       try {
-         await listingsAction.loadListingById({id});
-        setLoading(false)
+        await fetchSingleListing();
+        setLoading(false);
       } catch (error) {
-        setLoading(false)
-        navigate("/");
-        console.log(error.message);
+        setLoading(false);
       }
     };
-       fetchSingleListing();
 
+    fetchData();
   }, []);
-      
+  useEffect(() => {
+    if (!/\d+/.test(id)) {
+      navigate(-1);
+    }
+  }, [id, navigate]);
 
   if (loading) {
     return <Loader />
