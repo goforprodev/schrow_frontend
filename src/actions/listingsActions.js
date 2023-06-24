@@ -68,10 +68,11 @@ export const useListingsAction = () => {
     console.log(userId,listingId)
     const response = await axios.post(baseUrl, {
       endpoint: "del-saved-listing",
-      id: userId,
+      id:userId,
       listing_id:listingId
       });
     const { data } = response;
+    console.log(data)
     if(!data.error){
       alert(data.data.msg)
     }else{
