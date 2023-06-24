@@ -13,42 +13,39 @@ function SingleListings() {
   const navigate = useNavigate();
   const listingsAction = useListingsAction();
   const [loading, setLoading] = useState(false);
-  const listing = useRecoilValue(singleListingAtom) 
-  
-  
+  const listing = useRecoilValue(singleListingAtom);
+
   useEffect(() => {
     if (!/\d+/.test(id)) {
-        navigate(-1);
+      navigate(-1);
     }
   }, [id, navigate]);
-  
+
   useEffect(() => {
     const fetchSingleListing = async () => {
-      setLoading(true)
+      setLoading(true);
       try {
-         await listingsAction.loadListingById({id});
-        setLoading(false)
+        await listingsAction.loadListingById({ id });
+        setLoading(false);
       } catch (error) {
-        setLoading(false)
+        setLoading(false);
         navigate("/");
         console.log(error.message);
       }
     };
-       fetchSingleListing();
-
+    fetchSingleListing();
   }, []);
-      
 
   if (loading) {
-    return <Loader />
+    return <Loader />;
   }
 
-   if (!listing) {
+  if (!listing) {
     return <div>No listing available.</div>; // Render a message if the listing is still null
   }
-  
-  const {images} = listing
-  
+
+  const { images } = listing;
+
   return (
     <>
       <Flex
@@ -57,11 +54,11 @@ function SingleListings() {
         h={"100vh"}
         display={{ base: "block", sm: "flex" }}
         py={{ base: "10pt", sm: "15pt" }}
-        px={{base:"unset",md:"30pt"}}
+        px={{ base: "unset", md: "30pt" }}
         pb={{ base: "15pt", sm: "0" }}
       >
-        <ImageCarousel images={images}/>
-        <ListingInfo listing={listing}/>
+        <ImageCarousel images={images} />
+        <ListingInfo listing={listing} />
       </Flex>
     </>
   );

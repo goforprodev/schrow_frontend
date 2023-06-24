@@ -21,64 +21,69 @@ export const useListingsAction = () => {
     }
   };
 
-  const loadListingById = async ({id}) => {
+  const loadListingById = async ({ id }) => {
     const response = await axios.post(baseUrl, {
       endpoint: "load-single-listing",
-      id
+      id,
     });
     const { data } = response;
 
     if (!data.error) {
-      const singleListing = data.data.listing[0]
+      const singleListing = data.data.listing[0];
       setSingleListing(() => singleListing);
     } else {
       throw new Error(data.data.msg);
     }
   };
 
-  const saveListings = async({userId,listingId}) => {
+  const saveListings = async ({ userId, listingId }) => {
     const response = await axios.post(baseUrl, {
       endpoint: "save-listing",
       id: userId,
-      listing_id:listingId
-      });
+      listing_id: listingId,
+    });
     const { data } = response;
-    if(!data.error){
-      return data.data.msg
-    }else{
+    if (!data.error) {
+      return data.data.msg;
+    } else {
       throw new Error(data.data.msg);
     }
-  }
+  };
 
-  const loadSavedListings = async({userId}) => {
-    const response = await axios.post(`${baseUrl}?page=1`,  {
+  const loadSavedListings = async ({ userId }) => {
+    const response = await axios.post(`${baseUrl}?page=1`, {
       endpoint: "load-saved-listings",
       id: userId,
-    })
+    });
     const { data } = response;
-    if(!data.error){
+    if (!data.error) {
       const listingsArr = data.data.listings;
-      return listingsArr
-    }else{
+      return listingsArr;
+    } else {
       throw new Error(data.data.msg);
     }
-  }
+  };
 
-  const deleteSavedListing = async({userId,listingId}) => {
-    console.log(userId,listingId)
+  const deleteSavedListing = async ({ userId, listingId }) => {
+    console.log(userId, listingId);
     const response = await axios.post(baseUrl, {
       endpoint: "del-saved-listing",
-      id:userId,
+      id: userId,
       listing_id:listingId
       });
     const { data } = response;
-    console.log(data)
     if(!data.error){
       alert(data.data.msg)
     }else{
       throw new Error(data.data.msg);
     }
-  }
+  };
 
-  return { loadListings, loadListingById,saveListings ,loadSavedListings,deleteSavedListing};
+  return {
+    loadListings,
+    loadListingById,
+    saveListings,
+    loadSavedListings,
+    deleteSavedListing,
+  };
 };

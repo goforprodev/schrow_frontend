@@ -22,7 +22,6 @@ function AvatarIcon() {
   const userAction = useUserAction();
   
   useEffect(() => {
-
     const loadUserById = async (authUser,userAction) => {
       try {
       await userAction.getUserById({id: authUser[0]?.id})
@@ -30,7 +29,6 @@ function AvatarIcon() {
        console.log(error.message) 
       }
     }
-
     loadUserById(authUser,userAction)
   }, [])
  
