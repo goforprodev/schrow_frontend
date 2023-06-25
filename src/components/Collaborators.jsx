@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { Input, Tag, TagCloseButton, TagLabel, Wrap, WrapItem } from '@chakra-ui/react';
+import { setIn } from 'formik';
 
-const Collaborators = () => {
+const Collaborators = ({setCollaborators}) => {
   const [inputValue, setInputValue] = useState('');
   const [tags, setTags] = useState(['name@mail.com']);
 
@@ -14,11 +15,16 @@ const Collaborators = () => {
       e.preventDefault();
       const isValidEmail = validateEmail(inputValue.trim());
       if (isValidEmail) {
-        setTags([...tags, inputValue.trim()]);
-        setInputValue('');
+        if(tags.includes(inputValue.trim())){
+          alert('Already added');
+        }else{
+          setTags([...tags, inputValue.trim()]);
+          setCollaborators(prev => [...prev, inputValue.trim()])
+          setInputValue('');
+        }
       } else {
         // Handle invalid email
-        alert('Must be an email');
+        alert('Must be an email and must be unique');
       }
     }
   };
@@ -33,6 +39,7 @@ const validateEmail = (email) => {
   const handleTagClose = (tag) => {
     const updatedTags = tags.filter((t) => t !== tag);
     setTags(updatedTags);
+    setCollaborators(prev => prev.filter((t) => t !== tag));
   };
 
   return (

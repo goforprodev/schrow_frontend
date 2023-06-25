@@ -24,6 +24,7 @@ import Collaborators from "../components/Collaborators";
 function AddListing() {
   const [selectedImages, setSelectedImages] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [collaborators,setCollaborators] = useState([])
   const navigate = useNavigate();
 
   const handleImageUpload = (e) => {
@@ -35,6 +36,29 @@ function AddListing() {
     }
   };
 
+  const handleIsCollaborator = async (emails) => {
+    try {
+      //email = x@gmail.com~~angel@gmail.com~~z@gmail.com
+      const emails = collaborators.join("~~");
+      const response = await axios.post("/api/users.php", {
+        endpoint: "is_collaborator",
+        emails
+      })
+      const {data} = response;
+      if(data.data.exists[0] !== "" && data.data.exists.length){
+        //do something
+        return data.data.exists;
+        
+      }else{
+        alert("Collaborators does not exist")
+      }
+    } catch (error) {
+      console.log("Collaborator error : ", error);   
+    }  
+  }
+
+
+  
   const handleRemoveImage = (idx) => {
     const updatedImages = [...selectedImages];
     updatedImages.splice(idx, 1);
@@ -57,7 +81,11 @@ function AddListing() {
       }
   
       formData.append("endpoint", "create-listing");
-  
+      const tcollaborators = await handleIsCollaborator();
+      if(tcollaborators.length){
+        formData.append("collaborators", tcollaborators.join("~~"));
+      }
+
       try {
         setLoading(true);
   
@@ -66,6 +94,11 @@ function AddListing() {
             "Content-Type": "multipart/form-data",
           },
         });
+
+        //console our formdata using key value
+        for (var pair of formData.entries()) {
+          console.log(pair[0] + ", " + pair[1]);
+        }
   
         if (!data.error) {
           setLoading(false);
@@ -580,7 +613,7 @@ function AddListing() {
                   </AccordionButton>
                 </h2>
                 <AccordionPanel pb={4} fontSize={"10pt"}>
-                <Collaborators />
+                <Collaborators setCollaborators={setCollaborators}/>
                 </AccordionPanel>
               </AccordionItem>
             </Accordion>
