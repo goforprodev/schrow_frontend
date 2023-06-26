@@ -1,10 +1,13 @@
 import React, { useState } from 'react';
 import { Input, Tag, TagCloseButton, TagLabel, Wrap, WrapItem } from '@chakra-ui/react';
 import { setIn } from 'formik';
+import { useSetRecoilState } from 'recoil';
+import { errorAtom } from '../state/errors';
 
 const Collaborators = ({setCollaborators}) => {
   const [inputValue, setInputValue] = useState('');
   const [tags, setTags] = useState(['name@mail.com']);
+  const setError = useSetRecoilState(errorAtom);
 
   const handleInputChange = (e) => {
     setInputValue(e.target.value);

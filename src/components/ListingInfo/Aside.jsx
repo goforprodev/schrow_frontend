@@ -8,11 +8,14 @@ import { useListingsAction } from "../../actions/listingsActions";
 import { authAtom } from "../../state/auth";
 import { useRecoilValue } from "recoil";
 import Loader from "../Loader";
+import { useSetRecoilState } from "recoil";
+import { errorAtom } from "../../state/errors";
 
 function Aside({ listingId }) {
   const { id } = useRecoilValue(authAtom);
   const listingAction = useListingsAction();
   const [loading, setLoading] = React.useState(false);
+  const setError = useSetRecoilState(errorAtom);
 
   const saveListings = async (listingId, authId) => {
     setLoading(true);
