@@ -1,8 +1,7 @@
+import axios from "axios";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import { authAtom } from "../state/auth";
 import { userAtom } from "../state/user";
-import axios from "axios";
-import { useNavigate } from "react-router-dom";
 
 const useUserAction = () => {
   const baseUrl = "/api/users.php";
@@ -46,8 +45,8 @@ const useUserAction = () => {
 
   const logout = (navigate) => {
     localStorage.removeItem("user");
-    setAuth(null);
     navigate("/auth");
+    setAuth(null);
   };
 
   const getUserById = async ({id}) => {
