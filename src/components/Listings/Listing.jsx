@@ -1,29 +1,27 @@
-import React from "react";
 import {
+  Button,
   Card,
-  Image,
-  Heading,
-  Text,
   CardBody,
+  Flex,
+  Icon,
+  Image,
   Stack,
   Tag,
   TagLabel,
-  Flex,
-  Box,
-  Icon,
-  Button,
+  Text
 } from "@chakra-ui/react";
-import { useNavigate, Link } from "react-router-dom";
+import React from "react";
 import { BsFillTrashFill } from "react-icons/bs";
+import { Link } from "react-router-dom";
+import { useSetRecoilState, useRecoilValue } from "recoil";
 import { useListingsAction } from "../../actions/listingsActions";
 import { authAtom } from "../../state/auth";
-import { useRecoilValue } from "recoil";
 
-function Listing({ data, showDel }) {
+function Listing({ data, showDel ,setSavedListings}) {
   const { id } = useRecoilValue(authAtom);
   const listingAction = useListingsAction();
   const imageUrl = data?.images.split(", ")[0];
-  const navigate = useNavigate();
+  const [loading, setLoading] = React.useState(false);
 
   return (
     <>
@@ -31,11 +29,20 @@ function Listing({ data, showDel }) {
         <Button
           display={showDel ? "block" : "none"}
           size="sm"
+          isLoading={loading}           
           onClick={async () => {
-            await listingAction.deleteSavedListing({
-              userId: id,
-              listingId: data?.id,
-            });
+            try {
+              setLoading(true);
+              await listingAction.deleteSavedListing({
+                userId: id,
+                listingId: data?.id,
+              });  
+              setSavedListings((prev) => prev.filter((item) => item.id !== data?.id));
+            setLoading(false);
+            } catch (error) {
+              setLoading(false);
+              console.log(error);  
+            }
           }}
           position="absolute"
           top={-2}

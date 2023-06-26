@@ -3,7 +3,7 @@ import { Button,Grid, GridItem } from '@chakra-ui/react'
 import Listing from '../Listings/Listing'
 
 
-function SavedHomes({data}) {
+function SavedHomes({data,setSavedListings}) {
   return (
    <>
       <Grid
@@ -17,9 +17,9 @@ function SavedHomes({data}) {
         justifyItems={"center"}
         mx={"auto"}
       >
-        {data[0]?.map((listing) => (
+        {data?.map((listing) => (
           <GridItem key={listing?.id} cursor={"pointer"}>
-            <Listing data={listing} showDel={true} />  
+            <Listing data={listing} showDel={true} setSavedListings={setSavedListings} />  
           </GridItem>
         ))}
       </Grid>

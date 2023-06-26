@@ -48,15 +48,13 @@ export const useListingsAction = () => {
     });
     const { data } = response;
     if (!data.error) {
-      const listingsArr = data.data.listings;
-      return listingsArr;
+      return data.data.listings
     } else {
       throw new Error(data.data.msg);
     }
   };
 
   const deleteSavedListing = async ({ userId, listingId }) => {
-    console.log(userId, listingId);
     const response = await axios.post(baseUrl, {
       endpoint: "del-saved-listing",
       id: userId,
@@ -64,7 +62,7 @@ export const useListingsAction = () => {
       });
     const { data } = response;
     if(!data.error){
-      alert(data.data.msg)
+      return data.data.msg
     }else{
       throw new Error(data.data.msg);
     }

@@ -1,25 +1,26 @@
-import React, { useState, useEffect } from "react";
 import {
-  Flex,
-  Tabs,
-  TabList,
-  Tab,
-  TabPanels,
-  TabPanel,
-  TabIndicator,
-  Heading,
   Button,
+  Flex,
+  Heading,
+  Tab,
+  TabIndicator,
+  TabList,
+  TabPanel,
+  TabPanels,
+  Tabs,
 } from "@chakra-ui/react";
+import React, { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { useRecoilValue } from "recoil";
+import { useListingsAction } from "../actions/listingsActions";
+import AccountSettings from "../components/AccountSettings/AccountSettings";
 import Empty from "../components/Empty";
-import SavedHomes from "../components/SavedHomes/SavedHomes";
 import ManageInvestments from "../components/ManageInvestments/ManageInvestments";
 import ManageLisitings from "../components/ManageListings/ManageLisitings";
-import AccountSettings from "../components/AccountSettings/AccountSettings";
 import RecentlyViewed from "../components/RecentlyViewed/RecentlyViewed";
-import { Link } from "react-router-dom";
-import { useListingsAction } from "../actions/listingsActions";
-import { useRecoilValue } from "recoil";
+import SavedHomes from "../components/SavedHomes/SavedHomes";
 import { authAtom } from "../state/auth";
+import { userAtom } from "../state/user";
 import capitalize from "../utils/capitalize";
 
 function Dashboard() {
@@ -27,19 +28,21 @@ function Dashboard() {
   const [savedListings, setSavedListings] = useState([]);
   const data = null;
   const { name, id } = useRecoilValue(authAtom);
+  const user = useRecoilValue(userAtom)
 
   useEffect(() => {
     const fetchListings = async (id) => {
       try {
         const res = await listingAction.loadSavedListings({ userId: id });
-        setSavedListings((prev) => [...prev, res]);
+        setSavedListings(() => res);
       } catch (error) {
         console.log(error);
       }
     };
     fetchListings(id);
-  }, [savedListings]);
+  }, []);
 
+ 
   return (
     <>
       <Flex py={"10pt"} direction={"column"} w={"80vw"} mx={"auto"}>
@@ -51,7 +54,7 @@ function Dashboard() {
           textAlign={{ base: "center", sm: "left" }}
           fontWeight={"extrabold"}
         >
-          Welcome {capitalize(name)}
+          Welcome {capitalize(user?.names)}
         </Heading>
         <Flex p="10pt" justify={"left"}>
           <Tabs position="relative" variant="unstyled">
@@ -70,8 +73,8 @@ function Dashboard() {
             />
             <TabPanels>
               <TabPanel>
-                {savedListings[0]?.length ? (
-                  <SavedHomes data={savedListings} />
+                {savedListings?.length ? (
+                  <SavedHomes data={savedListings} setSavedListings={setSavedListings} />
                 ) : (
                   <Empty />
                 )}

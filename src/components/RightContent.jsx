@@ -20,6 +20,7 @@ import { userAtom } from "../state/user";
 function AvatarIcon() {
   const authUser = useRecoilState(authAtom);
   const userAction = useUserAction();
+  const user = useRecoilValue(userAtom);
   
   useEffect(() => {
     const loadUserById = async (authUser,userAction) => {
@@ -34,7 +35,7 @@ function AvatarIcon() {
  
   return (
     <>
-      <Avatar name={authUser[0]?.name || "John Doe"} size={"sm"} />
+      <Avatar name={user?.names|| "John Doe"} size={"sm"} />
     </>
   );
 }
