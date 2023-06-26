@@ -14,8 +14,6 @@ import Filters from "../components/Filters";
 import Listings from "../components/Listings/Listings";
 import { authSelector } from "../state/auth";
 import Loader from "../components/Loader";
-import Alert from "../components/Modals/Alert/AlertModal";
-import AlertModal from "../components/Modals/Alert/AlertModal";
 
 function Home() {
   const navigate = useNavigate();

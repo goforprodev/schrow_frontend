@@ -1,4 +1,4 @@
-import { Flex, Icon, Text } from "@chakra-ui/react";
+import { Flex, Icon, Text, useToast } from "@chakra-ui/react";
 import React from "react";
 import { AiFillHeart, AiOutlineShareAlt } from "react-icons/ai";
 import { BiHide } from "react-icons/bi";
@@ -8,14 +8,12 @@ import { useListingsAction } from "../../actions/listingsActions";
 import { authAtom } from "../../state/auth";
 import { useRecoilValue } from "recoil";
 import Loader from "../Loader";
-import { useSetRecoilState } from "recoil";
-import { errorAtom } from "../../state/errors";
 
 function Aside({ listingId }) {
   const { id } = useRecoilValue(authAtom);
   const listingAction = useListingsAction();
   const [loading, setLoading] = React.useState(false);
-  const setError = useSetRecoilState(errorAtom);
+  const toast = useToast()
 
   const saveListings = async (listingId, authId) => {
     setLoading(true);
@@ -25,9 +23,22 @@ function Aside({ listingId }) {
         listingId,
       });
       setLoading(false);
-      // alert(res)
+      toast({
+        title:"Success",
+        status:"success",
+        duration:1000,
+        description:res,
+        isClosable:true
+    })
     } catch (error) {
       setLoading(false);
+      toast({
+        title:"Error",
+        status:"error",
+        duration:5000,
+        description:"This listing is already saved",
+        isClosable:true
+    })
       console.log(error);
     }
   };
@@ -64,7 +75,7 @@ function Aside({ listingId }) {
     },
   ];
 
-  if (loading) return <Loader />;
+  // if (loading) return <Loader />;
 
   return (
     <>
@@ -77,6 +88,7 @@ function Aside({ listingId }) {
           gap={1}
           key={idx}
           _focus={{ color: "red" }}
+          isLoading={loading}
         >
           {buttonAs.icon}
           <Text>{buttonAs.name}</Text>

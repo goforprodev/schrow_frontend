@@ -3,7 +3,6 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import useUserAction from "../actions/userActions";
-import AlertModal from "./Modals/Alert/AlertModal";
 
 function SignIn() {
   const userAction = useUserAction();
