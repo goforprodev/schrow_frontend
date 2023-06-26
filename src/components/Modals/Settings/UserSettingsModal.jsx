@@ -3,6 +3,7 @@ import { settingsModalAtom } from '../../../state/settingsModal'
 import { useRecoilState } from 'recoil'
 import { Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton, Button, FormControl, FormLabel, Input } from '@chakra-ui/react'
 import ProfileSettings from './ProfileSettings'
+import PasswordSettings from './PasswordSettings'
 
 const UserSettingsModal = () => {
     const [settingsModal, setSettingsModal] = useRecoilState(settingsModalAtom)
@@ -27,7 +28,7 @@ const UserSettingsModal = () => {
             }</ModalHeader>
           <ModalCloseButton />
           <ModalBody pb={6}>
-            {settingsModal.type === "profile" ? <ProfileSettings /> : null}
+            {settingsModal.type === "profile" ? <ProfileSettings /> :<PasswordSettings />}
           </ModalBody> 
         </ModalContent>
       </Modal>

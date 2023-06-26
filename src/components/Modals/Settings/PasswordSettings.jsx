@@ -1,65 +1,61 @@
-import { Button, Flex, FormLabel, Input, Text } from '@chakra-ui/react';
-import axios from 'axios';
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useRecoilValue, useSetRecoilState } from 'recoil';
-import useUserAction from '../../../actions/userActions';
-import { authAtom } from '../../../state/auth';
-import { settingsModalAtom } from '../../../state/settingsModal';
-import { userAtom } from '../../../state/user';
+import React,{useState} from 'react'
+import { Button, Flex, FormLabel, Input, Text } from '@chakra-ui/react'
+import axios from 'axios'
+import { authAtom } from '../../../state/auth'
+import { useRecoilValue,useSetRecoilState } from 'recoil'
+import { useNavigate } from 'react-router-dom'
+import { settingsModalAtom } from '../../../state/settingsModal'
+import useUserAction from '../../../actions/userActions'
 
 
-const ProfileSettings = () => {
-    const _user = useRecoilValue(userAtom)
-    const _authUser = useRecoilValue(authAtom)
-    const [user,setUser] = useState({
-        names: _user?.names,
-        email: _user?.email
-    }) 
+const PasswordSettings = () => { 
+    const _user = useRecoilValue(authAtom)
     const [loading,setLoading] = useState(false)
-    const userAction = useUserAction();
-    const navigate = useNavigate();
+    const  [_password,setPassword] = useState({
+        old_password: "",
+        new_password: ""
+    })
+    const navigate = useNavigate()
     const setSettingsModal = useSetRecoilState(settingsModalAtom)
+    const userAction = useUserAction()
+
 
     const handleSubmit = async (e) => {
-      e.preventDefault()
+        e.preventDefault()
         try {
             setLoading(true)
-            const response = await axios.post("/api/users.php",{
-                endpoint:"update-profile",
-                email: user.email,
-                name: user.names,
+           const response = await axios.post("/api/users.php",{
+                endpoint:"change-password", 
+                old_password: _password.old_password,
+                password: _password.new_password,
                 id: _user?.id
                 })
-           if(!response.data.error){
-              if(user.email !== _authUser?.email){
+            if(!response.data.error){
                 setLoading(false)
+                setSettingsModal(prev => ({...prev, isOpen: false}))
                 userAction.logout(navigate)
-              }     
-           }
-            setLoading(false)
-           setSettingsModal(prev => ({...prev, isOpen: false}))
+            }else{
+                throw new Error(response.data.data.msg)
+            }
         } catch (error) {
            setLoading(false)
-              console.log(error) 
+            alert(error) 
         }
-    };
+    }
     const handleChange = (e) => {
-        setUser(prev => ({...prev, [e.target.name]: e.target.value}))
-    };
+        setPassword(prev => ({...prev, [e.target.name]: e.target.value}))
+    }
 
-    
- return (
-    <>
-    <form onSubmit={handleSubmit}>
+
+  return (
+<form onSubmit={handleSubmit}>
             <Flex direction={"column"} pb={"10pt"} color={"gray.700"}>
               <FormLabel fontSize={"10pt"} fontWeight={"medium"}>
-                Full name
+              Old password
               </FormLabel>
               <Input
-                name="names"
+                name="old_password"
                 type="text"
-                placeholder="John Doe"
                 mb={2}
                 required
                 onChange={handleChange}
@@ -80,17 +76,15 @@ const ProfileSettings = () => {
                   borderColor: "#000",
                 }}
                 bg={"gray.50"}
-                value={user?.names}
               />
             </Flex>
             <Flex direction={"column"} pb={"10pt"} color={"gray.700"}>
               <FormLabel fontSize={"10pt"} fontWeight={"medium"}>
-                Email
+                New password
               </FormLabel>
               <Input
-                name="email"
-                type="email"
-                placeholder="name@email.com"
+                name="new_password"
+                type="text"
                 mb={2}
                 required
                 onChange={handleChange}
@@ -111,17 +105,14 @@ const ProfileSettings = () => {
                   borderColor: "#000",
                 }}
                 bg={"gray.50"}
-                value={user?.email}
               />
-              <Text fontSize={"8pt"} color={"gray.500"}>If you change your email you would have to sign in again</Text>
-            <Text as={"a"} fontSize={"8pt"} cursor={"pointer"} color={"brand.100"} py={"1pt"} onClick={() => setSettingsModal(prev => ({...prev,type:"change_password"}))}>Change password</Text>
+              <Text fontSize={"8pt"} color={"gray.500"}>Your old password must match with your recent password</Text>
             </Flex>
-         <Button variant={"solid"} mr={3} type='submit' isLoading={loading}>
+            <Button variant={"solid"} mr={3} type='submit' isLoading={loading}>
               Save
             </Button>
     </form>
-    </>
   )
 }
 
-export default ProfileSettings
+export default PasswordSettings
