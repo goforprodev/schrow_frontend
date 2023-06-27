@@ -9,6 +9,7 @@ import {
   Tag,
   TagLabel,
   Text,
+  transition,
 } from "@chakra-ui/react";
 import React from "react";
 import { AiFillEdit } from "react-icons/ai";
@@ -78,7 +79,7 @@ function Listing({ data, showDel, showEdit, _class, setSavedListings }) {
         </Button>
         <Link to={`/${data.id}`}>
           <CardBody>
-            <Flex w={"100%"} h={"120px"}>
+            <Flex w={"100%"} h={"120px"} overflow={"hidden"}>
               <Image
                 src={
                   imageUrl ||
@@ -88,6 +89,8 @@ function Listing({ data, showDel, showEdit, _class, setSavedListings }) {
                 alt="Green double couch with wooden legs"
                 borderRadius="lg"
                 w={"100%"}
+                //scale image on hover
+                _hover={{ transform: "scale(1.1)", transition: "all 0.7s" }}
               />
             </Flex>
             <Stack mt="3" spacing="3" fontSize={"10pt"}>

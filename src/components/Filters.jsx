@@ -37,7 +37,12 @@ function Filters() {
   const handleChange = () => {};
   return (
     <>
-      <Icon as={BsFilter} boxSize={8} cursor={"pointer"} onClick={onOpen} />
+      <Icon
+        as={BsFilter}
+        boxSize={8}
+        cursor={"pointer"}
+        onClick={onOpen}
+      />
 
       {/* Drawer */}
       <Drawer

@@ -105,20 +105,28 @@ function Dashboard() {
                     setSavedListings={setSavedListings}
                   />
                 ) : (
-                  <Empty />
+                  <Empty text={"No saved liting"} />
                 )}
               </TabPanel>
               <TabPanel>
                 <ManageLisitings data={data} />
               </TabPanel>
               <TabPanel>
-                {data ? <ManageInvestments data={data} /> : <Empty />}
+                {data ? (
+                  <ManageInvestments data={data} />
+                ) : (
+                  <Empty text={"No Investments made"} />
+                )}
               </TabPanel>
               <TabPanel>
                 <AccountSettings data={data} />
               </TabPanel>
               <TabPanel>
-                {data ? <RecentlyViewed data={data} /> : <Empty />}
+                {data ? (
+                  <RecentlyViewed data={data} />
+                ) : (
+                  <Empty text={"No recently viewed listing"} />
+                )}
               </TabPanel>
             </TabPanels>
           </Tabs>

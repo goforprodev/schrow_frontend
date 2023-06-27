@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import {Flex,Button, Grid, GridItem } from "@chakra-ui/react";
+import { Flex, Button, Grid, GridItem } from "@chakra-ui/react";
 import { useListingsAction } from "../../actions/listingsActions";
 import { useEffect } from "react";
 import { authAtom } from "../../state/auth";
@@ -23,7 +23,7 @@ function ManageLisitings() {
   if (_listings.length === 0) {
     return (
       <Flex direction={"column"}>
-        <Empty />
+        <Empty text={"You dont have any listing"} />
         <Button alignSelf={"center"} variant={"outline"}>
           <Link to={"/add"}>Add new listing </Link>
         </Button>
