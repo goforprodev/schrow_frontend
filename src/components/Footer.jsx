@@ -21,7 +21,12 @@ import { MdEmail, MdLocationOn, MdPhone } from "react-icons/md";
 function Footer() {
   return (
     <>
-      <Box as="div" width={{ base: "100%", md: "90%", sm: "80%" }} m={"0 auto"}>
+      <Box
+        as="div"
+        bgGradient="linear(to-bl, rgb(147 51 234),  rgb(59 130 246))"
+        color={"gray.100"}
+        mt={"30pt"}
+      >
         <Grid
           templateColumns={{
             base: "none",
@@ -33,6 +38,8 @@ function Footer() {
           px={"10pt"}
           py={"25pt"}
           mx={"auto"}
+          width={{ base: "100%", md: "90%", sm: "80%" }}
+          m={"0 auto"}
         >
           <GridItem py={{ base: "10pt", sm: "0" }}>
             <Image src={Logo} alt="schrow-logo" h={"50px"} ml={"-10pt"} />
@@ -45,7 +52,9 @@ function Footer() {
             </Text>
           </GridItem>
           <GridItem>
-            <Text fontSize={"15pt"}>Our services</Text>
+            <Text fontSize={"15pt"} fontWeight={"bold"}>
+              Our services
+            </Text>
             <Box
               fontSize="10pt"
               py={"10pt"}
@@ -60,7 +69,9 @@ function Footer() {
             </Box>
           </GridItem>
           <GridItem>
-            <Text fontSize={"15pt"}>Company</Text>
+            <Text fontSize={"15pt"} fontWeight={"bold"}>
+              Company
+            </Text>
             <Box
               fontSize="10pt"
               py={"10pt"}
@@ -75,7 +86,9 @@ function Footer() {
             </Box>
           </GridItem>
           <GridItem>
-            <Text fontSize={"15pt"}>Contact Us</Text>
+            <Text fontSize={"15pt"} fontWeight={"bold"}>
+              Contact Us
+            </Text>
             <Box fontSize="10pt" py={"10pt"}>
               <Text
                 display={"flex"}
@@ -106,12 +119,14 @@ function Footer() {
             </Box>
           </GridItem>
         </Grid>
-        <Divider />
+        <Divider w={"90%"} mx={"auto"} />
         <Flex
           align={"center"}
           justify={"space-between"}
           direction={{ base: "column", sm: "row" }}
-          py={"10pt"}
+          py={"5pt"}
+          w={"90%"}
+          mx={"auto"}
         >
           <Text py="10pt" fontSize={"10pt"}>
             © 2021 Schrow, Inc. All rights reserved.

@@ -1,6 +1,7 @@
 import {
   Flex,
   Heading,
+  Icon,
   Tab,
   TabIndicator,
   TabList,
@@ -19,6 +20,11 @@ import RecentlyViewed from "../components/RecentlyViewed/RecentlyViewed";
 import SavedHomes from "../components/SavedHomes/SavedHomes";
 import { authAtom } from "../state/auth";
 import capitalize from "../utils/capitalize";
+import { BiHomeAlt } from "react-icons/bi";
+import { IoSettingsOutline } from "react-icons/io5";
+import { MdOutlineManageAccounts } from "react-icons/md";
+import { MdOutlineAccountBalanceWallet } from "react-icons/md";
+import { GrFormView } from "react-icons/gr";
 
 function Dashboard() {
   const listingAction = useListingsAction();
@@ -56,11 +62,34 @@ function Dashboard() {
         <Flex p="10pt" justify={"left"}>
           <Tabs position="relative" variant="unstyled">
             <TabList>
-              <Tab>Saved Homes</Tab>
-              <Tab>Manage Listings</Tab>
-              <Tab>Manage Investments</Tab>
-              <Tab>Account Settings</Tab>
-              <Tab>Recently Viewed</Tab>
+              <Tab>
+                <Icon as={BiHomeAlt} fontSize={"14pt"} mr={"5pt"} />
+                Saved Homes
+              </Tab>
+              <Tab>
+                <Icon
+                  as={MdOutlineManageAccounts}
+                  fontSize={"14pt"}
+                  mr={"5pt"}
+                />
+                Manage Listings
+              </Tab>
+              <Tab>
+                <Icon
+                  as={MdOutlineAccountBalanceWallet}
+                  fontSize={"14pt"}
+                  mr={"5pt"}
+                />
+                Manage Investments
+              </Tab>
+              <Tab>
+                <Icon as={IoSettingsOutline} fontSize={"14pt"} mr={"5pt"} />
+                Account Settings
+              </Tab>
+              <Tab>
+                <Icon as={GrFormView} fontSize={"14pt"} mr={"5pt"} />
+                Recently Viewed
+              </Tab>
             </TabList>
             <TabIndicator
               mt="-1.5px"

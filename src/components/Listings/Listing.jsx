@@ -11,18 +11,21 @@ import {
   Text,
 } from "@chakra-ui/react";
 import React from "react";
+import { AiFillEdit } from "react-icons/ai";
 import { BsFillTrashFill } from "react-icons/bs";
+import { MdOutlineManageAccounts } from "react-icons/md";
 import { Link } from "react-router-dom";
-import { useSetRecoilState, useRecoilValue } from "recoil";
+import { useRecoilValue } from "recoil";
 import { useListingsAction } from "../../actions/listingsActions";
 import { authAtom } from "../../state/auth";
-import { AiFillEdit } from "react-icons/ai";
+import { useNavigate } from "react-router-dom";
 
 function Listing({ data, showDel, showEdit, _class, setSavedListings }) {
   const { id } = useRecoilValue(authAtom);
   const listingAction = useListingsAction();
   const imageUrl = data?.images.split(", ")[0];
   const [loading, setLoading] = React.useState(false);
+  const navigate = useNavigate();
 
   return (
     <>
@@ -35,6 +38,7 @@ function Listing({ data, showDel, showEdit, _class, setSavedListings }) {
           right={10}
           borderRadius="full"
           zIndex={10}
+          onClick={() => navigate(`/edit/${data?.id}`)}
         >
           <Icon as={AiFillEdit} size={"20pt"} />
         </Button>
@@ -101,7 +105,12 @@ function Listing({ data, showDel, showEdit, _class, setSavedListings }) {
                 <Text as={"span"}>{data.statex},</Text>
                 <Text as={"span"}>{data.country}</Text>
               </Flex>
-              <Text>{data.title || "Bimpe Azeez real estate"}</Text>
+              <Flex justify={"space-between"}>
+                <Text>{data.title || "Bimpe Azeez real estate"}</Text>
+                {showEdit && (
+                  <Icon as={MdOutlineManageAccounts} size={"20pt"} />
+                )}
+              </Flex>
             </Stack>
           </CardBody>
         </Link>

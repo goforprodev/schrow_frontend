@@ -70,7 +70,7 @@ function Auth() {
             w={{ base: "100%", md: "293pt" }}
             wrap={"wrap"}
           >
-            <Heading as={"h2"} fontSize={"16pt"}>
+            <Heading as={"h2"} fontSize={"16pt"} fontWeight={"500"}>
               Welcome lets get started!
             </Heading>
             <Text
@@ -121,7 +121,7 @@ function Auth() {
             bg={"gray.300"}
           />
           <Text as="p" align={"center"} py={"10pt"} fontSize={"14pt"}>
-            Or continue with:
+            OR
           </Text>
           <Flex
             direction={"column"}

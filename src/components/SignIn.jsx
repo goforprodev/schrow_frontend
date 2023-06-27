@@ -35,7 +35,7 @@ function SignIn() {
           status: "error",
           description: error.message,
           isClosable: true,
-          duration: 3000,
+          duration: 2000,
         });
       }
     },

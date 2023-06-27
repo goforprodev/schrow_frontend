@@ -21,21 +21,25 @@ function AvatarIcon() {
   const authUser = useRecoilState(authAtom);
   const userAction = useUserAction();
   const user = useRecoilValue(userAtom);
-  
+
   useEffect(() => {
-    const loadUserById = async (authUser,userAction) => {
+    const loadUserById = async (authUser, userAction) => {
       try {
-      await userAction.getUserById({id: authUser[0]?.id})
+        await userAction.getUserById({ id: authUser[0]?.id });
       } catch (error) {
-       console.log(error.message) 
+        console.log(error.message);
       }
-    }
-    loadUserById(authUser,userAction)
-  }, [])
- 
+    };
+    loadUserById(authUser, userAction);
+  }, []);
+
   return (
     <>
-      <Avatar name={user?.names|| "John Doe"} size={"sm"} />
+      <Avatar
+        name={user?.names || "John Doe"}
+        size={"sm"}
+        fontWeight={"bold"}
+      />
     </>
   );
 }
@@ -83,7 +87,11 @@ function RightContent() {
             <MenuItem command="⌘S" onClick={() => userAction.logout(navigate)}>
               Sign Out
             </MenuItem>
-            <Button w={"100%"} my={"5pt"} display={{base:"block",sm:"none"}}>
+            <Button
+              w={"100%"}
+              my={"5pt"}
+              display={{ base: "block", sm: "none" }}
+            >
               <Link to="/message">Leave a message</Link>
             </Button>
           </MenuList>
