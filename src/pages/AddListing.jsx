@@ -14,25 +14,34 @@ import {
   Input,
   Text,
   Textarea,
+  useToast,
 } from "@chakra-ui/react";
 import axios from "axios";
 import { useFormik } from "formik";
-import  { useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Collaborators from "../components/Collaborators";
+import { BsChevronCompactLeft } from "react-icons/bs";
 
 function AddListing() {
   const [selectedImages, setSelectedImages] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [collaborators,setCollaborators] = useState([])
+  const [collaborators, setCollaborators] = useState([]);
   const navigate = useNavigate();
+  const toast = useToast();
 
   const handleImageUpload = (e) => {
     const files = Array.from(e.target.files);
     if (selectedImages.length + files.length <= 6) {
       setSelectedImages([...selectedImages, ...files]);
     } else {
-      alert("image should not exceed 6");
+      toast({
+        status: "error",
+        title: "Error",
+        description: "You can only upload up to 6 images",
+        duration: 3000,
+        isClosable: true,
+      });
     }
   };
 
@@ -42,23 +51,26 @@ function AddListing() {
       const emails = collaborators.join("~~");
       const response = await axios.post("/api/users.php", {
         endpoint: "is_collaborator",
-        emails
-      })
-      const {data} = response;
-      if(data.data.exists[0] !== "" && data.data.exists.length){
+        emails,
+      });
+      const { data } = response;
+      if (data.data.exists[0] !== "" && data.data.exists.length) {
         //do something
         return data.data.exists;
-        
-      }else{
-        alert("Collaborators does not exist")
+      } else {
+        toast({
+          status: "error",
+          title: "Error",
+          description: "Collaborator does not exist",
+          duration: 7000,
+          isClosable: true,
+        });
       }
     } catch (error) {
-      console.log("Collaborator error : ", error);   
-    }  
-  }
+      console.log("Collaborator error : ", error);
+    }
+  };
 
-
-  
   const handleRemoveImage = (idx) => {
     const updatedImages = [...selectedImages];
     updatedImages.splice(idx, 1);
@@ -68,38 +80,49 @@ function AddListing() {
   const onSubmit = async (values) => {
     const formData = new FormData();
 
-    if(values){
-      selectedImages.forEach((image,index) => {
+    if (values) {
+      selectedImages.forEach((image, index) => {
         const blob = new Blob([image], { type: image.type });
         formData.append(`image-${index + 1}`, blob);
       });
-  
+
       for (const key in values) {
         if (key.indexOf("image") === -1) {
           formData.append(key, values[key]);
         }
       }
-  
+
       formData.append("endpoint", "create-listing");
       const tcollaborators = await handleIsCollaborator();
-      if(tcollaborators.length){
+      if (collaborators.length !== tcollaborators.length) {
+        //check for the collborators not in tcollaborators
+        const t = collaborators.filter(
+          (email) => !tcollaborators.includes(email)
+        );
+        //return a toast that displays the emails
+        toast({
+          status: "error",
+          title: "Error",
+          description: `${t.join(", ")} does not exist`,
+          duration: 7000,
+          isClosable: true,
+        });
+
+        return;
+      }
+      if (tcollaborators.length) {
         formData.append("collaborators", tcollaborators.join("~~"));
       }
 
       try {
         setLoading(true);
-  
+
         const { data } = await axios.post("/api/users.php", formData, {
           headers: {
             "Content-Type": "multipart/form-data",
           },
         });
 
-        //console our formdata using key value
-        for (var pair of formData.entries()) {
-          console.log(pair[0] + ", " + pair[1]);
-        }
-  
         if (!data.error) {
           setLoading(false);
           navigate("/");
@@ -107,11 +130,9 @@ function AddListing() {
       } catch (error) {
         setLoading(false);
         console.log("AddListings error Error : ", error);
-
+      }
     }
-    }
-    return
-
+    return;
   };
 
   const formik = useFormik({
@@ -613,7 +634,7 @@ function AddListing() {
                   </AccordionButton>
                 </h2>
                 <AccordionPanel pb={4} fontSize={"10pt"}>
-                <Collaborators setCollaborators={setCollaborators}/>
+                  <Collaborators setCollaborators={setCollaborators} />
                 </AccordionPanel>
               </AccordionItem>
             </Accordion>
