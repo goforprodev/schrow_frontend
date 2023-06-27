@@ -47,20 +47,17 @@ function Home() {
 
   return (
     <>
-      <Flex
-        direction="column"
-        py={"15pt"}
-        px={"30pt"}
-        bg={"body.100"}
-      >
+      <Flex direction="column" py={"15pt"} px={"30pt"} bg={"body.100"}>
         <Flex
           justify={{ base: "center", sm: "space-between" }}
           align={"center"}
           py={"10pt"}
           gap={3}
           direction={{ base: "column", xl: "row" }}
+          w={"95%"}
+          mx={"auto"}
         >
-          <Heading as={"h3"} fontSize={{ base: "13pt", sm: "15pt" }}>
+          <Heading as={"h3"} fontSize={{ base: "13pt", sm: "17pt" }}>
             Real Estate & Homes For Sale
           </Heading>
           <Flex align={"center"} gap={"10pt"} w={{ base: "90%", sm: "60%" }}>

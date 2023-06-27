@@ -10,7 +10,7 @@ export const useListingsAction = () => {
 
   const loadListings = async ({ endpoint }) => {
     const res = await fetchNRelease({
-      url:`${baseUrl}?page=1`,
+      url: `${baseUrl}?page=1`,
       body: { endpoint },
     });
     setListings(() => res.listings);
@@ -23,9 +23,9 @@ export const useListingsAction = () => {
         endpoint: "load-single-listing",
         id,
       },
-    })
-    setSingleListing(() => response.listing[0])
- };
+    });
+    setSingleListing(() => response.listing[0]);
+  };
 
   const saveListings = async ({ userId, listingId }) => {
     const response = await axios.post(baseUrl, {
@@ -48,7 +48,7 @@ export const useListingsAction = () => {
     });
     const { data } = response;
     if (!data.error) {
-      return data.data.listings
+      return data.data.listings;
     } else {
       throw new Error(data.data.msg);
     }
@@ -58,14 +58,40 @@ export const useListingsAction = () => {
     const response = await axios.post(baseUrl, {
       endpoint: "del-saved-listing",
       id: userId,
-      listing_id:listingId
-      });
+      listing_id: listingId,
+    });
     const { data } = response;
-    if(!data.error){
-      return data.data.msg
-    }else{
+    if (!data.error) {
+      return data.data.msg;
+    } else {
       throw new Error(data.data.msg);
     }
+  };
+
+  const loadSellerListings = async ({ id }) => {
+    const response = await fetchNRelease({
+      url: `${baseUrl}?page=1&seller_id=${id}`,
+      body: { endpoint: "load-listing" },
+    });
+    return response.listings;
+  };
+
+  const deleteListing = async ({ id, listingId }) => {
+    console.log(id, listingId);
+    const response = await fetchNRelease({
+      url: baseUrl,
+      body: { endpoint: "del-listing", id, listing_id: listingId },
+    });
+    console.log(response);
+    return response.msg;
+  };
+
+  const editListing = async ({ data }) => {
+    const response = await fetchNRelease({
+      url: baseUrl,
+      body: { endpoint: "edit-listing", ...data },
+    });
+    return response.msg;
   };
 
   return {
@@ -74,5 +100,7 @@ export const useListingsAction = () => {
     saveListings,
     loadSavedListings,
     deleteSavedListing,
+    loadSellerListings,
+    deleteListing,
   };
 };

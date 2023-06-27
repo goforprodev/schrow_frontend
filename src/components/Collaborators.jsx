@@ -10,7 +10,6 @@ import {
 } from "@chakra-ui/react";
 import { setIn } from "formik";
 import { useSetRecoilState } from "recoil";
-import { errorAtom } from "../state/errors";
 
 const Collaborators = ({ setCollaborators }) => {
   const [inputValue, setInputValue] = useState("");

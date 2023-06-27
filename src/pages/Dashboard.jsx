@@ -1,5 +1,4 @@
 import {
-  Button,
   Flex,
   Heading,
   Tab,
@@ -10,7 +9,6 @@ import {
   Tabs,
 } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
 import { useRecoilValue } from "recoil";
 import { useListingsAction } from "../actions/listingsActions";
 import AccountSettings from "../components/AccountSettings/AccountSettings";
@@ -20,7 +18,6 @@ import ManageLisitings from "../components/ManageListings/ManageLisitings";
 import RecentlyViewed from "../components/RecentlyViewed/RecentlyViewed";
 import SavedHomes from "../components/SavedHomes/SavedHomes";
 import { authAtom } from "../state/auth";
-import { userAtom } from "../state/user";
 import capitalize from "../utils/capitalize";
 
 function Dashboard() {
@@ -28,7 +25,6 @@ function Dashboard() {
   const [savedListings, setSavedListings] = useState([]);
   const data = null;
   const { name, id } = useRecoilValue(authAtom);
-  const user = useRecoilValue(userAtom)
 
   useEffect(() => {
     const fetchListings = async (id) => {
@@ -40,21 +36,22 @@ function Dashboard() {
       }
     };
     fetchListings(id);
-  }, []);
+  }, [id]);
 
- 
   return (
     <>
-      <Flex py={"10pt"} direction={"column"} w={"80vw"} mx={"auto"}>
+      <Flex py={"10pt"} direction={"column"} w={"90vw"} mx={"auto"}>
         <Heading
           as={"h1"}
           fontFamily={"heading"}
           fontSize={"25pt"}
-          py={"10pt"}
+          p={"10pt"}
           textAlign={{ base: "center", sm: "left" }}
           fontWeight={"extrabold"}
+          bgGradient="linear(to-br, #7928CA, #FF0080)"
+          bgClip="text"
         >
-          Welcome {capitalize(user?.names)}
+          Welcome {capitalize(name)} 🎉
         </Heading>
         <Flex p="10pt" justify={"left"}>
           <Tabs position="relative" variant="unstyled">
@@ -74,22 +71,16 @@ function Dashboard() {
             <TabPanels>
               <TabPanel>
                 {savedListings?.length ? (
-                  <SavedHomes data={savedListings} setSavedListings={setSavedListings} />
+                  <SavedHomes
+                    data={savedListings}
+                    setSavedListings={setSavedListings}
+                  />
                 ) : (
                   <Empty />
                 )}
               </TabPanel>
               <TabPanel>
-                {data ? (
-                  <ManageLisitings data={data} />
-                ) : (
-                  <Flex direction={"column"}>
-                    <Empty />
-                    <Button alignSelf={"center"} variant={"outline"}>
-                      <Link to={"/add"}>Add new listing </Link>
-                    </Button>
-                  </Flex>
-                )}
+                <ManageLisitings data={data} />
               </TabPanel>
               <TabPanel>
                 {data ? <ManageInvestments data={data} /> : <Empty />}

@@ -2,6 +2,8 @@ import "@fontsource/open-sans/300.css";
 import "@fontsource/open-sans/400.css";
 import "@fontsource/open-sans/700.css";
 import "@fontsource/raleway/200.css";
+import "@fontsource/raleway/400.css";
+import "@fontsource/raleway/500.css";
 // import "@fontsource/raleway/700.css";
 import { extendTheme } from "@chakra-ui/react";
 import { Button } from "./button";

@@ -8,7 +8,7 @@ import {
   Stack,
   Tag,
   TagLabel,
-  Text
+  Text,
 } from "@chakra-ui/react";
 import React from "react";
 import { BsFillTrashFill } from "react-icons/bs";
@@ -16,8 +16,9 @@ import { Link } from "react-router-dom";
 import { useSetRecoilState, useRecoilValue } from "recoil";
 import { useListingsAction } from "../../actions/listingsActions";
 import { authAtom } from "../../state/auth";
+import { AiFillEdit } from "react-icons/ai";
 
-function Listing({ data, showDel ,setSavedListings}) {
+function Listing({ data, showDel, showEdit, _class, setSavedListings }) {
   const { id } = useRecoilValue(authAtom);
   const listingAction = useListingsAction();
   const imageUrl = data?.images.split(", ")[0];
@@ -27,21 +28,40 @@ function Listing({ data, showDel ,setSavedListings}) {
     <>
       <Card maxW="sm" position={"relative"}>
         <Button
+          display={showEdit ? "block" : "none"}
+          size="sm"
+          position="absolute"
+          top={-2}
+          right={10}
+          borderRadius="full"
+          zIndex={10}
+        >
+          <Icon as={AiFillEdit} size={"20pt"} />
+        </Button>
+
+        <Button
           display={showDel ? "block" : "none"}
           size="sm"
-          isLoading={loading}           
+          isLoading={loading}
           onClick={async () => {
             try {
               setLoading(true);
-              await listingAction.deleteSavedListing({
-                userId: id,
-                listingId: data?.id,
-              });  
-              setSavedListings((prev) => prev.filter((item) => item.id !== data?.id));
-            setLoading(false);
+              showEdit
+                ? await listingAction.deleteListing({
+                    id,
+                    listingId: data?.id,
+                  })
+                : await listingAction.deleteSavedListing({
+                    userId: id,
+                    listingId: data?.id,
+                  });
+              setSavedListings((prev) =>
+                prev.filter((item) => item.id !== data?.id)
+              );
+              setLoading(false);
             } catch (error) {
               setLoading(false);
-              console.log(error);  
+              console.log(error);
             }
           }}
           position="absolute"

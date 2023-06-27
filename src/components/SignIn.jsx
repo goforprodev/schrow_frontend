@@ -1,13 +1,21 @@
-import { Button, Flex, FormLabel, Input, Text } from "@chakra-ui/react";
+import {
+  Button,
+  Flex,
+  FormLabel,
+  Input,
+  Text,
+  useToast,
+} from "@chakra-ui/react";
+import { useFormik } from "formik";
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { useFormik } from "formik";
 import useUserAction from "../actions/userActions";
 
 function SignIn() {
   const userAction = useUserAction();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
+  const toast = useToast();
   const formik = useFormik({
     initialValues: {
       email: "",
@@ -22,7 +30,13 @@ function SignIn() {
         navigate("/");
       } catch (error) {
         setLoading(false);
-        alert(error.message);
+        toast({
+          title: "Error",
+          status: "error",
+          description: error.message,
+          isClosable: true,
+          duration: 3000,
+        });
       }
     },
   });

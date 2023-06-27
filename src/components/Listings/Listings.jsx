@@ -15,7 +15,7 @@ function Listings() {
           md: "repeat(3,1fr)",
           xl: "repeat(5,1fr)",
         }}
-        gap={{ base: 4, md: 4, sm: 1 }}
+        gap={{ base: 4, md: 3, sm: 1 }}
         py={"10pt"}
         w={"95%"}
         mx={"auto"}
