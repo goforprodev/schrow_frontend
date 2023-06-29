@@ -9,9 +9,12 @@ import {
   TabPanels,
   Tabs,
 } from "@chakra-ui/react";
-import React, { useEffect, useState } from "react";
+import React from "react";
+import { BiHomeAlt } from "react-icons/bi";
+import { GrFormView } from "react-icons/gr";
+import { IoSettingsOutline } from "react-icons/io5";
+import { MdOutlineAccountBalanceWallet, MdOutlineManageAccounts } from "react-icons/md";
 import { useRecoilValue } from "recoil";
-import { useListingsAction } from "../actions/listingsActions";
 import AccountSettings from "../components/AccountSettings/AccountSettings";
 import Empty from "../components/Empty";
 import ManageInvestments from "../components/ManageInvestments/ManageInvestments";
@@ -20,29 +23,10 @@ import RecentlyViewed from "../components/RecentlyViewed/RecentlyViewed";
 import SavedHomes from "../components/SavedHomes/SavedHomes";
 import { authAtom } from "../state/auth";
 import capitalize from "../utils/capitalize";
-import { BiHomeAlt } from "react-icons/bi";
-import { IoSettingsOutline } from "react-icons/io5";
-import { MdOutlineManageAccounts } from "react-icons/md";
-import { MdOutlineAccountBalanceWallet } from "react-icons/md";
-import { GrFormView } from "react-icons/gr";
 
 function Dashboard() {
-  const listingAction = useListingsAction();
-  const [savedListings, setSavedListings] = useState([]);
   const data = null;
-  const { name, id } = useRecoilValue(authAtom);
-
-  useEffect(() => {
-    const fetchListings = async (id) => {
-      try {
-        const res = await listingAction.loadSavedListings({ userId: id });
-        setSavedListings(() => res);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    fetchListings(id);
-  }, [id]);
+  const { name } = useRecoilValue(authAtom);
 
   return (
     <>
@@ -99,14 +83,7 @@ function Dashboard() {
             />
             <TabPanels>
               <TabPanel>
-                {savedListings?.length ? (
-                  <SavedHomes
-                    data={savedListings}
-                    setSavedListings={setSavedListings}
-                  />
-                ) : (
-                  <Empty text={"No saved liting"} />
-                )}
+                <SavedHomes />
               </TabPanel>
               <TabPanel>
                 <ManageLisitings data={data} />
@@ -122,11 +99,7 @@ function Dashboard() {
                 <AccountSettings data={data} />
               </TabPanel>
               <TabPanel>
-                {data ? (
-                  <RecentlyViewed data={data} />
-                ) : (
-                  <Empty text={"No recently viewed listing"} />
-                )}
+                <RecentlyViewed />
               </TabPanel>
             </TabPanels>
           </Tabs>

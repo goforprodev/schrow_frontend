@@ -10,9 +10,10 @@ import {
   TagLabel,
   Text,
   transition,
+  useToast,
 } from "@chakra-ui/react";
 import React from "react";
-import { AiFillEdit } from "react-icons/ai";
+import { AiFillEdit, AiFillHeart } from "react-icons/ai";
 import { BsFillTrashFill } from "react-icons/bs";
 import { MdOutlineManageAccounts } from "react-icons/md";
 import { Link } from "react-router-dom";
@@ -21,12 +22,41 @@ import { useListingsAction } from "../../actions/listingsActions";
 import { authAtom } from "../../state/auth";
 import { useNavigate } from "react-router-dom";
 
-function Listing({ data, showDel, showEdit, _class, setSavedListings }) {
+function Listing({ data, showDel, showEdit, _class, setSavedListings, save }) {
   const { id } = useRecoilValue(authAtom);
   const listingAction = useListingsAction();
   const imageUrl = data?.images.split(", ")[0];
   const [loading, setLoading] = React.useState(false);
   const navigate = useNavigate();
+  const toast = useToast();
+
+  const saveListings = async (authId, listingId) => {
+    setLoading(true);
+    try {
+      const res = await listingAction.saveListings({
+        userId: authId,
+        listingId,
+      });
+      setLoading(false);
+      toast({
+        title: "Success",
+        status: "success",
+        duration: 1000,
+        description: res,
+        isClosable: true,
+      });
+    } catch (error) {
+      setLoading(false);
+      toast({
+        title: "Error",
+        status: "error",
+        duration: 5000,
+        description: "This listing is already saved",
+        isClosable: true,
+      });
+      console.log(error);
+    }
+  };
 
   return (
     <>
@@ -44,6 +74,18 @@ function Listing({ data, showDel, showEdit, _class, setSavedListings }) {
           <Icon as={AiFillEdit} size={"20pt"} />
         </Button>
 
+        <Button
+          display={save ? "block" : "none"}
+          size="sm"
+          position="absolute"
+          top={-2}
+          right={-2}
+          borderRadius="full"
+          zIndex={10}
+          onClick={() => saveListings(id, data?.id)}
+        >
+          <Icon as={AiFillHeart} size={"20pt"} />
+        </Button>
         <Button
           display={showDel ? "block" : "none"}
           size="sm"

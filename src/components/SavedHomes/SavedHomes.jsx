@@ -1,11 +1,38 @@
-import React from 'react'
-import { Button,Grid, GridItem } from '@chakra-ui/react'
-import Listing from '../Listings/Listing'
+import { Flex, Grid, GridItem } from "@chakra-ui/react";
+import React, { useEffect, useState } from "react";
+import { useRecoilValue } from "recoil";
+import { useListingsAction } from "../../actions/listingsActions";
+import { authAtom } from "../../state/auth";
+import Empty from "../Empty";
+import Listing from "../Listings/Listing";
 
+function SavedHomes() {
+  const listingAction = useListingsAction();
+  const [savedListings, setSavedListings] = useState([]);
+  const { name, id } = useRecoilValue(authAtom);
 
-function SavedHomes({data,setSavedListings}) {
+  useEffect(() => {
+    const fetchListings = async (id) => {
+      try {
+        const res = await listingAction.loadSavedListings({ userId: id });
+        setSavedListings(() => res);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchListings(id);
+  }, [savedListings, id]);
+
+  if (savedListings.length === 0) {
+    return (
+      <Flex direction={"column"}>
+        <Empty text={"No saved listing"} />
+      </Flex>
+    );
+  }
+
   return (
-   <>
+    <>
       <Grid
         templateColumns={{
           base: "none",
@@ -17,15 +44,18 @@ function SavedHomes({data,setSavedListings}) {
         justifyItems={"center"}
         mx={"auto"}
       >
-        {data?.map((listing) => (
+        {savedListings?.map((listing) => (
           <GridItem key={listing?.id} cursor={"pointer"}>
-            <Listing data={listing} showDel={true} setSavedListings={setSavedListings} />  
+            <Listing
+              data={listing}
+              showDel={true}
+              setSavedListings={setSavedListings}
+            />
           </GridItem>
         ))}
       </Grid>
     </>
-
-  )
+  );
 }
 
-export default SavedHomes
+export default SavedHomes;
