@@ -1,9 +1,5 @@
-import { Image } from "@chakra-ui/react";
-import {
-  Outlet,
-  RouterProvider,
-  createBrowserRouter
-} from "react-router-dom";
+import { Flex, Image } from "@chakra-ui/react";
+import { Outlet, RouterProvider, createBrowserRouter } from "react-router-dom";
 import Footer from "./components/Footer";
 import Navbar from "./components/Navbar";
 import SignUp from "./components/SignUp";

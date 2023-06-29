@@ -47,7 +47,12 @@ function Home() {
 
   return (
     <>
-      <Flex direction="column" py={"15pt"} px={"30pt"} bg={"#fbf9ff"}>
+      <Flex
+        direction="column"
+        py={"15pt"}
+        px={{ base: "10pt", sm: "30pt" }}
+        bg={"#fbf9ff"}
+      >
         <Flex
           justify={{ base: "center", sm: "space-between" }}
           align={"center"}

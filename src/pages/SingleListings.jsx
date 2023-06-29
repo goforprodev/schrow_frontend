@@ -7,6 +7,7 @@ import ListingInfo from "../components/ListingInfo/ListingInfo";
 import { useRecoilValue } from "recoil";
 import { singleListingAtom } from "../state/lisitings";
 import Loader from "../components/Loader";
+import { authAtom } from "../state/auth";
 
 function SingleListings() {
   const { id } = useParams();
@@ -14,12 +15,25 @@ function SingleListings() {
   const listingsAction = useListingsAction();
   const [loading, setLoading] = useState(false);
   const listing = useRecoilValue(singleListingAtom);
+  const authUser = useRecoilValue(authAtom);
+  const STORAGE_KEY = "recentListings";
 
   useEffect(() => {
     if (!/\d+/.test(id)) {
       navigate(-1);
     }
   }, [id, navigate]);
+
+  const saveRecent = async () => {
+    try {
+      await listingsAction.saveRecentListing({
+        userId: authUser?.id,
+        listingId: id,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   useEffect(() => {
     const fetchSingleListing = async () => {
@@ -34,7 +48,22 @@ function SingleListings() {
       }
     };
     fetchSingleListing();
-  }, []);
+  }, [id]);
+
+  useEffect(() => {
+    const recentListings = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+
+    const hasViewedListing = recentListings.some(
+      (listing) => listing.id === id
+    );
+
+    if (!hasViewedListing) {
+      recentListings.push({ id: listing?.id, date: new Date() });
+      //check if id exists in recentListings before setting
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(recentListings));
+      saveRecent();
+    }
+  }, [listing?.id]);
 
   if (loading) {
     return <Loader />;

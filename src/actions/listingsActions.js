@@ -87,11 +87,46 @@ export const useListingsAction = () => {
   };
 
   const editListing = async ({ data }) => {
-    const response = await fetchNRelease({
-      url: baseUrl,
-      body: { endpoint: "edit-listing", ...data },
+    const response = await axios.post(baseUrl, data, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
     });
-    return response.msg;
+
+    const { data: res } = response;
+
+    if (!res.error) {
+      return res.data.msg;
+    } else {
+      throw new Error(res.data.msg);
+    }
+  };
+
+  const saveRecentListing = async ({ userId, listingId }) => {
+    const response = await axios.post(baseUrl, {
+      endpoint: "save-listing-view",
+      id: userId,
+      listing_id: listingId,
+    });
+    const { data } = response;
+    if (!data.error) {
+      return data.data.msg;
+    } else {
+      throw new Error(data.data.msg);
+    }
+  };
+
+  const loadRecentListings = async ({ userId }) => {
+    const response = await axios.post(baseUrl, {
+      endpoint: "load-recent-views",
+      id: userId,
+    });
+    const { data } = response;
+    if (!data.error) {
+      return data.data.listings;
+    } else {
+      throw new Error(data.data.msg);
+    }
   };
 
   return {
@@ -102,5 +137,8 @@ export const useListingsAction = () => {
     deleteSavedListing,
     loadSellerListings,
     deleteListing,
+    editListing,
+    saveRecentListing,
+    loadRecentListings,
   };
 };

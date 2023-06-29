@@ -13,7 +13,7 @@ function Aside({ listingId }) {
   const { id } = useRecoilValue(authAtom);
   const listingAction = useListingsAction();
   const [loading, setLoading] = React.useState(false);
-  const toast = useToast()
+  const toast = useToast();
 
   const saveListings = async (listingId, authId) => {
     setLoading(true);
@@ -24,21 +24,21 @@ function Aside({ listingId }) {
       });
       setLoading(false);
       toast({
-        title:"Success",
-        status:"success",
-        duration:1000,
-        description:res,
-        isClosable:true
-    })
+        title: "Success",
+        status: "success",
+        duration: 1000,
+        description: res,
+        isClosable: true,
+      });
     } catch (error) {
       setLoading(false);
       toast({
-        title:"Error",
-        status:"error",
-        duration:5000,
-        description:"This listing is already saved",
-        isClosable:true
-    })
+        title: "Error",
+        status: "error",
+        duration: 5000,
+        description: "This listing is already saved",
+        isClosable: true,
+      });
       console.log(error);
     }
   };
@@ -88,7 +88,7 @@ function Aside({ listingId }) {
           gap={1}
           key={idx}
           _focus={{ color: "red" }}
-          isLoading={loading}
+          // isLoading={loading}
         >
           {buttonAs.icon}
           <Text>{buttonAs.name}</Text>

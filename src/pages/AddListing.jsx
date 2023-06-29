@@ -22,13 +22,15 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Collaborators from "../components/Collaborators";
 import { BsChevronCompactLeft } from "react-icons/bs";
+import { useListingsAction } from "../actions/listingsActions";
 
-function AddListing() {
+function AddListing({ edit, listing }) {
   const [selectedImages, setSelectedImages] = useState([]);
   const [loading, setLoading] = useState(false);
   const [collaborators, setCollaborators] = useState([]);
   const navigate = useNavigate();
   const toast = useToast();
+  const listingsAction = useListingsAction();
 
   const handleImageUpload = (e) => {
     const files = Array.from(e.target.files);
@@ -135,25 +137,68 @@ function AddListing() {
     return;
   };
 
+  const omit = (obj, omitKeys) => {
+    let newObj = { ...obj };
+    omitKeys.forEach((key) => {
+      delete obj[key];
+    });
+    return obj;
+  };
+
+  const handleEdit = async (values) => {
+    const formData = new FormData();
+    const omitKeys = ["images", "collaborators", "duration", "property_type"];
+    const newValues = omit(values, omitKeys);
+    try {
+      setLoading(true);
+      if (values) {
+        for (const key in newValues) {
+          formData.append(key, newValues[key]);
+        }
+        formData.append("endpoint", "edit-listing");
+        formData.append("listing_id", listing?.id);
+        formData.append("id", listing?.user_id);
+
+        const res = await listingsAction.editListing({ data: formData });
+        if (res) {
+          setLoading(false);
+          toast({
+            status: "success",
+            title: "Success",
+            description: "Listing edited successfully",
+            duration: 3000,
+            isClosable: true,
+          });
+          navigate("/");
+        }
+      }
+    } catch (error) {
+      setLoading(false);
+      console.log("Edit Listing Error : ", error);
+    }
+
+    return;
+  };
+
   const formik = useFormik({
     initialValues: {
-      name: "",
-      description: "",
+      name: listing?.title || "",
+      description: listing?.descr || "",
       duration: "",
-      no_of_floors: "",
-      no_of_units: "",
-      estimated_cost: "",
-      amenities: "",
+      no_of_floors: listing?.no_of_floors || "",
+      no_of_units: listing?.no_of_units || "",
+      estimated_cost: listing?.estimated_cost || "",
+      amenities: listing?.amenities || "",
       collaborators: "",
       property_type: "",
-      street_addr: "",
-      city: "",
-      state: "",
-      country: "",
-      zip_code: "",
+      street_addr: listing?.street || "",
+      city: listing?.city || "",
+      state: listing?.statex || "",
+      country: listing?.country || "",
+      zip_code: listing?.zip_code || "",
       images: [],
     },
-    onSubmit: onSubmit,
+    onSubmit: edit ? handleEdit : onSubmit,
   });
 
   return (
@@ -161,7 +206,7 @@ function AddListing() {
       <Flex direction="column" px={"30pt"} py={"10pt"}>
         <Flex direction={"column"} width={"90%"} mx={"auto"}>
           <Heading as={"h1"} fontWeight={"700"} fontSize={"22px"}>
-            Add Listing
+            {edit ? `Edit ${listing?.title || "Listing"}` : "Add Listing"}
           </Heading>
           <form onSubmit={formik.handleSubmit}>
             <Flex
@@ -187,6 +232,7 @@ function AddListing() {
                     mb={2}
                     required
                     onChange={formik.handleChange}
+                    value={formik.values.name}
                     fontSize={"10pt"}
                     borderColor="#888"
                     _placeholder={{
@@ -217,6 +263,7 @@ function AddListing() {
                     fontSize={"10pt"}
                     mb={2}
                     onChange={formik.handleChange}
+                    value={formik.values.description}
                     borderColor="#888"
                     _placeholder={{
                       color: "gray.500",
@@ -276,6 +323,7 @@ function AddListing() {
                     mb={2}
                     required
                     onChange={formik.handleChange}
+                    value={formik.values.no_of_floors}
                     fontSize={"10pt"}
                     borderColor="#888"
                     _placeholder={{
@@ -306,6 +354,7 @@ function AddListing() {
                     mb={2}
                     required
                     onChange={formik.handleChange}
+                    value={formik.values.no_of_units}
                     fontSize={"10pt"}
                     borderColor="#888"
                     _placeholder={{
@@ -336,6 +385,7 @@ function AddListing() {
                     mb={2}
                     required
                     onChange={formik.handleChange}
+                    value={formik.values.estimated_cost}
                     fontSize={"10pt"}
                     borderColor="#888"
                     _placeholder={{
@@ -356,7 +406,12 @@ function AddListing() {
                   />
                 </Flex>
 
-                <Flex direction={"column"} pb={"5pt"} color={"gray.700"}>
+                <Flex
+                  direction={"column"}
+                  pb={"5pt"}
+                  color={"gray.700"}
+                  display={edit ? "none" : "block"}
+                >
                   <FormLabel
                     as={"label"}
                     fontSize={"10pt"}
@@ -381,7 +436,7 @@ function AddListing() {
                     accept="image/*"
                     mb={2}
                     display={"none"}
-                    required
+                    // required
                     onChange={handleImageUpload}
                     fontSize={"10pt"}
                     borderColor="#888"
@@ -445,6 +500,7 @@ function AddListing() {
                     required
                     fontSize={"10pt"}
                     onChange={formik.handleChange}
+                    value={formik.values.street_addr}
                     borderColor="#888"
                     _placeholder={{
                       color: "gray.500",
@@ -479,6 +535,7 @@ function AddListing() {
                     mb={2}
                     required
                     onChange={formik.handleChange}
+                    value={formik.values.city}
                     fontSize={"10pt"}
                     borderColor="#888"
                     _placeholder={{
@@ -509,6 +566,7 @@ function AddListing() {
                     mb={2}
                     required
                     onChange={formik.handleChange}
+                    value={formik.values.state}
                     fontSize={"10pt"}
                     borderColor="#888"
                     _placeholder={{
@@ -539,6 +597,7 @@ function AddListing() {
                     mb={2}
                     required
                     onChange={formik.handleChange}
+                    value={formik.values.country}
                     fontSize={"10pt"}
                     borderColor="#888"
                     _placeholder={{
@@ -569,6 +628,7 @@ function AddListing() {
                     mb={2}
                     required
                     onChange={formik.handleChange}
+                    value={formik.values.zip_code}
                     fontSize={"10pt"}
                     borderColor="#888"
                     _placeholder={{
@@ -591,7 +651,12 @@ function AddListing() {
               </Flex>
             </Flex>
             <Divider />
-            <Flex direction={"column"} px={"15px"} gap={4}>
+            <Flex
+              direction={"column"}
+              px={"15px"}
+              gap={4}
+              display={edit ? "none" : "flex"}
+            >
               <Accordion py={"5pt"}>
                 <AccordionItem>
                   <h2>
@@ -664,8 +729,16 @@ function AddListing() {
               </Accordion>
             </Flex>
             <Flex gap={4} py={"20pt"} justifyContent={"center"}>
-              <Button type="button" variant="outline" width={"20%"}>
-                Save
+              <Button
+                type="button"
+                variant="outline"
+                width={"20%"}
+                //navigate backwards
+                onClick={() => {
+                  navigate(-1);
+                }}
+              >
+                Cancel
               </Button>
               <Button type="submit" width={"20%"} isLoading={loading}>
                 Submit
