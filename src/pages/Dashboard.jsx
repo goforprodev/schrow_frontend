@@ -13,7 +13,10 @@ import React from "react";
 import { BiHomeAlt } from "react-icons/bi";
 import { GrFormView } from "react-icons/gr";
 import { IoSettingsOutline } from "react-icons/io5";
-import { MdOutlineAccountBalanceWallet, MdOutlineManageAccounts } from "react-icons/md";
+import {
+  MdOutlineAccountBalanceWallet,
+  MdOutlineManageAccounts,
+} from "react-icons/md";
 import { useRecoilValue } from "recoil";
 import AccountSettings from "../components/AccountSettings/AccountSettings";
 import Empty from "../components/Empty";
@@ -44,7 +47,7 @@ function Dashboard() {
           Welcome {capitalize(name)} 🎉
         </Heading>
         <Flex p="10pt" justify={"left"}>
-          <Tabs position="relative" variant="unstyled">
+          <Tabs position="relative" variant="unstyled" py={"5pt"}>
             <TabList>
               <Tab>
                 <Icon as={BiHomeAlt} fontSize={"14pt"} mr={"5pt"} />
@@ -81,7 +84,7 @@ function Dashboard() {
               bg="blue.500"
               borderRadius="1px"
             />
-            <TabPanels>
+            <TabPanels py={"10pt"}>
               <TabPanel>
                 <SavedHomes />
               </TabPanel>

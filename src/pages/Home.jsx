@@ -39,6 +39,7 @@ function Home() {
       navigate("/auth");
     }
     fetchListings();
+    
   }, []);
 
   if (loading) {

@@ -11,6 +11,7 @@ const EditListing = () => {
   const listing = useRecoilValue(singleListingAtom);
 
   useEffect(() => {
+    if (!id) return;
     (async () => {
       await listingActions.loadListingById({ id });
     })();

@@ -13,6 +13,7 @@ function Aside({ listingId }) {
   const { id } = useRecoilValue(authAtom);
   const listingAction = useListingsAction();
   const [loading, setLoading] = React.useState(false);
+  const [selected, setSelected] = React.useState(false);
   const toast = useToast();
 
   const saveListings = async (listingId, authId) => {
@@ -43,6 +44,7 @@ function Aside({ listingId }) {
     }
   };
 
+
   const asideButtons = [
     {
       name: "Save",
@@ -51,10 +53,12 @@ function Aside({ listingId }) {
           as={AiFillHeart}
           _hover={{ fill: "red", cursor: "pointer", transform: "scale(1.2)" }}
           _focus={{ fill: "red" }}
+          color={selected ? "red" : "black"}
         />
       ),
       type: "buyer",
       onClick: () => {
+        setSelected(true);
         saveListings(listingId, id);
       },
     },
@@ -88,10 +92,11 @@ function Aside({ listingId }) {
           gap={1}
           key={idx}
           _focus={{ color: "red" }}
-          // isLoading={loading}
         >
           {buttonAs.icon}
-          <Text>{buttonAs.name}</Text>
+          <Text color={buttonAs.name == "Save" && selected ? "red" : "black"}>
+            {buttonAs.name}
+          </Text>
         </Flex>
       ))}
     </>

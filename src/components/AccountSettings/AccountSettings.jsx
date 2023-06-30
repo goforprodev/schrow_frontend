@@ -17,23 +17,20 @@ function AccountSettings() {
     {
       name: "Profile",
       desc: "Personalize your account & update your sign in preferences.",
-      onClick: () => {setSettingsModal({isOpen:true,type:"profile"})}
-    },
-    {
-      name: "Documentation",
-      desc: "View your legal documents, status and provide documents for verification.",
-      onClick:() => {}
+      onClick: () => {
+        setSettingsModal({ isOpen: true, type: "profile" });
+      },
     },
     {
       name: "Projects",
       desc: "View your projects, homes, and investments with their progress.",
-      onClick:() => {}
+      onClick: () => {},
     },
   ];
 
   return (
     <>
-    <UserSettingsModal />
+      <UserSettingsModal />
       <Stack spacing="4">
         {[...settings].map((setting) => (
           <Card
