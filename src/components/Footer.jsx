@@ -26,6 +26,8 @@ function Footer() {
         bgGradient="linear(to-bl, rgb(147 51 234),  rgb(59 130 246))"
         color={"gray.100"}
         mt={"30pt"}
+        position={"relative"}
+        bottom={0}
       >
         <Grid
           templateColumns={{

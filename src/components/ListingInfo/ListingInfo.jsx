@@ -62,7 +62,9 @@ function ListingInfo({listing}) {
             <BreadcrumbItem isCurrentPage>
               <BreadcrumbLink href="#">{capitalize(listing?.street)}</BreadcrumbLink>
             </BreadcrumbItem>
+
           </Breadcrumb>
+
           <Flex fontSize={"10pt"} gap={4}>
             <Aside listingId={listing?.id}/>
           </Flex>

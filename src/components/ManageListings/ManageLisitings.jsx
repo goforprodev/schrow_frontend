@@ -14,6 +14,7 @@ function ManageLisitings() {
   const { id } = useRecoilValue(authAtom);
 
   useEffect(() => {
+    if (!id) return;
     (async () => {
       const listings = await listingActions.loadSellerListings({ id });
       setListings(listings);

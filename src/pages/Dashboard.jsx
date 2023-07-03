@@ -31,6 +31,9 @@ function Dashboard() {
   const data = null;
   const { name } = useRecoilValue(authAtom);
 
+  // display only first name
+  const displayName = name?.split(" ")[0] + " " + (name.split(" ")[1] || "");
+
   return (
     <>
       <Flex py={"10pt"} direction={"column"} w={"90vw"} mx={"auto"}>
@@ -44,14 +47,14 @@ function Dashboard() {
           bgGradient="linear(to-br, #7928CA, #FF0080)"
           bgClip="text"
         >
-          Welcome {capitalize(name)} 🎉
+          Welcome {capitalize(displayName)} 🎉
         </Heading>
         <Flex p="10pt" justify={"left"}>
           <Tabs position="relative" variant="unstyled" py={"5pt"}>
-            <TabList>
+            <TabList overflowX={{ base: "scroll", sm: "unset" }}>
               <Tab>
-                <Icon as={BiHomeAlt} fontSize={"14pt"} mr={"5pt"} />
-                Saved Homes
+                <Icon as={IoSettingsOutline} fontSize={"14pt"} mr={"5pt"} />
+                Account Settings
               </Tab>
               <Tab>
                 <Icon
@@ -70,8 +73,8 @@ function Dashboard() {
                 Manage Investments
               </Tab>
               <Tab>
-                <Icon as={IoSettingsOutline} fontSize={"14pt"} mr={"5pt"} />
-                Account Settings
+                <Icon as={BiHomeAlt} fontSize={"14pt"} mr={"5pt"} />
+                Saved Homes
               </Tab>
               <Tab>
                 <Icon as={GrFormView} fontSize={"14pt"} mr={"5pt"} />
@@ -84,9 +87,9 @@ function Dashboard() {
               bg="blue.500"
               borderRadius="1px"
             />
-            <TabPanels py={"10pt"}>
+            <TabPanels py={"10pt"} height={"50vh"}>
               <TabPanel>
-                <SavedHomes />
+                <AccountSettings data={data} />
               </TabPanel>
               <TabPanel>
                 <ManageLisitings data={data} />
@@ -99,7 +102,7 @@ function Dashboard() {
                 )}
               </TabPanel>
               <TabPanel>
-                <AccountSettings data={data} />
+                <SavedHomes />
               </TabPanel>
               <TabPanel>
                 <RecentlyViewed />

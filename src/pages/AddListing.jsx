@@ -15,19 +15,24 @@ import {
   Text,
   Textarea,
   useToast,
+  Select,
 } from "@chakra-ui/react";
 import axios from "axios";
 import { useFormik } from "formik";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Collaborators from "../components/Collaborators";
 import { BsChevronCompactLeft } from "react-icons/bs";
 import { useListingsAction } from "../actions/listingsActions";
+import capitalize from "../utils/capitalize";
+import Amenities from "../components/Amenities";
 
 function AddListing({ edit, listing }) {
   const [selectedImages, setSelectedImages] = useState([]);
   const [loading, setLoading] = useState(false);
   const [collaborators, setCollaborators] = useState([]);
+  const [_amenities, setAmenities] = useState([]);
+  const [listingTypes, setListingTypes] = useState([]);
   const navigate = useNavigate();
   const toast = useToast();
   const listingsAction = useListingsAction();
@@ -80,61 +85,74 @@ function AddListing({ edit, listing }) {
   };
 
   const onSubmit = async (values) => {
+    if (!values) {
+      return;
+    }
+
     const formData = new FormData();
 
-    if (values) {
-      selectedImages.forEach((image, index) => {
-        const blob = new Blob([image], { type: image.type });
-        formData.append(`image-${index + 1}`, blob);
-      });
+    selectedImages.forEach((image, index) => {
+      const blob = new Blob([image], { type: image.type });
+      formData.append(`image-${index + 1}`, blob);
+    });
 
-      for (const key in values) {
-        if (key.indexOf("image") === -1) {
-          formData.append(key, values[key]);
-        }
-      }
-
-      formData.append("endpoint", "create-listing");
+    if (collaborators.length) {
       const tcollaborators = await handleIsCollaborator();
+      const missingCollaborators = collaborators.filter(
+        (email) => !tcollaborators.includes(email)
+      );
+
       if (collaborators.length !== tcollaborators.length) {
-        //check for the collborators not in tcollaborators
-        const t = collaborators.filter(
-          (email) => !tcollaborators.includes(email)
-        );
-        //return a toast that displays the emails
         toast({
           status: "error",
           title: "Error",
-          description: `${t.join(", ")} does not exist`,
+          description: `${missingCollaborators.join(", ")} does not exist`,
           duration: 7000,
           isClosable: true,
         });
-
         return;
       }
+
       if (tcollaborators.length) {
         formData.append("collaborators", tcollaborators.join("~~"));
       }
+    }
 
-      try {
-        setLoading(true);
+    if (_amenities.length) {
+      formData.append("amenities", _amenities.join(","));
+    }
 
-        const { data } = await axios.post("/api/users.php", formData, {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        });
-
-        if (!data.error) {
-          setLoading(false);
-          navigate("/");
-        }
-      } catch (error) {
-        setLoading(false);
-        console.log("AddListings error Error : ", error);
+    for (const key in values) {
+      if (key.indexOf("image") === -1) {
+        formData.append(key, values[key]);
       }
     }
-    return;
+
+    formData.append("endpoint", "create-listing");
+
+    setLoading(true);
+
+    for (const [key, value] of formData.entries()) {
+      console.log(key, value);
+    }
+
+    // Uncomment the following lines when you're ready to make the API call
+    try {
+      const { data } = await axios.post("/api/users.php", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+
+      if (!data.error) {
+        setLoading(false);
+        navigate("/");
+      }
+    } catch (error) {
+      console.log("AddListings error Error: ", error);
+    }
+
+    setLoading(false);
   };
 
   const omit = (obj, omitKeys) => {
@@ -180,6 +198,17 @@ function AddListing({ edit, listing }) {
     return;
   };
 
+  useEffect(() => {
+    (async () => {
+      try {
+        const res = await listingsAction.loadListingTypes();
+        setListingTypes(res);
+      } catch (error) {
+        console.log(error);
+      }
+    })();
+  }, [listingTypes]);
+
   const formik = useFormik({
     initialValues: {
       name: listing?.title || "",
@@ -187,7 +216,10 @@ function AddListing({ edit, listing }) {
       duration: "",
       no_of_floors: listing?.no_of_floors || "",
       no_of_units: listing?.no_of_units || "",
+      no_of_bed: listing?.no_of_beds || "",
+      no_of_bath: listing?.no_of_bath || "",
       estimated_cost: listing?.estimated_cost || "",
+      sqft: listing?.sqft || "",
       amenities: listing?.amenities || "",
       collaborators: "",
       property_type: "",
@@ -196,6 +228,7 @@ function AddListing({ edit, listing }) {
       state: listing?.statex || "",
       country: listing?.country || "",
       zip_code: listing?.zip_code || "",
+      status: listing?.status || "",
       images: [],
     },
     onSubmit: edit ? handleEdit : onSubmit,
@@ -312,98 +345,228 @@ function AddListing({ edit, listing }) {
                     bg={"gray.50"}
                   />
                 </Flex>
-                <Flex direction={"column"} pb={"5pt"} color={"gray.700"}>
-                  <FormLabel fontSize={"10pt"} fontWeight={"medium"}>
-                    Number of floors
-                  </FormLabel>
-                  <Input
-                    name="no_of_floors"
-                    type="number"
-                    placeholder="2"
-                    mb={2}
-                    required
-                    onChange={formik.handleChange}
-                    value={formik.values.no_of_floors}
-                    fontSize={"10pt"}
-                    borderColor="#888"
-                    _placeholder={{
-                      color: "gray.500",
-                    }}
-                    _hover={{
-                      bg: "white",
-                      border: "1px solid",
-                      borderColor: "#000",
-                    }}
-                    _focus={{
-                      outline: "none",
-                      bg: "white",
-                      border: "1px solid",
-                      borderColor: "#000",
-                    }}
-                    bg={"gray.50"}
-                  />
+                <Flex w={"100%"} justify={"space-between"} gap={"10pt"}>
+                  <Flex
+                    direction={"column"}
+                    pb={"5pt"}
+                    color={"gray.700"}
+                    flexGrow={1}
+                  >
+                    <FormLabel fontSize={"10pt"} fontWeight={"medium"}>
+                      Number of floors
+                    </FormLabel>
+                    <Input
+                      name="no_of_floors"
+                      type="number"
+                      placeholder="2"
+                      mb={2}
+                      required
+                      onChange={formik.handleChange}
+                      value={formik.values.no_of_floors}
+                      fontSize={"10pt"}
+                      borderColor="#888"
+                      _placeholder={{
+                        color: "gray.500",
+                      }}
+                      _hover={{
+                        bg: "white",
+                        border: "1px solid",
+                        borderColor: "#000",
+                      }}
+                      _focus={{
+                        outline: "none",
+                        bg: "white",
+                        border: "1px solid",
+                        borderColor: "#000",
+                      }}
+                      bg={"gray.50"}
+                    />
+                  </Flex>
+                  <Flex
+                    direction={"column"}
+                    pb={"5pt"}
+                    color={"gray.700"}
+                    flexGrow={1}
+                  >
+                    <FormLabel fontSize={"10pt"} fontWeight={"medium"}>
+                      Number of units
+                    </FormLabel>
+                    <Input
+                      name="no_of_units"
+                      type="number"
+                      placeholder="100"
+                      mb={2}
+                      required
+                      onChange={formik.handleChange}
+                      value={formik.values.no_of_units}
+                      fontSize={"10pt"}
+                      borderColor="#888"
+                      _placeholder={{
+                        color: "gray.500",
+                      }}
+                      _hover={{
+                        bg: "white",
+                        border: "1px solid",
+                        borderColor: "#000",
+                      }}
+                      _focus={{
+                        outline: "none",
+                        bg: "white",
+                        border: "1px solid",
+                        borderColor: "#000",
+                      }}
+                      bg={"gray.50"}
+                    />
+                  </Flex>
                 </Flex>
-                <Flex direction={"column"} pb={"5pt"} color={"gray.700"}>
-                  <FormLabel fontSize={"10pt"} fontWeight={"medium"}>
-                    Number of units
-                  </FormLabel>
-                  <Input
-                    name="no_of_floors"
-                    type="number"
-                    placeholder="100"
-                    mb={2}
-                    required
-                    onChange={formik.handleChange}
-                    value={formik.values.no_of_units}
-                    fontSize={"10pt"}
-                    borderColor="#888"
-                    _placeholder={{
-                      color: "gray.500",
-                    }}
-                    _hover={{
-                      bg: "white",
-                      border: "1px solid",
-                      borderColor: "#000",
-                    }}
-                    _focus={{
-                      outline: "none",
-                      bg: "white",
-                      border: "1px solid",
-                      borderColor: "#000",
-                    }}
-                    bg={"gray.50"}
-                  />
+                <Flex w={"100%"} justify={"space-between"} gap={"10pt"}>
+                  <Flex
+                    direction={"column"}
+                    pb={"5pt"}
+                    color={"gray.700"}
+                    flexGrow={1}
+                  >
+                    <FormLabel fontSize={"10pt"} fontWeight={"medium"}>
+                      Number of beds
+                    </FormLabel>
+                    <Input
+                      name="no_of_bed"
+                      type="number"
+                      placeholder="2"
+                      mb={2}
+                      required
+                      onChange={formik.handleChange}
+                      value={formik.values.no_of_bed}
+                      fontSize={"10pt"}
+                      borderColor="#888"
+                      _placeholder={{
+                        color: "gray.500",
+                      }}
+                      _hover={{
+                        bg: "white",
+                        border: "1px solid",
+                        borderColor: "#000",
+                      }}
+                      _focus={{
+                        outline: "none",
+                        bg: "white",
+                        border: "1px solid",
+                        borderColor: "#000",
+                      }}
+                      bg={"gray.50"}
+                    />
+                  </Flex>
+                  <Flex
+                    direction={"column"}
+                    pb={"5pt"}
+                    color={"gray.700"}
+                    flexGrow={1}
+                  >
+                    <FormLabel fontSize={"10pt"} fontWeight={"medium"}>
+                      Number of baths
+                    </FormLabel>
+                    <Input
+                      name="no_of_bath"
+                      type="number"
+                      placeholder="2"
+                      mb={2}
+                      required
+                      onChange={formik.handleChange}
+                      value={formik.values.no_of_bath}
+                      fontSize={"10pt"}
+                      borderColor="#888"
+                      _placeholder={{
+                        color: "gray.500",
+                      }}
+                      _hover={{
+                        bg: "white",
+                        border: "1px solid",
+                        borderColor: "#000",
+                      }}
+                      _focus={{
+                        outline: "none",
+                        bg: "white",
+                        border: "1px solid",
+                        borderColor: "#000",
+                      }}
+                      bg={"gray.50"}
+                    />
+                  </Flex>
                 </Flex>
-                <Flex direction={"column"} pb={"5pt"} color={"gray.700"}>
-                  <FormLabel fontSize={"10pt"} fontWeight={"medium"}>
-                    Esitmated Cost
-                  </FormLabel>
-                  <Input
-                    name="estimated_cost"
-                    type="number"
-                    placeholder="1000000"
-                    mb={2}
-                    required
-                    onChange={formik.handleChange}
-                    value={formik.values.estimated_cost}
-                    fontSize={"10pt"}
-                    borderColor="#888"
-                    _placeholder={{
-                      color: "gray.500",
-                    }}
-                    _hover={{
-                      bg: "white",
-                      border: "1px solid",
-                      borderColor: "#000",
-                    }}
-                    _focus={{
-                      outline: "none",
-                      bg: "white",
-                      border: "1px solid",
-                      borderColor: "#000",
-                    }}
-                    bg={"gray.50"}
-                  />
+
+                <Flex w={"100%"} justify={"space-between"} gap={"10pt"}>
+                  <Flex
+                    direction={"column"}
+                    pb={"5pt"}
+                    color={"gray.700"}
+                    flexGrow={1}
+                  >
+                    <FormLabel fontSize={"10pt"} fontWeight={"medium"}>
+                      Esitmated Cost
+                    </FormLabel>
+                    <Input
+                      name="estimated_cost"
+                      type="number"
+                      placeholder="1000000"
+                      mb={2}
+                      required
+                      onChange={formik.handleChange}
+                      value={formik.values.estimated_cost}
+                      fontSize={"10pt"}
+                      borderColor="#888"
+                      _placeholder={{
+                        color: "gray.500",
+                      }}
+                      _hover={{
+                        bg: "white",
+                        border: "1px solid",
+                        borderColor: "#000",
+                      }}
+                      _focus={{
+                        outline: "none",
+                        bg: "white",
+                        border: "1px solid",
+                        borderColor: "#000",
+                      }}
+                      bg={"gray.50"}
+                    />
+                  </Flex>
+                  <Flex
+                    direction={"column"}
+                    pb={"5pt"}
+                    color={"gray.700"}
+                    flexGrow={1}
+                  >
+                    <FormLabel fontSize={"10pt"} fontWeight={"medium"}>
+                      sqft (square feet)
+                    </FormLabel>
+                    <Input
+                      name="sqft"
+                      type="number"
+                      placeholder="2300sq"
+                      mb={2}
+                      required
+                      onChange={formik.handleChange}
+                      value={formik.values.sqft}
+                      fontSize={"10pt"}
+                      borderColor="#888"
+                      _placeholder={{
+                        color: "gray.500",
+                      }}
+                      _hover={{
+                        bg: "white",
+                        border: "1px solid",
+                        borderColor: "#000",
+                      }}
+                      _focus={{
+                        outline: "none",
+                        bg: "white",
+                        border: "1px solid",
+                        borderColor: "#000",
+                      }}
+                      bg={"gray.50"}
+                    />
+                  </Flex>
                 </Flex>
 
                 <Flex
@@ -648,6 +811,38 @@ function AddListing({ edit, listing }) {
                     bg={"gray.50"}
                   />
                 </Flex>
+
+                <Flex direction={"column"} pb={5} color={"gray.700"}>
+                  <FormLabel fontSize={"10pt"} fontWeight={"medium"}>
+                    Listing status
+                  </FormLabel>
+                  <Select
+                    name="status"
+                    placeholder="Listing Status"
+                    onChange={formik.handleChange}
+                    value={formik.values.status}
+                    fontSize={"10pt"}
+                    borderColor="#888"
+                    _placeholder={{
+                      color: "gray.500",
+                    }}
+                    _hover={{
+                      bg: "white",
+                      border: "1px solid",
+                      borderColor: "#000",
+                    }}
+                    _focus={{
+                      outline: "none",
+                      bg: "white",
+                      border: "1px solid",
+                      borderColor: "#000",
+                    }}
+                  >
+                    <option value="for-sale">For sale</option>
+                    <option value="renovation">Renovation</option>
+                    <option value="developing">Developing</option>
+                  </Select>
+                </Flex>
               </Flex>
             </Flex>
             <Divider />
@@ -676,7 +871,9 @@ function AddListing({ edit, listing }) {
                       </Box>
                     </AccordionButton>
                   </h2>
-                  <AccordionPanel pb={4} fontSize={"10pt"}></AccordionPanel>
+                  <AccordionPanel pb={4} fontSize={"10pt"}>
+                    <Amenities setAmenities={setAmenities} />
+                  </AccordionPanel>
                 </AccordionItem>
               </Accordion>
               <Divider />
@@ -724,7 +921,36 @@ function AddListing({ edit, listing }) {
                       </Box>
                     </AccordionButton>
                   </h2>
-                  <AccordionPanel pb={4} fontSize={"10pt"}></AccordionPanel>
+                  <AccordionPanel pb={4} fontSize={"10pt"}>
+                    <Select
+                      name="property_type"
+                      placeholder="Property Type"
+                      onChange={formik.handleChange}
+                      value={formik.values.property_type}
+                      fontSize={"10pt"}
+                      borderColor="#888"
+                      _placeholder={{
+                        color: "gray.500",
+                      }}
+                      _hover={{
+                        bg: "white",
+                        border: "1px solid",
+                        borderColor: "#000",
+                      }}
+                      _focus={{
+                        outline: "none",
+                        bg: "white",
+                        border: "1px solid",
+                        borderColor: "#000",
+                      }}
+                    >
+                      {listingTypes?.map((type) => (
+                        <option key={type.id} value={type.name}>
+                          {capitalize(type?.name)}
+                        </option>
+                      ))}
+                    </Select>
+                  </AccordionPanel>
                 </AccordionItem>
               </Accordion>
             </Flex>

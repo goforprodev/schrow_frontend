@@ -129,6 +129,19 @@ export const useListingsAction = () => {
     }
   };
 
+  const loadListingTypes = async () => {
+    const response = await axios.post(baseUrl, {
+      endpoint: "load-listing-types",
+    });
+
+    const { data } = response;
+    if (!data.error) {
+      return data.data.types;
+    } else {
+      throw new Error(data.data.msg);
+    }
+  };
+
   return {
     loadListings,
     loadListingById,
@@ -140,5 +153,6 @@ export const useListingsAction = () => {
     editListing,
     saveRecentListing,
     loadRecentListings,
+    loadListingTypes,
   };
 };
