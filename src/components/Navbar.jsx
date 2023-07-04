@@ -18,7 +18,7 @@ import { Link } from "react-router-dom";
 function Navbar() {
   return (
     <>
-      <Box as="div" width={{ base: "100%", md: "90%", sm: "80%" }} m={"0 auto"}>
+      <Box as="div" width={{ base: "90%", md: "85%", sm: "80%" }} m={"0 auto"}>
         <Flex
           h="10vh"
           w="100%"

@@ -78,7 +78,7 @@ function SingleListings() {
       <Flex
         gap={{ base: 2, sm: 6 }}
         w={"100%"}
-        h={"100vh"}
+        h={{ base: "auto", md: "100vh" }}
         display={{ base: "block", sm: "flex" }}
         py={{ base: "10pt", sm: "15pt" }}
         px={{ base: "unset", md: "30pt" }}
