@@ -18,11 +18,13 @@ import { authAtom } from "../../state/auth";
 import {
   EmailShareButton,
   FacebookShareButton,
+  WhatsappShareButton,
   TwitterShareButton,
   InstapaperShareButton,
   LinkedinShareButton,
 } from "react-share";
 import {
+  WhatsappIcon,
   FacebookIcon,
   TwitterIcon,
   LinkedinIcon,
@@ -135,6 +137,10 @@ function Aside({ listingId }) {
             <FacebookShareButton url={url}>
               <FacebookIcon size={32} round={true} />
             </FacebookShareButton>
+
+            <WhatsappShareButton url={url}>
+              <WhatsappIcon size={32} round={true} />
+            </WhatsappShareButton>
 
             <TwitterShareButton url={url}>
               <TwitterIcon size={32} round={true} />
