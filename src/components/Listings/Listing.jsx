@@ -21,6 +21,7 @@ import { useRecoilValue } from "recoil";
 import { useListingsAction } from "../../actions/listingsActions";
 import { authAtom } from "../../state/auth";
 import { useNavigate } from "react-router-dom";
+import { TbCurrencyNaira } from "react-icons/tb";
 
 function Listing({ data, showDel, showEdit, _class, setSavedListings, save }) {
   const { id } = useRecoilValue(authAtom);
@@ -136,8 +137,14 @@ function Listing({ data, showDel, showEdit, _class, setSavedListings, save }) {
               />
             </Flex>
             <Stack mt="3" spacing="3" fontSize={"10pt"}>
-              <Text color="blue.600" fontSize="xl">
-                ${data.estimated_cost}
+              <Text
+                color="blue.600"
+                fontSize="xl"
+                display={"flex"}
+                align={"center"}
+              >
+                <Icon as={TbCurrencyNaira} fontSize={"22pt"} />
+                {data.estimated_cost}
               </Text>
               <Flex align={"center"} gap={"5pt"} fontSize={"10pt"}>
                 {data.mass || "5bds|4ba|2,625sqft"}

@@ -6,6 +6,7 @@ import Listing from "./Listing";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { useIntersection } from "@mantine/hooks";
+import { useRecoilState } from "recoil";
 
 const fetchListings = async ({ pageParam }) => {
   try {
@@ -77,7 +78,7 @@ function Listings() {
         mx={"auto"}
         justifyContent={"center"}
       >
-        {_data.map((listing, i) => {
+        {_data?.map((listing, i) => {
           if (i === _data.length - 1) {
             return (
               <GridItem key={listing.id} cursor={"pointer"} ref={ref}>
