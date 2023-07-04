@@ -87,7 +87,7 @@ function Dashboard() {
               bg="blue.500"
               borderRadius="1px"
             />
-            <TabPanels py={"10pt"} height={"50vh"}>
+            <TabPanels py={"10pt"} height={"auto"}>
               <TabPanel>
                 <AccountSettings data={data} />
               </TabPanel>

@@ -26,6 +26,7 @@ const fetchListings = async ({ pageParam }) => {
 };
 
 function Listings() {
+  const [listings, setListings] = useRecoilState(listingsAtom);
   const {
     isLoading,
     isError,
@@ -81,13 +82,13 @@ function Listings() {
         {_data?.map((listing, i) => {
           if (i === _data.length - 1) {
             return (
-              <GridItem key={listing.id} cursor={"pointer"} ref={ref}>
+              <GridItem key={listing?.id} cursor={"pointer"} ref={ref}>
                 <Listing data={listing} />
               </GridItem>
             );
           }
           return (
-            <GridItem key={listing.id} cursor={"pointer"}>
+            <GridItem key={listing?.id} cursor={"pointer"}>
               <Listing data={listing} />
             </GridItem>
           );

@@ -1,20 +1,46 @@
-import { Flex, Icon, Text, useToast } from "@chakra-ui/react";
+import {
+  Flex,
+  Icon,
+  Text,
+  useToast,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalFooter,
+} from "@chakra-ui/react";
 import React from "react";
 import { AiFillHeart, AiOutlineShareAlt } from "react-icons/ai";
-import { BiHide } from "react-icons/bi";
+import { BiHide, BiMap } from "react-icons/bi";
 import { BsThreeDots } from "react-icons/bs";
-import { Link } from "react-router-dom";
+import { useRecoilValue } from "recoil";
 import { useListingsAction } from "../../actions/listingsActions";
 import { authAtom } from "../../state/auth";
-import { useRecoilValue } from "recoil";
-import Loader from "../Loader";
+import {
+  EmailShareButton,
+  FacebookShareButton,
+  TwitterShareButton,
+  InstapaperShareButton,
+  LinkedinShareButton,
+} from "react-share";
+import {
+  FacebookIcon,
+  TwitterIcon,
+  LinkedinIcon,
+  InstapaperIcon,
+  EmailIcon,
+} from "react-share";
+import { useParams } from "react-router-dom";
 
 function Aside({ listingId }) {
   const { id } = useRecoilValue(authAtom);
   const listingAction = useListingsAction();
   const [loading, setLoading] = React.useState(false);
   const [selected, setSelected] = React.useState(false);
+  const [isOpen, setIsOpen] = React.useState(false);
   const toast = useToast();
+  const listing = useParams();
+  // const url = `https://www.schrow.com/${listing.id}`;7
+  const url = `https://react-icons.github.io/react-icons/search?q=map`;
 
   const saveListings = async (listingId, authId) => {
     setLoading(true);
@@ -44,6 +70,12 @@ function Aside({ listingId }) {
     }
   };
 
+  const handleShareClick = () => {
+    setIsOpen(true);
+  };
+  const handleClose = () => {
+    setIsOpen(false);
+  };
 
   const asideButtons = [
     {
@@ -66,6 +98,12 @@ function Aside({ listingId }) {
       name: "Share",
       icon: <Icon as={AiOutlineShareAlt} />,
       type: "buyer",
+      onClick: () => handleShareClick(),
+    },
+    {
+      name: "Map",
+      icon: <Icon as={BiMap} />,
+      type: "buyer",
     },
     {
       name: "Hide",
@@ -83,6 +121,35 @@ function Aside({ listingId }) {
 
   return (
     <>
+      <Modal isOpen={isOpen} onClose={handleClose} size="sm">
+        <ModalOverlay />
+        <ModalContent>
+          <Text as="h2" py={3} textAlign={"center"} fontSize={"15pt"}>
+            Share Listing on
+          </Text>
+          <ModalFooter justifyContent="center" gap={5}>
+            <EmailShareButton url={url}>
+              <EmailIcon size={32} round={true} />
+            </EmailShareButton>
+
+            <FacebookShareButton url={url}>
+              <FacebookIcon size={32} round={true} />
+            </FacebookShareButton>
+
+            <TwitterShareButton url={url}>
+              <TwitterIcon size={32} round={true} />
+            </TwitterShareButton>
+
+            <LinkedinShareButton url={url}>
+              <LinkedinIcon size={32} round={true} />
+            </LinkedinShareButton>
+
+            <InstapaperShareButton url={url}>
+              <InstapaperIcon size={32} round={true} />
+            </InstapaperShareButton>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
       {asideButtons.map((buttonAs, idx) => (
         <Flex
           onClick={buttonAs?.onClick}

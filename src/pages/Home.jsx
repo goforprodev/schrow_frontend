@@ -23,24 +23,11 @@ function Home() {
   const [loading, setLoading] = useState(false);
   const [search, setSearch] = useState("");
 
-  // const fetchListings = async () => {
-  //   setLoading(true);
-  //   try {
-  //     await listingsAction.loadListings({
-  //       endpoint: "load-listing",
-  //     });
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  //   setLoading(false);
-  // };
-
-  // useEffect(() => {
-  //   if (!authUser) {
-  //     navigate("/auth");
-  //   }
-  //   fetchListings();
-  // }, []);
+  useEffect(() => {
+    if (!authUser) {
+      navigate("/auth");
+    }
+  }, [authUser]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
