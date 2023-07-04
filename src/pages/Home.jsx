@@ -6,22 +6,22 @@ import {
   InputGroup,
   InputLeftElement,
 } from "@chakra-ui/react";
-import React, { useState, useEffect } from "react";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useRecoilValue } from "recoil";
-import { useListingsAction } from "../actions/listingsActions";
+import { useRecoilValue, useRecoilState } from "recoil";
 import Filters from "../components/Filters";
 import Listings from "../components/Listings/Listings";
-import { authSelector } from "../state/auth";
 import Loader from "../components/Loader";
-import axios from "axios";
+import { authSelector } from "../state/auth";
+import { listingsAtom } from "../state/lisitings";
 
 function Home() {
   const navigate = useNavigate();
-  const listingsAction = useListingsAction();
   const authUser = useRecoilValue(authSelector);
   const [loading, setLoading] = useState(false);
   const [search, setSearch] = useState("");
+  const [listings, setListings] = useRecoilState(listingsAtom);
 
   useEffect(() => {
     if (!authUser) {
@@ -32,7 +32,17 @@ function Home() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (search) {
-      const res = await axios.post("");
+      try {
+        const { data } = await axios.post(
+          `/api/users.php?page=1&addr_or_zip${search}`,
+          { endpoint: "load-listing" }
+        );
+        if (!data.error) {
+          setListings(data.data.listing);
+        }
+      } catch (error) {
+        console.log(error);
+      }
     }
   };
 

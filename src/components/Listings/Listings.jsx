@@ -1,4 +1,4 @@
-import { Flex, Grid, GridItem } from "@chakra-ui/react";
+import { Flex, Grid, GridItem, Spinner } from "@chakra-ui/react";
 import React, { useEffect, useRef } from "react";
 import { useRecoilValue } from "recoil";
 import { listingsAtom } from "../../state/lisitings";
@@ -7,6 +7,7 @@ import { useInfiniteQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { useIntersection } from "@mantine/hooks";
 import { useRecoilState } from "recoil";
+import Loader from "../Loader";
 
 const fetchListings = async ({ pageParam }) => {
   try {
@@ -55,8 +56,8 @@ function Listings() {
     if (entry?.isIntersecting) fetchNextPage();
   }, [entry]);
 
-  if (isLoading) {
-    return <div>Loading...</div>;
+  if (isLoading && isFetching) {
+    return <Loader />;
   }
 
   if (isError) {
@@ -93,10 +94,14 @@ function Listings() {
             </GridItem>
           );
         })}
-        <Flex w={"100%"}>
-          {isFetching && !isFetchingNextPage ? "Fetching..." : null}
-        </Flex>
       </Grid>
+      <Flex w={"100%"}>
+        {isFetching ? (
+          <Flex w={"100%"} justify={"center"} py={10}>
+            <Spinner size={"xl"} />
+          </Flex>
+        ) : null}
+      </Flex>
     </>
   );
 }
