@@ -14,19 +14,8 @@ import Stats from "./Stats";
 import OtherInfo from "./OtherInfo";
 import capitalize from "../../utils/capitalize";
 
-function ListingInfo({listing}) {
-  const data = {
-    id: 4,
-    imageUrl:
-      "https://images.unsplash.com/photo-1558036117-15d82a90b9b1?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTh8fHJlYWwlMjBlc3RhdGV8ZW58MHx8MHx8&auto=format&fit=crop&w=500&q=60",
-    price: "$1.2Million",
-    mass: "5bds|4ba|2,625sqft",
-    status: "House for sale",
-    location: "25 montgomery street akoka yaba lagos",
-    owner: "Bimpe Azeez real estate",
-  };
-
-   return (
+function ListingInfo({ listing }) {
+  return (
     <>
       <Flex
         w={{ base: "100%", sm: "60%" }}
@@ -52,37 +41,34 @@ function ListingInfo({listing}) {
             separator={<ChevronRightIcon color="gray.500" />}
           >
             <BreadcrumbItem>
-              <BreadcrumbLink href="#">{capitalize(listing?.city)}</BreadcrumbLink>
+              <BreadcrumbLink>{capitalize(listing?.city)}</BreadcrumbLink>
             </BreadcrumbItem>
 
             <BreadcrumbItem>
-              <BreadcrumbLink href="#">{capitalize(listing?.statex)}</BreadcrumbLink>
+              <BreadcrumbLink>{capitalize(listing?.statex)}</BreadcrumbLink>
             </BreadcrumbItem>
 
-            <BreadcrumbItem isCurrentPage>
-              <BreadcrumbLink href="#">{capitalize(listing?.street)}</BreadcrumbLink>
+            <BreadcrumbItem>
+              <BreadcrumbLink>{capitalize(listing?.street)}</BreadcrumbLink>
             </BreadcrumbItem>
-
           </Breadcrumb>
 
           <Flex fontSize={"10pt"} gap={4}>
-            <Aside listingId={listing?.id}/>
+            <Aside listingId={listing?.id} />
           </Flex>
         </Flex>
-
 
         {/* Info section */}
         <Flex direction={"column"} py={"10pt"}>
           <Info data={listing} />
           <Divider />
-          <Stats />
+          <Stats data={listing} />
           <Divider />
-          <OtherInfo />
+          <OtherInfo data={listing} />
         </Flex>
       </Flex>
     </>
   );
 }
-
 
 export default ListingInfo;

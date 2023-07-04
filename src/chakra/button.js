@@ -3,13 +3,13 @@ export const Button = {
     borderRadius: "60px",
     fontSize: "12pt",
     fontWeight: "bold",
-    _focus: {
-      outline: "none",
-      border: "1px solid",
-      color: "purple.500",
-      borderColor: "purple.500",
-      bg: "transparent",
-    },
+    // _focus: {
+    //   outline: "none",
+    //   border: "1px solid",
+    //   color: "purple.500",
+    //   borderColor: "purple.500",
+    //   bg: "transparent",
+    // },
   },
 
   sizes: {
@@ -20,7 +20,6 @@ export const Button = {
       fontSize: "10pt",
     },
   },
-
   variants: {
     solid: {
       color: "white",

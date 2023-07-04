@@ -142,7 +142,7 @@ function Listing({ data, showDel, showEdit, _class, setSavedListings, save }) {
               <Flex align={"center"} gap={"5pt"} fontSize={"10pt"}>
                 {data.mass || "5bds|4ba|2,625sqft"}
                 <Tag size={"sm"} variant="subtle" colorScheme="blue">
-                  <TagLabel>{data.status || "House for sale"}</TagLabel>
+                  <TagLabel>{data.statuse || "House for sale"}</TagLabel>
                 </Tag>
               </Flex>
               <Flex gap={"2pt"}>

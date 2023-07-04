@@ -6,13 +6,51 @@ import {
   Heading,
   FormLabel,
   Input,
+  useToast,
 } from "@chakra-ui/react";
-import React from "react";
-import { Link } from "react-router-dom";
+import axios from "axios";
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 
 function Message() {
-  const handleSubmit = (e) => {};
-  const handleChange = () => {};
+  const [message, setMessage] = useState({
+    name: "",
+    email: "",
+    phone_number: "",
+    message: "",
+  });
+  const toast = useToast();
+  const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    try {
+      const { data } = await axios.post("/api/users.php", {
+        endpoint: "leave-message",
+        message: message.message,
+      });
+
+      if (!data.error) {
+        toast({
+          title: "Success",
+          status: "success",
+          isClosable: true,
+          description: data.data.msg,
+          duration: 3000,
+        });
+        navigate("/");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+    setLoading(false);
+  };
+
+  const handleChange = (e) => {
+    setMessage((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+  };
   return (
     <>
       <Flex
@@ -43,7 +81,7 @@ function Message() {
                 Full name
               </FormLabel>
               <Input
-                name="full_name"
+                name="name"
                 type="text"
                 placeholder="John Doe"
                 mb={2}
@@ -103,7 +141,7 @@ function Message() {
                 Phone Number
               </FormLabel>
               <Input
-                name="number"
+                name="phone_number"
                 type="text"
                 placeholder="+234-000-000-000"
                 mb={2}
@@ -133,10 +171,13 @@ function Message() {
                 Your message
               </FormLabel>
               <Textarea
+                name="message"
                 placeholder="Leave a message for us here"
                 size="sm"
                 fontSize={"10pt"}
                 mb={2}
+                required
+                onChange={handleChange}
                 borderColor="#888"
                 _placeholder={{
                   color: "gray.500",
@@ -155,7 +196,11 @@ function Message() {
                 bg={"gray.50"}
               />
             </Flex>
-            <Button type="submit" w={{ base: "100%", md: "50%" }}>
+            <Button
+              isLoading={loading}
+              type="submit"
+              w={{ base: "100%", md: "50%" }}
+            >
               Submit
             </Button>
           </form>

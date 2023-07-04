@@ -18,12 +18,6 @@ function SingleListings() {
   const authUser = useRecoilValue(authAtom);
   const STORAGE_KEY = "recentListings";
 
-  useEffect(() => {
-    if (!/\d+/.test(id)) {
-      navigate(-1);
-    }
-  }, [id, navigate]);
-
   const saveRecent = async () => {
     try {
       await listingsAction.saveRecentListing({
@@ -36,6 +30,10 @@ function SingleListings() {
   };
 
   useEffect(() => {
+    if (!id) return;
+    if (!/\d+/.test(id)) {
+      navigate(-1);
+    }
     const fetchSingleListing = async () => {
       setLoading(true);
       try {

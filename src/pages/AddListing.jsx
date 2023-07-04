@@ -96,6 +96,14 @@ function AddListing({ edit, listing }) {
       formData.append(`image-${index + 1}`, blob);
     });
 
+    for (const key in values) {
+      if (key.indexOf("image") === -1) {
+        formData.append(key, values[key]);
+      }
+    }
+
+    formData.append("endpoint", "create-listing");
+
     if (collaborators.length) {
       const tcollaborators = await handleIsCollaborator();
       const missingCollaborators = collaborators.filter(
@@ -122,20 +130,7 @@ function AddListing({ edit, listing }) {
       formData.append("amenities", _amenities.join(","));
     }
 
-    for (const key in values) {
-      if (key.indexOf("image") === -1) {
-        formData.append(key, values[key]);
-      }
-    }
-
-    formData.append("endpoint", "create-listing");
-
     setLoading(true);
-
-    for (const [key, value] of formData.entries()) {
-      console.log(key, value);
-    }
-
     // Uncomment the following lines when you're ready to make the API call
     try {
       const { data } = await axios.post("/api/users.php", formData, {
@@ -216,7 +211,7 @@ function AddListing({ edit, listing }) {
       duration: "",
       no_of_floors: listing?.no_of_floors || "",
       no_of_units: listing?.no_of_units || "",
-      no_of_bed: listing?.no_of_beds || "",
+      no_of_bed: listing?.no_of_bed || "",
       no_of_bath: listing?.no_of_bath || "",
       estimated_cost: listing?.estimated_cost || "",
       sqft: listing?.sqft || "",
@@ -227,7 +222,7 @@ function AddListing({ edit, listing }) {
       city: listing?.city || "",
       state: listing?.statex || "",
       country: listing?.country || "",
-      zip_code: listing?.zip_code || "",
+      zip_code: listing?.zipcode || "",
       status: listing?.status || "",
       images: [],
     },

@@ -23,26 +23,19 @@ const ForwardedBsFilter = forwardRef((props, ref) => (
 
 function Filters() {
   const [tags, setTags] = useState([
-    { id: 1, name: "Apartment" },
-    { id: 2, name: "House" },
-    { id: 3, name: "Condo" },
-    { id: 4, name: "Townhouse" },
-    { id: 5, name: "Multi-Family" },
-    { id: 6, name: "Land" },
-    { id: 7, name: "View more" },
+    { id: 1, name: "Bungalow" },
+    { id: 2, name: "Duplex" },
+    { id: 3, name: "Story Building" },
   ]);
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const [clicked, setClicked] = useState(null);
 
   const handleSubmit = (e) => {};
   const handleChange = () => {};
+
   return (
     <>
-      <Icon
-        as={BsFilter}
-        boxSize={8}
-        cursor={"pointer"}
-        onClick={onOpen}
-      />
+      <Icon as={BsFilter} boxSize={8} cursor={"pointer"} onClick={onOpen} />
 
       {/* Drawer */}
       <Drawer
@@ -184,16 +177,24 @@ function Filters() {
                 <FormLabel fontSize={"11pt"} fontWeight={"medium"}>
                   Home Types
                 </FormLabel>
-                <Flex gap={2} h={"auto"} flexWrap={"wrap"} align={"center"}>
+                <Flex
+                  gap={2}
+                  h={"auto"}
+                  flexWrap={"wrap"}
+                  align={"center"}
+                  cursor={"pointer"}
+                >
                   {tags.map((tag) => (
-                    <Tag
-                      size={"lg"}
+                    <Button
                       key={tag.id}
-                      variant="subtle"
-                      colorScheme="purple"
+                      variant={clicked === tag.id ? "solid" : "outline"}
+                      onClick={() =>
+                        setClicked((prev) => (prev === tag.id ? null : tag.id))
+                      }
+                      isDisabled={clicked !== null && clicked !== tag.id}
                     >
-                      <TagLabel>{tag.name}</TagLabel>
-                    </Tag>
+                      {tag.name}
+                    </Button>
                   ))}
                 </Flex>
               </Flex>
