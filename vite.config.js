@@ -7,7 +7,11 @@ dotenv.config();
 export default defineConfig({
   server: {
     proxy: {
-      "/api": process.env.REACT_APP_API_URL,
+      "/api": {
+        target: process.env.REACT_APP_API_URL,
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api/, "/api/users.php"),
+      },
     },
   },
   plugins: [react()],
