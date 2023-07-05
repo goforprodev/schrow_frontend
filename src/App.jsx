@@ -12,6 +12,7 @@ import Message from "./pages/Message";
 import SingleListings from "./pages/SingleListings";
 import Success from "./pages/Success";
 import ScrollToTop from "./components/ScrollToTop";
+import ErrorPage from "./pages/ErrorPage";
 
 function App() {
   const Layout = ({ children }) => {
@@ -35,10 +36,7 @@ function App() {
           path: "/dashboard",
           element: <Dashboard />,
         },
-        {
-          path: "/add",
-          element: <AddListing />,
-        },
+        { path: "/add", element: <AddListing /> },
         {
           path: "/edit/:id",
           element: <EditListing />,
@@ -48,6 +46,7 @@ function App() {
           element: <SingleListings />,
         },
       ],
+      errorElement: <ErrorPage />,
     },
 
     {

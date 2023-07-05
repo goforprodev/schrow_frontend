@@ -39,9 +39,10 @@ function Dashboard() {
       <Flex
         py={"10pt"}
         direction={"column"}
-        w={"85vw"}
+        w={{ base: "95%", md: "90%" }}
         mx={"auto"}
         minH={"70vh"}
+        overflowX={"hidden"}
       >
         <Heading
           as={"h1"}
@@ -56,10 +57,21 @@ function Dashboard() {
           WELCOME {displayName.toUpperCase()}
         </Heading>
         <Flex p="10pt" justify={"left"}>
-          <Tabs position="relative" variant="unstyled" py={"5pt"}>
-            <TabList overflowX={{ base: "scroll", sm: "unset" }}>
+          <Tabs
+            position="relative"
+            variant="unstyled"
+            py={"5pt"}
+            overflow={"auto"}
+            display={"block"}
+          >
+            <TabList>
               <Tab>
-                <Icon as={IoSettingsOutline} fontSize={"14pt"} mr={"5pt"} />
+                <Icon
+                  as={IoSettingsOutline}
+                  display={{ base: "none", md: "block" }}
+                  fontSize={"14pt"}
+                  mr={"5pt"}
+                />
                 Account Settings
               </Tab>
               <Tab>
@@ -67,6 +79,7 @@ function Dashboard() {
                   as={MdOutlineManageAccounts}
                   fontSize={"14pt"}
                   mr={"5pt"}
+                  display={{ base: "none", md: "block" }}
                 />
                 Manage Listings
               </Tab>
@@ -74,23 +87,34 @@ function Dashboard() {
                 <Icon
                   as={MdOutlineAccountBalanceWallet}
                   fontSize={"14pt"}
+                  display={{ base: "none", md: "block" }}
                   mr={"5pt"}
                 />
                 Manage Investments
               </Tab>
               <Tab>
-                <Icon as={BiHomeAlt} fontSize={"14pt"} mr={"5pt"} />
+                <Icon
+                  as={BiHomeAlt}
+                  display={{ base: "none", md: "block" }}
+                  fontSize={"14pt"}
+                  mr={"5pt"}
+                />
                 Saved Homes
               </Tab>
               <Tab>
-                <Icon as={GrFormView} fontSize={"14pt"} mr={"5pt"} />
+                <Icon
+                  as={GrFormView}
+                  fontSize={"14pt"}
+                  display={{ base: "none", md: "block" }}
+                  mr={"5pt"}
+                />
                 Recently Viewed
               </Tab>
             </TabList>
             <TabIndicator
               mt="-1.5px"
               height="2px"
-              bg="blue.500"
+              bg="brand.100"
               borderRadius="1px"
             />
             <TabPanels py={"10pt"} height={"auto"}>

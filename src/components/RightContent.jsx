@@ -39,6 +39,7 @@ function AvatarIcon() {
         name={user?.names || "John Doe"}
         size={"sm"}
         fontWeight={"bold"}
+        bg="gray.400"
       />
     </>
   );
@@ -67,7 +68,7 @@ function RightContent({ setOpen }) {
             as={IconButton}
             aria-label="Options"
             icon={<AvatarIcon />}
-            bg={"transparent"}
+            bg={"gray.400"}
             _hover={{
               bg: "gray.100",
             }}
@@ -84,7 +85,7 @@ function RightContent({ setOpen }) {
             </Link>
             <MenuItem command="⌘⇧S">Switch to seller</MenuItem>
             <Link to={"/add"}>
-              <MenuItem command="⌘⇧A" display={{ md: "none" }}>
+              <MenuItem command="⌘A" display={{ md: "none" }}>
                 Add Listing
               </MenuItem>
             </Link>

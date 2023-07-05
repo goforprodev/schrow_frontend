@@ -33,12 +33,14 @@ function RecentlyViewed() {
       <Grid
         templateColumns={{
           base: "none",
+          sm: "repeat(2,1fr)",
           md: "repeat(3,1fr)",
           xl: "repeat(5,1fr)",
         }}
         gap={{ base: 4, md: 3, sm: 1 }}
         py={"10pt"}
-        justifyItems={"center"}
+        // justifyItems={"center"}
+        justifyItems={{ base: "center", md: "stretch" }}
         mx={"auto"}
       >
         {_listings?.map((listing) => (

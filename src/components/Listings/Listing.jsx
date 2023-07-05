@@ -92,7 +92,7 @@ function Listing({ data, showDel, showEdit, _class, setSavedListings, save }) {
             saveListings(id, data?.id);
             setSelectBtn("save");
           }}
-          bg={selectBtn === "save" ? "red"}
+          bg={selectBtn === "save" ? "red" : "brand.100"}
         >
           <Icon as={AiFillHeart} size={"20pt"} />
         </Button>
