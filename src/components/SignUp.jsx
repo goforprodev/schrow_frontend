@@ -76,13 +76,12 @@ function SignUp() {
     onSubmit: async (values) => {
       setLoading(true);
       try {
-        setLoading(false);
         await userAction.register(values);
         navigate("/");
       } catch (error) {
-        setLoading(false);
         alert(error.message);
       }
+      setLoading(false);
     },
   });
 

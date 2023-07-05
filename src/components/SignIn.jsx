@@ -25,11 +25,9 @@ function SignIn() {
     onSubmit: async (values) => {
       setLoading(true);
       try {
-        setLoading(false);
         await userAction.login(values);
         navigate("/");
       } catch (error) {
-        setLoading(false);
         toast({
           title: "Error",
           status: "error",
@@ -38,6 +36,7 @@ function SignIn() {
           duration: 2000,
         });
       }
+      setLoading(false);
     },
   });
 
