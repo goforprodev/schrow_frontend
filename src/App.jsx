@@ -11,11 +11,13 @@ import Home from "./pages/Home";
 import Message from "./pages/Message";
 import SingleListings from "./pages/SingleListings";
 import Success from "./pages/Success";
+import ScrollToTop from "./components/ScrollToTop";
 
 function App() {
   const Layout = ({ children }) => {
     return (
       <>
+        <ScrollToTop />
         <Navbar />
         <Outlet />
         <Footer />
