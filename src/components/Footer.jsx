@@ -7,6 +7,7 @@ import {
   Image,
   Text,
   Icon,
+  calc,
 } from "@chakra-ui/react";
 import Logo from "../assets/schrow.png";
 import React from "react";
@@ -23,11 +24,11 @@ function Footer() {
     <>
       <Box
         as="div"
-        bgGradient="linear(to-bl, rgb(147 51 234),  rgb(59 130 246))"
+        bg={"gray.600"}
         color={"gray.100"}
-        mt={"30pt"}
-        position={"relative"}
-        bottom={0}
+        pt={"30pt"}
+        width="100%"
+        mt={"auto"}
       >
         <Grid
           templateColumns={{
@@ -44,7 +45,7 @@ function Footer() {
           m={"0 auto"}
         >
           <GridItem py={{ base: "10pt", sm: "0" }}>
-            <Image src={Logo} alt="schrow-logo" h={"50px"} ml={"-10pt"} />
+            <Image src={Logo} alt="schrow-logo" h={"60px"} ml={"-10pt"} />
             <Text as="p" fontSize={"10pt"}>
               Schrow is committed to ensuring digital accessibility for
               individuals with disabilities. We are continuously working to

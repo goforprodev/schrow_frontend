@@ -1,8 +1,8 @@
 import React from "react";
 import { Text, Box, Flex, Image } from "@chakra-ui/react";
-import EmptyImg from "../assets/empty_svg.svg";
+import EmptyImg from "../assets/empt_svg.svg";
 
-function Empty({text}) {
+function Empty({ text }) {
   return (
     <>
       <Flex direction={"column"} justify={"center"} align="center" py={"10pt"}>

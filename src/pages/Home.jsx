@@ -55,7 +55,7 @@ function Home() {
       <Flex
         direction="column"
         py={"15pt"}
-        px={{ base: "10pt", sm: "30pt" }}
+        px={{ base: "10pt", sm: "20pt" }}
         bg={"#fbf9ff"}
       >
         <Flex
@@ -67,10 +67,18 @@ function Home() {
           w={"95%"}
           mx={"auto"}
         >
-          <Heading as={"h3"} fontSize={{ base: "13pt", sm: "17pt" }}>
+          <Heading
+            as={"h3"}
+            fontSize={{ base: "13pt", sm: "17pt" }}
+            color={"gray.800"}
+          >
             Real Estate & Homes For Sale
           </Heading>
-          <Flex align={"center"} gap={"10pt"} w={{ base: "90%", sm: "60%" }}>
+          <Flex
+            align={"center"}
+            gap={"10pt"}
+            w={{ base: "100%", sm: "100%", md: "60%" }}
+          >
             <form onSubmit={handleSubmit} style={{ flexGrow: 1 }}>
               <InputGroup>
                 <InputLeftElement pointerEvents="none">
@@ -80,20 +88,20 @@ function Home() {
                   type="text"
                   placeholder="Enter an address, neighbourhood, city, or ZIP code"
                   fontSize={"10pt"}
-                  borderColor="#888"
+                  // borderColor="#888"
                   _placeholder={{
                     color: "gray.500",
                   }}
                   _hover={{
                     bg: "white",
                     border: "1px solid",
-                    borderColor: "#000",
+                    borderColor: "#888",
                   }}
                   _focus={{
                     outline: "none",
                     bg: "white",
                     border: "1px solid",
-                    borderColor: "#000",
+                    borderColor: "#888",
                   }}
                   bg={"white"}
                   value={search}

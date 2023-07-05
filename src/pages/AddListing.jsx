@@ -16,6 +16,7 @@ import {
   Textarea,
   useToast,
   Select,
+  Icon,
 } from "@chakra-ui/react";
 import axios from "axios";
 import { useFormik } from "formik";
@@ -26,6 +27,8 @@ import { BsChevronCompactLeft } from "react-icons/bs";
 import { useListingsAction } from "../actions/listingsActions";
 import capitalize from "../utils/capitalize";
 import Amenities from "../components/Amenities";
+import { BsCloudUpload } from "react-icons/bs";
+// import { FaCloudUpload } from "react-icons/fa";
 
 function AddListing({ edit, listing }) {
   const [selectedImages, setSelectedImages] = useState([]);
@@ -231,8 +234,12 @@ function AddListing({ edit, listing }) {
 
   return (
     <>
-      <Flex direction="column" px={"30pt"} py={"10pt"}>
-        <Flex direction={"column"} width={"90%"} mx={"auto"}>
+      <Flex direction="column" px={{ base: "10pt", md: "30pt" }} py={"10pt"}>
+        <Flex
+          direction={"column"}
+          width={{ base: "100%", md: "92%" }}
+          mx={"auto"}
+        >
           <Heading as={"h1"} fontWeight={"700"} fontSize={"22px"}>
             {edit ? `Edit ${listing?.title || "Listing"}` : "Add Listing"}
           </Heading>
@@ -241,16 +248,18 @@ function AddListing({ edit, listing }) {
               w={"100%"}
               justify={"space-between"}
               // px={"15pt"}
+              gap={"30pt"}
               direction={{ base: "column", sm: "row" }}
             >
               <Flex
                 direction={"column"}
-                py={"10pt"}
-                w={{ base: "100%", sm: "45%" }}
+                py={"20pt"}
+                w={{ base: "100%", sm: "50%" }}
+                color={"gray.500"}
               >
-                <Text py={"10pt"}>Project Information</Text>
-                <Flex direction={"column"} pb={"5pt"} color={"gray.700"}>
-                  <FormLabel fontSize={"10pt"} fontWeight={"medium"}>
+                {/* <Text py={"10pt"}>Project Information</Text> */}
+                <Flex direction={"column"} pb={"5pt"} color={"gray.500"}>
+                  <FormLabel fontSize={"10pt"} fontWeight={"bold"}>
                     Project Name
                   </FormLabel>
                   <Input
@@ -262,7 +271,6 @@ function AddListing({ edit, listing }) {
                     onChange={formik.handleChange}
                     value={formik.values.name}
                     fontSize={"10pt"}
-                    borderColor="#888"
                     _placeholder={{
                       color: "gray.500",
                     }}
@@ -280,8 +288,8 @@ function AddListing({ edit, listing }) {
                     bg={"gray.50"}
                   />
                 </Flex>
-                <Flex direction={"column"} pb={"5pt"} color={"gray.700"}>
-                  <FormLabel fontSize={"10pt"} fontWeight={"medium"}>
+                <Flex direction={"column"} pb={"5pt"}>
+                  <FormLabel fontSize={"10pt"} fontWeight={"bold"}>
                     Project Description
                   </FormLabel>
                   <Textarea
@@ -292,7 +300,6 @@ function AddListing({ edit, listing }) {
                     mb={2}
                     onChange={formik.handleChange}
                     value={formik.values.description}
-                    borderColor="#888"
                     _placeholder={{
                       color: "gray.500",
                     }}
@@ -310,19 +317,18 @@ function AddListing({ edit, listing }) {
                     bg={"gray.50"}
                   />
                 </Flex>
-                <Flex direction={"column"} pb={"5pt"} color={"gray.700"}>
-                  <FormLabel fontSize={"10pt"} fontWeight={"medium"}>
+                <Flex direction={"column"} pb={"5pt"}>
+                  <FormLabel fontSize={"10pt"} fontWeight={"bold"}>
                     Project Duration
                   </FormLabel>
                   <Input
                     name="duration"
                     type="text"
-                    placeholder="months"
+                    placeholder="Enter number of months"
                     mb={2}
                     required
                     onChange={formik.handleChange}
                     fontSize={"10pt"}
-                    borderColor="#888"
                     _placeholder={{
                       color: "gray.500",
                     }}
@@ -344,22 +350,21 @@ function AddListing({ edit, listing }) {
                   <Flex
                     direction={"column"}
                     pb={"5pt"}
-                    color={"gray.700"}
+                    // color={"gray.700"}
                     flexGrow={1}
                   >
-                    <FormLabel fontSize={"10pt"} fontWeight={"medium"}>
+                    <FormLabel fontSize={"10pt"} fontWeight={"bold"}>
                       Number of floors
                     </FormLabel>
                     <Input
                       name="no_of_floors"
                       type="number"
-                      placeholder="2"
+                      placeholder="Enter number of floors eg (1,2,3...)"
                       mb={2}
                       required
                       onChange={formik.handleChange}
                       value={formik.values.no_of_floors}
                       fontSize={"10pt"}
-                      borderColor="#888"
                       _placeholder={{
                         color: "gray.500",
                       }}
@@ -380,22 +385,21 @@ function AddListing({ edit, listing }) {
                   <Flex
                     direction={"column"}
                     pb={"5pt"}
-                    color={"gray.700"}
+                    // color={"gray.700"}
                     flexGrow={1}
                   >
-                    <FormLabel fontSize={"10pt"} fontWeight={"medium"}>
+                    <FormLabel fontSize={"10pt"} fontWeight={"bold"}>
                       Number of units
                     </FormLabel>
                     <Input
                       name="no_of_units"
                       type="number"
-                      placeholder="100"
+                      placeholder="Enter number of units eg (100)"
                       mb={2}
                       required
                       onChange={formik.handleChange}
                       value={formik.values.no_of_units}
                       fontSize={"10pt"}
-                      borderColor="#888"
                       _placeholder={{
                         color: "gray.500",
                       }}
@@ -418,22 +422,21 @@ function AddListing({ edit, listing }) {
                   <Flex
                     direction={"column"}
                     pb={"5pt"}
-                    color={"gray.700"}
+                    // color={"gray.700"}
                     flexGrow={1}
                   >
-                    <FormLabel fontSize={"10pt"} fontWeight={"medium"}>
+                    <FormLabel fontSize={"10pt"} fontWeight={"bold"}>
                       Number of beds
                     </FormLabel>
                     <Input
                       name="no_of_bed"
                       type="number"
-                      placeholder="2"
+                      placeholder="Enter number of beds eg(1,2,3...)"
                       mb={2}
                       required
                       onChange={formik.handleChange}
                       value={formik.values.no_of_bed}
                       fontSize={"10pt"}
-                      borderColor="#888"
                       _placeholder={{
                         color: "gray.500",
                       }}
@@ -454,22 +457,21 @@ function AddListing({ edit, listing }) {
                   <Flex
                     direction={"column"}
                     pb={"5pt"}
-                    color={"gray.700"}
+                    // color={"gray.700"}
                     flexGrow={1}
                   >
-                    <FormLabel fontSize={"10pt"} fontWeight={"medium"}>
+                    <FormLabel fontSize={"10pt"} fontWeight={"bold"}>
                       Number of baths
                     </FormLabel>
                     <Input
                       name="no_of_bath"
                       type="number"
-                      placeholder="2"
+                      placeholder="Enter number of baths eg(1,2,3...)"
                       mb={2}
                       required
                       onChange={formik.handleChange}
                       value={formik.values.no_of_bath}
                       fontSize={"10pt"}
-                      borderColor="#888"
                       _placeholder={{
                         color: "gray.500",
                       }}
@@ -493,22 +495,21 @@ function AddListing({ edit, listing }) {
                   <Flex
                     direction={"column"}
                     pb={"5pt"}
-                    color={"gray.700"}
+                    // color={"gray.700"}
                     flexGrow={1}
                   >
-                    <FormLabel fontSize={"10pt"} fontWeight={"medium"}>
+                    <FormLabel fontSize={"10pt"} fontWeight={"bold"}>
                       Esitmated Cost
                     </FormLabel>
                     <Input
                       name="estimated_cost"
                       type="number"
-                      placeholder="1000000"
+                      placeholder="Enter the price in Naira"
                       mb={2}
                       required
                       onChange={formik.handleChange}
                       value={formik.values.estimated_cost}
                       fontSize={"10pt"}
-                      borderColor="#888"
                       _placeholder={{
                         color: "gray.500",
                       }}
@@ -529,22 +530,21 @@ function AddListing({ edit, listing }) {
                   <Flex
                     direction={"column"}
                     pb={"5pt"}
-                    color={"gray.700"}
+                    // color={"gray.700"}
                     flexGrow={1}
                   >
-                    <FormLabel fontSize={"10pt"} fontWeight={"medium"}>
+                    <FormLabel fontSize={"10pt"} fontWeight={"bold"}>
                       sqft (square feet)
                     </FormLabel>
                     <Input
                       name="sqft"
                       type="number"
-                      placeholder="2300sq"
+                      placeholder="Enter the amount of square feet eg(2300sq)"
                       mb={2}
                       required
                       onChange={formik.handleChange}
                       value={formik.values.sqft}
                       fontSize={"10pt"}
-                      borderColor="#888"
                       _placeholder={{
                         color: "gray.500",
                       }}
@@ -567,24 +567,30 @@ function AddListing({ edit, listing }) {
                 <Flex
                   direction={"column"}
                   pb={"5pt"}
-                  color={"gray.700"}
+                  // color={"gray.700"}
                   display={edit ? "none" : "block"}
                 >
                   <FormLabel
                     as={"label"}
                     fontSize={"10pt"}
-                    fontWeight={"medium"}
+                    fontWeight={"bold"}
                     htmlFor="image_upload"
                   >
                     <Text pb={"5pt"}>Images</Text>
-                    <Box
+                    <Flex
                       border={"2px dashed"}
-                      borderColor={"gray.500"}
+                      borderColor={"gray.400"}
                       borderRadius={"5pt"}
-                      p={"10pt"}
+                      p={"20pt"}
+                      direction={"column"}
+                      align={"center"}
+                      fontSize={"1.5em"}
+                      cursor={"pointer"}
+                      fontWeight={"bold"}
                     >
+                      <Icon as={BsCloudUpload} />
                       Upload images{" "}
-                    </Box>
+                    </Flex>
                   </FormLabel>
                   <Input
                     name="images"
@@ -597,7 +603,6 @@ function AddListing({ edit, listing }) {
                     // required
                     onChange={handleImageUpload}
                     fontSize={"10pt"}
-                    borderColor="#888"
                     _placeholder={{
                       color: "gray.500",
                     }}
@@ -641,25 +646,25 @@ function AddListing({ edit, listing }) {
               <Flex
                 direction={"column"}
                 py={{ base: "5pt", sm: "10pt" }}
-                w={{ base: "100%", sm: "45%" }}
+                w={{ base: "100%", sm: "50%" }}
+                color={"gray.500"}
               >
-                <Text textAlign={"left"} py={"10pt"}>
+                {/* <Text textAlign={"left"} py={"10pt"}>
                   Location Information
-                </Text>
-                <Flex direction={"column"} pb={"5pt"} color={"gray.700"}>
-                  <FormLabel fontSize={"10pt"} fontWeight={"medium"}>
+                </Text> */}
+                <Flex direction={"column"} pb={"5pt"}>
+                  <FormLabel fontSize={"10pt"} fontWeight={"bold"}>
                     Street Address
                   </FormLabel>
                   <Input
                     name="street_addr"
                     type="text"
-                    placeholder="25 Main Street"
+                    placeholder="Enter street address eg(25 Main Street)"
                     mb={2}
                     required
                     fontSize={"10pt"}
                     onChange={formik.handleChange}
                     value={formik.values.street_addr}
-                    borderColor="#888"
                     _placeholder={{
                       color: "gray.500",
                     }}
@@ -682,20 +687,19 @@ function AddListing({ edit, listing }) {
                     </Text>
                   </Checkbox>
                 </Flex>
-                <Flex direction={"column"} pb={"5pt"} color={"gray.700"}>
-                  <FormLabel fontSize={"10pt"} fontWeight={"medium"}>
+                <Flex direction={"column"} pb={"5pt"}>
+                  <FormLabel fontSize={"10pt"} fontWeight={"bold"}>
                     City
                   </FormLabel>
                   <Input
                     name="city"
                     type="text"
-                    placeholder="city"
+                    placeholder="Enter city name"
                     mb={2}
                     required
                     onChange={formik.handleChange}
                     value={formik.values.city}
                     fontSize={"10pt"}
-                    borderColor="#888"
                     _placeholder={{
                       color: "gray.500",
                     }}
@@ -713,20 +717,19 @@ function AddListing({ edit, listing }) {
                     bg={"gray.50"}
                   />
                 </Flex>
-                <Flex direction={"column"} pb={"5pt"} color={"gray.700"}>
-                  <FormLabel fontSize={"10pt"} fontWeight={"medium"}>
+                <Flex direction={"column"} pb={"5pt"}>
+                  <FormLabel fontSize={"10pt"} fontWeight={"bold"}>
                     State
                   </FormLabel>
                   <Input
                     name="state"
                     type="text"
-                    placeholder="state"
+                    placeholder="Enter state name"
                     mb={2}
                     required
                     onChange={formik.handleChange}
                     value={formik.values.state}
                     fontSize={"10pt"}
-                    borderColor="#888"
                     _placeholder={{
                       color: "gray.500",
                     }}
@@ -744,20 +747,19 @@ function AddListing({ edit, listing }) {
                     bg={"gray.50"}
                   />
                 </Flex>
-                <Flex direction={"column"} pb={"5pt"} color={"gray.700"}>
-                  <FormLabel fontSize={"10pt"} fontWeight={"medium"}>
+                <Flex direction={"column"} pb={"5pt"}>
+                  <FormLabel fontSize={"10pt"} fontWeight={"bold"}>
                     Country
                   </FormLabel>
                   <Input
                     name="country"
                     type="text"
-                    placeholder="country"
+                    placeholder="Enter country name"
                     mb={2}
                     required
                     onChange={formik.handleChange}
                     value={formik.values.country}
                     fontSize={"10pt"}
-                    borderColor="#888"
                     _placeholder={{
                       color: "gray.500",
                     }}
@@ -775,20 +777,19 @@ function AddListing({ edit, listing }) {
                     bg={"gray.50"}
                   />
                 </Flex>
-                <Flex direction={"column"} pb={"5pt"} color={"gray.700"}>
-                  <FormLabel fontSize={"10pt"} fontWeight={"medium"}>
+                <Flex direction={"column"} pb={"5pt"}>
+                  <FormLabel fontSize={"10pt"} fontWeight={"bold"}>
                     Zip Code
                   </FormLabel>
                   <Input
                     name="zip_code"
                     type="text"
-                    placeholder="100011"
+                    placeholder="Enter zip or postal code eg(100011)"
                     mb={2}
                     required
                     onChange={formik.handleChange}
                     value={formik.values.zip_code}
                     fontSize={"10pt"}
-                    borderColor="#888"
                     _placeholder={{
                       color: "gray.500",
                     }}
@@ -807,8 +808,8 @@ function AddListing({ edit, listing }) {
                   />
                 </Flex>
 
-                <Flex direction={"column"} pb={5} color={"gray.700"}>
-                  <FormLabel fontSize={"10pt"} fontWeight={"medium"}>
+                <Flex direction={"column"} pb={5}>
+                  <FormLabel fontSize={"10pt"} fontWeight={"bold"}>
                     Listing status
                   </FormLabel>
                   <Select
@@ -817,7 +818,6 @@ function AddListing({ edit, listing }) {
                     onChange={formik.handleChange}
                     value={formik.values.status}
                     fontSize={"10pt"}
-                    borderColor="#888"
                     _placeholder={{
                       color: "gray.500",
                     }}
@@ -846,8 +846,9 @@ function AddListing({ edit, listing }) {
               px={"15px"}
               gap={4}
               display={edit ? "none" : "flex"}
+              color={"gray.500"}
             >
-              <Accordion py={"5pt"}>
+              <Accordion py={"5pt"} fontWeight={"bold"}>
                 <AccordionItem>
                   <h2>
                     <AccordionButton bg={"gray.100"}>
@@ -923,7 +924,6 @@ function AddListing({ edit, listing }) {
                       onChange={formik.handleChange}
                       value={formik.values.property_type}
                       fontSize={"10pt"}
-                      borderColor="#888"
                       _placeholder={{
                         color: "gray.500",
                       }}
@@ -953,7 +953,7 @@ function AddListing({ edit, listing }) {
               <Button
                 type="button"
                 variant="outline"
-                width={"20%"}
+                width={{ base: "100%", md: "20%" }}
                 //navigate backwards
                 onClick={() => {
                   navigate(-1);
@@ -961,7 +961,11 @@ function AddListing({ edit, listing }) {
               >
                 Cancel
               </Button>
-              <Button type="submit" width={"20%"} isLoading={loading}>
+              <Button
+                type="submit"
+                width={{ base: "100%", md: "20%" }}
+                isLoading={loading}
+              >
                 Submit
               </Button>
             </Flex>

@@ -23,20 +23,24 @@ export const Button = {
   variants: {
     solid: {
       color: "white",
-      bgGradient: "linear(to-br, rgb(147 51 234),  rgb(59 130 246))",
+      bg: "brand.100",
       _hover: {
-        bgGradient: "linear(to-bl, rgb(147 51 234),  rgb(59 130 246))",
+        bg: "blue.500",
       },
+      // bgGradient: "linear(to-br, rgb(147 51 234),  rgb(59 130 246))",
+      // _hover: {
+      //   bgGradient: "linear(to-bl, rgb(147 51 234),  rgb(59 130 246))",
+      // },
     },
 
     outline: {
-      color: "rgb(147 51 234)",
+      color: "brand.100",
       bg: "transparent",
       border: "2px solid ",
-      borderColor: "purple.500",
+      borderColor: "brand.100",
       _hover: {
         color: "white",
-        bgGradient: "linear(to-br, rgb(147 51 234),  rgb(59 130 246))",
+        bg: "brand.100",
       },
     },
 
@@ -49,6 +53,17 @@ export const Button = {
         color: "gray.800",
         bg: "gray.50",
       },
+    },
+
+    icons: {
+      color: "white",
+      bg: "brand.100",
+      borderRadius: "50%",
+      width: "40px",
+      height: "40px",
+      // _hover: {
+      //   bg: "brand.100",
+      // },
     },
   },
 };

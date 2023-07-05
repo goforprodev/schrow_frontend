@@ -14,13 +14,16 @@ import {
 import RightContent from "./RightContent";
 import { EmailIcon, ChevronDownIcon } from "@chakra-ui/icons";
 import { Link } from "react-router-dom";
+import MessageModal from "./MessageModal";
 
 function Navbar() {
+  const [open, setOpen] = React.useState(false);
   return (
     <>
-      <Box as="div" width={{ base: "90%", md: "85%", sm: "80%" }} m={"0 auto"}>
+      <MessageModal open={open} setOpen={setOpen} />
+      <Box as="div" width={{ base: "95%", md: "90%" }} m={"0 auto"}>
         <Flex
-          h="10vh"
+          h={{ base: "7vh", md: "10vh" }}
           w="100%"
           align={"center"}
           justify={"space-between"}
@@ -38,11 +41,13 @@ function Navbar() {
             display={{ base: "none", sm: "flex" }}
             gap={"8pt"}
             align="center"
+            onClick={() => setOpen(true)}
           >
             <EmailIcon boxSize={4} />
-            <Link to={"/message"}>Leave a message</Link>
+            {/* <Link to={"/message"}>Leave a message</Link> */}
+            Leave a message
           </Button>
-          <RightContent />
+          <RightContent setOpen={setOpen} />
         </Flex>
       </Box>
     </>

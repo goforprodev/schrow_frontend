@@ -70,7 +70,8 @@ function Listings() {
     <>
       <Grid
         templateColumns={{
-          base: "none",
+          base: "repeat(1,1fr)",
+          sm: "repeat(2,1fr)",
           md: "repeat(3,1fr)",
           xl: "repeat(5,1fr)",
         }}
@@ -78,7 +79,8 @@ function Listings() {
         py={"10pt"}
         w={{ base: "100%", sm: "95%" }}
         mx={"auto"}
-        justifyContent={"center"}
+        justifyItems={{ base: "center", md: "stretch" }}
+        pb={10}
       >
         {_data?.map((listing, i) => {
           if (i === _data.length - 1) {

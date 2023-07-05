@@ -30,6 +30,7 @@ function Listing({ data, showDel, showEdit, _class, setSavedListings, save }) {
   const [loading, setLoading] = React.useState(false);
   const navigate = useNavigate();
   const toast = useToast();
+  const [selectBtn, setSelectBtn] = React.useState("");
 
   const saveListings = async (authId, listingId) => {
     setLoading(true);
@@ -69,8 +70,12 @@ function Listing({ data, showDel, showEdit, _class, setSavedListings, save }) {
           top={-2}
           right={10}
           borderRadius="full"
+          // variant={"outline"}
           zIndex={10}
-          onClick={() => navigate(`/edit/${data?.id}`)}
+          onClick={() => {
+            navigate(`/edit/${data?.id}`);
+            setSelectBtn("edit");
+          }}
         >
           <Icon as={AiFillEdit} size={"20pt"} />
         </Button>
@@ -83,7 +88,11 @@ function Listing({ data, showDel, showEdit, _class, setSavedListings, save }) {
           right={-2}
           borderRadius="full"
           zIndex={10}
-          onClick={() => saveListings(id, data?.id)}
+          onClick={() => {
+            saveListings(id, data?.id);
+            setSelectBtn("save");
+          }}
+          bg={selectBtn === "save" ? "red"}
         >
           <Icon as={AiFillHeart} size={"20pt"} />
         </Button>
@@ -146,22 +155,24 @@ function Listing({ data, showDel, showEdit, _class, setSavedListings, save }) {
                 <Icon as={TbCurrencyNaira} fontSize={"22pt"} />
                 {data.estimated_cost}
               </Text>
-              <Flex align={"center"} gap={"5pt"} fontSize={"10pt"}>
+              <Flex
+                align={"center"}
+                gap={"5pt"}
+                fontSize={"10pt"}
+                color={"gray.600"}
+              >
                 {data.mass || "5bds|4ba|2,625sqft"}
                 <Tag size={"sm"} variant="subtle" colorScheme="blue">
                   <TagLabel>{data.statuse || "House for sale"}</TagLabel>
                 </Tag>
               </Flex>
-              <Flex gap={"2pt"}>
+              <Flex gap={"2pt"} color={"gray.600"}>
                 <Text as={"span"}>{data.city} ,</Text>
                 <Text as={"span"}>{data.statex},</Text>
                 <Text as={"span"}>{data.country}</Text>
               </Flex>
-              <Flex justify={"space-between"}>
+              <Flex justify={"space-between"} color={"gray.600"}>
                 <Text>{data.title || "Bimpe Azeez real estate"}</Text>
-                {showEdit && (
-                  <Icon as={MdOutlineManageAccounts} size={"20pt"} />
-                )}
               </Flex>
             </Stack>
           </CardBody>

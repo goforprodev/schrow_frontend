@@ -35,7 +35,13 @@ function Filters() {
 
   return (
     <>
-      <Icon as={BsFilter} boxSize={8} cursor={"pointer"} onClick={onOpen} />
+      <Icon
+        as={BsFilter}
+        boxSize={8}
+        cursor={"pointer"}
+        onClick={onOpen}
+        color={"gray.500"}
+      />
 
       {/* Drawer */}
       <Drawer
@@ -68,20 +74,19 @@ function Filters() {
                     required
                     onChange={handleChange}
                     fontSize={"10pt"}
-                    borderColor="#888"
                     _placeholder={{
                       color: "gray.500",
                     }}
                     _hover={{
                       bg: "white",
                       border: "1px solid",
-                      borderColor: "#000",
+                      borderColor: "#888",
                     }}
                     _focus={{
                       outline: "none",
                       bg: "white",
                       border: "1px solid",
-                      borderColor: "#000",
+                      borderColor: "#888",
                     }}
                     bg={"gray.50"}
                   />
@@ -93,20 +98,19 @@ function Filters() {
                     required
                     onChange={handleChange}
                     fontSize={"10pt"}
-                    borderColor="#888"
                     _placeholder={{
                       color: "gray.500",
                     }}
                     _hover={{
                       bg: "white",
                       border: "1px solid",
-                      borderColor: "#000",
+                      borderColor: "#888",
                     }}
                     _focus={{
                       outline: "none",
                       bg: "white",
                       border: "1px solid",
-                      borderColor: "#000",
+                      borderColor: "#888",
                     }}
                     bg={"gray.50"}
                   />
@@ -127,20 +131,19 @@ function Filters() {
                     required
                     onChange={handleChange}
                     fontSize={"10pt"}
-                    borderColor="#888"
                     _placeholder={{
                       color: "gray.500",
                     }}
                     _hover={{
                       bg: "white",
                       border: "1px solid",
-                      borderColor: "#000",
+                      borderColor: "#888",
                     }}
                     _focus={{
                       outline: "none",
                       bg: "white",
                       border: "1px solid",
-                      borderColor: "#000",
+                      borderColor: "#888",
                     }}
                     bg={"gray.50"}
                   />
@@ -152,20 +155,19 @@ function Filters() {
                     required
                     onChange={handleChange}
                     fontSize={"10pt"}
-                    borderColor="#888"
                     _placeholder={{
                       color: "gray.500",
                     }}
                     _hover={{
                       bg: "white",
                       border: "1px solid",
-                      borderColor: "#000",
+                      borderColor: "#888",
                     }}
                     _focus={{
                       outline: "none",
                       bg: "white",
                       border: "1px solid",
-                      borderColor: "#000",
+                      borderColor: "#888",
                     }}
                     bg={"gray.50"}
                   />
@@ -213,20 +215,19 @@ function Filters() {
                     required
                     onChange={handleChange}
                     fontSize={"10pt"}
-                    borderColor="#888"
                     _placeholder={{
                       color: "gray.500",
                     }}
                     _hover={{
                       bg: "white",
                       border: "1px solid",
-                      borderColor: "#000",
+                      borderColor: "#888",
                     }}
                     _focus={{
                       outline: "none",
                       bg: "white",
                       border: "1px solid",
-                      borderColor: "#000",
+                      borderColor: "#888",
                     }}
                     bg={"gray.50"}
                   />
@@ -238,20 +239,19 @@ function Filters() {
                     required
                     onChange={handleChange}
                     fontSize={"10pt"}
-                    borderColor="#888"
                     _placeholder={{
                       color: "gray.500",
                     }}
                     _hover={{
                       bg: "white",
                       border: "1px solid",
-                      borderColor: "#000",
+                      borderColor: "#888",
                     }}
                     _focus={{
                       outline: "none",
                       bg: "white",
                       border: "1px solid",
-                      borderColor: "#000",
+                      borderColor: "#888",
                     }}
                     bg={"gray.50"}
                   />

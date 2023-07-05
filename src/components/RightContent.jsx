@@ -44,7 +44,7 @@ function AvatarIcon() {
   );
 }
 
-function RightContent() {
+function RightContent({ setOpen }) {
   const user = useRecoilValue(userAtom);
   const navigate = useNavigate();
   const userAction = useUserAction();
@@ -67,7 +67,11 @@ function RightContent() {
             as={IconButton}
             aria-label="Options"
             icon={<AvatarIcon />}
-            variant="outline"
+            bg={"transparent"}
+            _hover={{
+              bg: "gray.100",
+            }}
+            // variant="outline"
           />
           <MenuList fontSize={"10pt"} px={"2pt"}>
             <MenuItem command="⌘T">
@@ -91,8 +95,10 @@ function RightContent() {
               w={"100%"}
               my={"5pt"}
               display={{ base: "block", sm: "none" }}
+              onClick={() => setOpen(true)}
             >
-              <Link to="/message">Leave a message</Link>
+              {/* <Link to="/message">Leave a message</Link> */}
+              Leave a message
             </Button>
           </MenuList>
         </Menu>

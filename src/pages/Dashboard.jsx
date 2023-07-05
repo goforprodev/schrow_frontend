@@ -36,18 +36,24 @@ function Dashboard() {
 
   return (
     <>
-      <Flex py={"10pt"} direction={"column"} w={"90vw"} mx={"auto"}>
+      <Flex
+        py={"10pt"}
+        direction={"column"}
+        w={"85vw"}
+        mx={"auto"}
+        minH={"70vh"}
+      >
         <Heading
           as={"h1"}
           fontFamily={"heading"}
-          fontSize={"25pt"}
+          fontSize={"15pt"}
           p={"10pt"}
           textAlign={{ base: "center", sm: "left" }}
           fontWeight={"extrabold"}
-          bgGradient="linear(to-br, #7928CA, #FF0080)"
-          bgClip="text"
+          color={"gray.600"}
         >
-          Welcome {capitalize(displayName)} 🎉
+          {/* Welcome {capitalize(displayName)} */}
+          WELCOME {displayName.toUpperCase()}
         </Heading>
         <Flex p="10pt" justify={"left"}>
           <Tabs position="relative" variant="unstyled" py={"5pt"}>

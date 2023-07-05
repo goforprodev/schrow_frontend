@@ -35,13 +35,14 @@ function SavedHomes() {
     <>
       <Grid
         templateColumns={{
-          base: "none",
+          base: "repeat(1,1fr)",
+          sm: "repeat(2,1fr)",
           md: "repeat(3,1fr)",
-          xl: "repeat(4,1fr)",
+          xl: "repeat(5,1fr)",
         }}
         gap={{ base: 4, md: 4, sm: 1 }}
         py={"10pt"}
-        justifyItems={"center"}
+        justifyItems={{ base: "center", md: "stretch" }}
         mx={"auto"}
       >
         {savedListings?.map((listing) => (
