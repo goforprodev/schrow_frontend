@@ -1,5 +1,5 @@
 import { useRouteError } from "react-router-dom";
-import { Flex } from "@chakra-ui/react";
+import { Flex, Text } from "@chakra-ui/react";
 
 export default function ErrorPage() {
   const error = useRouteError();
@@ -8,15 +8,15 @@ export default function ErrorPage() {
   return (
     <div id="error-page">
       <Flex
-        w={"100%"}
-        h={"100%"}
+        w={"100vw"}
+        h={"100vh"}
         alignItems={"center"}
         justifyContent={"center"}
-        fontSize={"2em"}
+        direction={"column "}
       >
-        😥
-        <Text>Oops Something went wrong</Text>
-        <i>{error.statusText || error.message}</i>
+        <Text fontSize={"4em"}>😥</Text>
+        <Text fontSize={"2em"}>Oops Something went wrong</Text>
+        <i>{error.statusText || error.message} Please Reload </i>
       </Flex>
     </div>
   );

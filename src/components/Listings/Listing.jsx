@@ -22,6 +22,7 @@ import { useListingsAction } from "../../actions/listingsActions";
 import { authAtom } from "../../state/auth";
 import { useNavigate } from "react-router-dom";
 import { TbCurrencyNaira } from "react-icons/tb";
+import capitalize from "../../utils/capitalize";
 
 function Listing({ data, showDel, showEdit, _class, setSavedListings, save }) {
   const { id } = useRecoilValue(authAtom);
@@ -62,7 +63,7 @@ function Listing({ data, showDel, showEdit, _class, setSavedListings, save }) {
 
   return (
     <>
-      <Card maxW="sm" position={"relative"}>
+      <Card maxW="sm" position={"relative"} boxShadow={"md"}>
         <Button
           display={showEdit ? "block" : "none"}
           size="sm"
@@ -130,8 +131,8 @@ function Listing({ data, showDel, showEdit, _class, setSavedListings, save }) {
           <Icon as={BsFillTrashFill} size={"20pt"} />
         </Button>
         <Link to={`/${data.id}`}>
-          <CardBody>
-            <Flex w={"100%"} h={"120px"} overflow={"hidden"}>
+          <CardBody p={0}>
+            <Flex w={"100%"} h={"150px"} overflow={"hidden"}>
               <Image
                 src={
                   imageUrl ||
@@ -139,40 +140,40 @@ function Listing({ data, showDel, showEdit, _class, setSavedListings, save }) {
                   "https://www.placehold.it/300x200"
                 }
                 alt="Green double couch with wooden legs"
-                borderRadius="lg"
+                borderTopRadius={"lg"}
                 w={"100%"}
                 //scale image on hover
                 _hover={{ transform: "scale(1.1)", transition: "all 0.7s" }}
               />
             </Flex>
-            <Stack mt="3" spacing="3" fontSize={"10pt"}>
+            <Stack mt="3" spacing="1" fontSize={"10pt"} px={3} pb={2}>
               <Text
-                color="blue.600"
-                fontSize="xl"
+                color="gray.600"
+                fontWeight={"bold"}
+                fontSize="lg"
                 display={"flex"}
                 align={"center"}
               >
-                <Icon as={TbCurrencyNaira} fontSize={"22pt"} />
-                {data.estimated_cost}
+                <Icon as={TbCurrencyNaira} fontSize={"18pt"} />
+                {Math.round(data.estimated_cost / 12)}+/mo
               </Text>
-              <Flex
-                align={"center"}
-                gap={"5pt"}
-                fontSize={"10pt"}
-                color={"gray.600"}
-              >
-                {data.mass || "5bds|4ba|2,625sqft"}
+              <Flex align={"center"} gap={"5pt"} color={"gray.600"}>
+                {data.mass || "5bds | 4ba | 2,625sqft"}
                 <Tag size={"sm"} variant="subtle" colorScheme="blue">
-                  <TagLabel>{data.statuse || "House for sale"}</TagLabel>
+                  <TagLabel>
+                    {(data.statuse || "House for sale").toLowerCase()}
+                  </TagLabel>
                 </Tag>
               </Flex>
               <Flex gap={"2pt"} color={"gray.600"}>
-                <Text as={"span"}>{data.city} ,</Text>
-                <Text as={"span"}>{data.statex},</Text>
-                <Text as={"span"}>{data.country}</Text>
+                <Text as={"span"}>{capitalize(data.city)},</Text>
+                <Text as={"span"}>{capitalize(data.statex)},</Text>
+                <Text as={"span"}>{capitalize(data.country)}</Text>
               </Flex>
               <Flex justify={"space-between"} color={"gray.600"}>
-                <Text>{data.title || "Bimpe Azeez real estate"}</Text>
+                <Text fontWeight={"bold"} color={"gray.500"} fontSize={"7pt"}>
+                  {(data.title || "Bimpe Azeez real estate").toUpperCase()}
+                </Text>
               </Flex>
             </Stack>
           </CardBody>

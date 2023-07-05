@@ -39,106 +39,107 @@ function Dashboard() {
       <Flex
         py={"10pt"}
         direction={"column"}
-        w={{ base: "95%", md: "90%" }}
-        mx={"auto"}
         minH={"70vh"}
-        overflowX={"hidden"}
+        w={"100%"}
+        bg={"#fbf9ff"}
       >
-        <Heading
-          as={"h1"}
-          fontFamily={"heading"}
-          fontSize={"15pt"}
-          p={"10pt"}
-          textAlign={{ base: "center", sm: "left" }}
-          fontWeight={"extrabold"}
-          color={"gray.600"}
-        >
-          {/* Welcome {capitalize(displayName)} */}
-          WELCOME {displayName.toUpperCase()}
-        </Heading>
-        <Flex p="10pt" justify={"left"}>
-          <Tabs
-            position="relative"
-            variant="unstyled"
-            py={"5pt"}
-            overflow={"auto"}
-            display={"block"}
+        <Flex mx={"auto"} direction={"column"} w={{ base: "95%", md: "90%" }}>
+          <Heading
+            as={"h1"}
+            fontFamily={"heading"}
+            fontSize={"15pt"}
+            p={"10pt"}
+            textAlign={{ base: "center", sm: "left" }}
+            fontWeight={"extrabold"}
+            color={"gray.600"}
           >
-            <TabList>
-              <Tab>
-                <Icon
-                  as={IoSettingsOutline}
-                  display={{ base: "none", md: "block" }}
-                  fontSize={"14pt"}
-                  mr={"5pt"}
-                />
-                Account Settings
-              </Tab>
-              <Tab>
-                <Icon
-                  as={MdOutlineManageAccounts}
-                  fontSize={"14pt"}
-                  mr={"5pt"}
-                  display={{ base: "none", md: "block" }}
-                />
-                Manage Listings
-              </Tab>
-              <Tab>
-                <Icon
-                  as={MdOutlineAccountBalanceWallet}
-                  fontSize={"14pt"}
-                  display={{ base: "none", md: "block" }}
-                  mr={"5pt"}
-                />
-                Manage Investments
-              </Tab>
-              <Tab>
-                <Icon
-                  as={BiHomeAlt}
-                  display={{ base: "none", md: "block" }}
-                  fontSize={"14pt"}
-                  mr={"5pt"}
-                />
-                Saved Homes
-              </Tab>
-              <Tab>
-                <Icon
-                  as={GrFormView}
-                  fontSize={"14pt"}
-                  display={{ base: "none", md: "block" }}
-                  mr={"5pt"}
-                />
-                Recently Viewed
-              </Tab>
-            </TabList>
-            <TabIndicator
-              mt="-1.5px"
-              height="2px"
-              bg="brand.100"
-              borderRadius="1px"
-            />
-            <TabPanels py={"10pt"} height={"auto"}>
-              <TabPanel>
-                <AccountSettings data={data} />
-              </TabPanel>
-              <TabPanel>
-                <ManageLisitings data={data} />
-              </TabPanel>
-              <TabPanel>
-                {data ? (
-                  <ManageInvestments data={data} />
-                ) : (
-                  <Empty text={"No Investments made"} />
-                )}
-              </TabPanel>
-              <TabPanel>
-                <SavedHomes />
-              </TabPanel>
-              <TabPanel>
-                <RecentlyViewed />
-              </TabPanel>
-            </TabPanels>
-          </Tabs>
+            {/* Welcome {capitalize(displayName)} */}
+            WELCOME {displayName.toUpperCase()}
+          </Heading>
+          <Flex p="10pt" justify={"left"}>
+            <Tabs
+              position="relative"
+              variant="unstyled"
+              py={"5pt"}
+              overflow={"auto"}
+              display={"block"}
+            >
+              <TabList>
+                <Tab>
+                  <Icon
+                    as={IoSettingsOutline}
+                    display={{ base: "none", md: "block" }}
+                    fontSize={"14pt"}
+                    mr={"5pt"}
+                  />
+                  Account Settings
+                </Tab>
+                <Tab>
+                  <Icon
+                    as={MdOutlineManageAccounts}
+                    fontSize={"14pt"}
+                    mr={"5pt"}
+                    display={{ base: "none", md: "block" }}
+                  />
+                  Manage Listings
+                </Tab>
+                <Tab>
+                  <Icon
+                    as={MdOutlineAccountBalanceWallet}
+                    fontSize={"14pt"}
+                    display={{ base: "none", md: "block" }}
+                    mr={"5pt"}
+                  />
+                  Manage Investments
+                </Tab>
+                <Tab>
+                  <Icon
+                    as={BiHomeAlt}
+                    display={{ base: "none", md: "block" }}
+                    fontSize={"14pt"}
+                    mr={"5pt"}
+                  />
+                  Saved Homes
+                </Tab>
+                <Tab>
+                  <Icon
+                    as={GrFormView}
+                    fontSize={"14pt"}
+                    display={{ base: "none", md: "block" }}
+                    mr={"5pt"}
+                  />
+                  Recently Viewed
+                </Tab>
+              </TabList>
+              <TabIndicator
+                mt="-1.5px"
+                height="2px"
+                bg="brand.100"
+                borderRadius="1px"
+              />
+              <TabPanels py={"10pt"} height={"auto"}>
+                <TabPanel>
+                  <AccountSettings data={data} />
+                </TabPanel>
+                <TabPanel>
+                  <ManageLisitings data={data} />
+                </TabPanel>
+                <TabPanel>
+                  {data ? (
+                    <ManageInvestments data={data} />
+                  ) : (
+                    <Empty text={"No Investments made"} />
+                  )}
+                </TabPanel>
+                <TabPanel>
+                  <SavedHomes />
+                </TabPanel>
+                <TabPanel>
+                  <RecentlyViewed />
+                </TabPanel>
+              </TabPanels>
+            </Tabs>
+          </Flex>
         </Flex>
       </Flex>
     </>

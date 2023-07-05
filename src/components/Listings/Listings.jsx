@@ -75,11 +75,11 @@ function Listings() {
           md: "repeat(3,1fr)",
           xl: "repeat(5,1fr)",
         }}
-        gap={{ base: 4, md: 3, sm: 1 }}
+        gap={{ base: 4, md: 3 }}
         py={"10pt"}
         w={{ base: "100%", sm: "95%" }}
         mx={"auto"}
-        justifyItems={{ base: "center", md: "stretch" }}
+        justifyItems={{ base: "stretch", md: "stretch" }}
         pb={10}
       >
         {_data?.map((listing, i) => {

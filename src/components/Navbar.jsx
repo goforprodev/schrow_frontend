@@ -23,7 +23,7 @@ function Navbar() {
       <MessageModal open={open} setOpen={setOpen} />
       <Box as="div" width={{ base: "95%", md: "90%" }} m={"0 auto"}>
         <Flex
-          h={{ base: "7vh", md: "10vh" }}
+          h={{ base: "7vh", md: "9vh" }}
           w="100%"
           align={"center"}
           justify={"space-between"}
