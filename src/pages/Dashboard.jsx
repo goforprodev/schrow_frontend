@@ -43,7 +43,7 @@ function Dashboard() {
         w={"100%"}
         bg={"#fbf9ff"}
       >
-        <Flex mx={"auto"} direction={"column"} w={{ base: "95%", md: "90%" }}>
+        <Flex mx={"auto"} maxW={"80%"} direction={"column"} w={{ base: "95%", md: "90%" }}>
           <Heading
             as={"h1"}
             fontFamily={"heading"}

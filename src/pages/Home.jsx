@@ -66,6 +66,7 @@ function Home() {
           direction={{ base: "column", xl: "row" }}
           w={"95%"}
           mx={"auto"}
+          maxW={"80%"}
         >
           <Heading
             as={"h3"}

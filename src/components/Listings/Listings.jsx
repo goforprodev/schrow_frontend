@@ -81,6 +81,7 @@ function Listings() {
         mx={"auto"}
         justifyItems={{ base: "stretch", md: "stretch" }}
         pb={10}
+        maxW={"80%"}
       >
         {_data?.map((listing, i) => {
           if (i === _data.length - 1) {

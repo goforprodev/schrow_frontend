@@ -239,6 +239,7 @@ function AddListing({ edit, listing }) {
           direction={"column"}
           width={{ base: "100%", md: "92%" }}
           mx={"auto"}
+          maxW={"80%"}
         >
           <Heading as={"h1"} fontWeight={"700"} fontSize={"22px"}>
             {edit ? `Edit ${listing?.title || "Listing"}` : "Add Listing"}

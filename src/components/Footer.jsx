@@ -29,7 +29,8 @@ function Footer() {
         pt={"30pt"}
         width="100%"
         mt={"auto"}
-      >
+        >
+          <Box as="div" maxW={"80%"} mx={"auto"}>
         <Grid
           templateColumns={{
             base: "none",
@@ -40,7 +41,6 @@ function Footer() {
           gridGap={8}
           px={"10pt"}
           py={"25pt"}
-          mx={"auto"}
           width={{ base: "100%", md: "90%", sm: "80%" }}
           m={"0 auto"}
         >
@@ -141,6 +141,7 @@ function Footer() {
             <Icon as={AiOutlineLinkedin} w={"20px"} h={"20px"} />
           </Flex>
         </Flex>
+          </Box>
       </Box>
     </>
   );
