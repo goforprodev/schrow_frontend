@@ -8,26 +8,30 @@ import axios from "axios";
 import { useIntersection } from "@mantine/hooks";
 import { useRecoilState } from "recoil";
 import Loader from "../Loader";
+import Empty from "../Empty";
+import { useListingsAction } from "../../actions/listingsActions";
 
-const fetchListings = async ({ pageParam }) => {
-  try {
-    const res = await axios.post(
-      `/api/users.php?page=${pageParam}&results_count=15`,
-      { endpoint: "load-listing" }
-    );
-    const { data } = res;
-    if (!data.error) {
-      return data.data.listings;
-    } else {
-      throw new Error(data.data.msg);
-    }
-  } catch (error) {
-    console.log("FetchListings error ", error);
-  }
-};
+// const fetchListings = async ({ pageParam }) => {
+//   try {
+//     const res = await axios.post(
+//       `/api/users.php?page=${pageParam}&results_count=15`,
+//       { endpoint: "load-listing" }
+//     );
+//     const { data } = res;
+//     if (!data.error) {
+//       return data.data.listings;
+//     } else {
+//       throw new Error(data.data.msg);
+//     }
+//   } catch (error) {
+//     console.log("FetchListings error ", error);
+//   }
+// };
 
 function Listings() {
   const [listings, setListings] = useRecoilState(listingsAtom);
+  const listingAction = useListingsAction()
+
   const {
     isLoading,
     isError,
@@ -38,7 +42,7 @@ function Listings() {
     isFetchingNextPage,
   } = useInfiniteQuery(
     ["listings"],
-    ({ pageParam = 1 }) => fetchListings({ pageParam }),
+    ({ pageParam = 1 }) => listingAction.loadListings({ pageParam }),
     {
       getNextPageParam: (_, pages) => {
         return pages.length + 1;
@@ -65,6 +69,12 @@ function Listings() {
   }
 
   const _data = data.pages.flatMap((page) => page);
+  
+  if(_data.length === 0) return (
+    <Flex w={"100%"} justify={"center"} py={10}>
+      <Empty  text={"No listings found"} />
+    </Flex>
+  )
 
   return (
     <>

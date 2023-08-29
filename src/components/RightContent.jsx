@@ -83,9 +83,10 @@ function RightContent({ setOpen }) {
             <Link to="/dashboard">
               <MenuItem command="⌘D">Dashboard</MenuItem>
             </Link>
-            <MenuItem command="⌘⇧S">Switch to seller</MenuItem>
+            {/* No switch to seller functionality */}
+            {/* <MenuItem command="⌘⇧S">Switch to seller</MenuItem> */}
             <Link to={"/add"}>
-              <MenuItem command="⌘A" display={{ md: "none" }}>
+              <MenuItem command="⌘A" display={{ base:"flex",md: "none" }}>
                 Add Listing
               </MenuItem>
             </Link>

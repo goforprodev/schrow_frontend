@@ -239,7 +239,7 @@ function AddListing({ edit, listing }) {
           direction={"column"}
           width={{ base: "100%", md: "92%" }}
           mx={"auto"}
-          maxW={"80%"}
+          maxW={"90%"}
         >
           <Heading as={"h1"} fontWeight={"700"} fontSize={"22px"}>
             {edit ? `Edit ${listing?.title || "Listing"}` : "Add Listing"}
@@ -853,7 +853,7 @@ function AddListing({ edit, listing }) {
                 <AccordionItem>
                   <h2>
                     <AccordionButton bg={"gray.100"}>
-                      <Box as="span" flex="1" textAlign="left">
+                      <Box as="span" flex="1" textAlign="left" fontSize={"11pt"}>
                         Property Information
                       </Box>
                       <Box as="span" fontSize={"10pt"}>
@@ -861,7 +861,7 @@ function AddListing({ edit, listing }) {
                           as={"span"}
                           display={{ base: "none", sm: "inline" }}
                         >
-                          This is not required to be filled in other to submit a
+                          This is not required to submit a
                           listing
                         </Text>
                         <AccordionIcon ml={"2pt"} />
@@ -878,7 +878,7 @@ function AddListing({ edit, listing }) {
                 <AccordionItem>
                   <h2>
                     <AccordionButton bg={"gray.100"}>
-                      <Box as="span" flex="1" textAlign="left">
+                      <Box as="span" flex="1" textAlign="left" fontSize={"11pt"}>
                         Collaborators
                       </Box>
                       <Box as="span" fontSize={"10pt"}>
@@ -886,7 +886,7 @@ function AddListing({ edit, listing }) {
                           as={"span"}
                           display={{ base: "none", sm: "inline" }}
                         >
-                          This is not required to be filled in other to submit a
+                          This is not required to submit a
                           listing
                         </Text>
                         <AccordionIcon ml={"2pt"} />
@@ -903,7 +903,7 @@ function AddListing({ edit, listing }) {
                 <AccordionItem>
                   <h2>
                     <AccordionButton bg={"gray.100"}>
-                      <Box as="span" flex="1" textAlign="left">
+                      <Box as="span" flex="1" textAlign="left" fontSize={"11pt"}>
                         Property Type
                       </Box>
                       <Box as="span" fontSize={"10pt"}>
@@ -911,7 +911,7 @@ function AddListing({ edit, listing }) {
                           as={"span"}
                           display={{ base: "none", sm: "inline" }}
                         >
-                          This is not required to be filled in other to submit a
+                          This is not required to submit a
                           listing
                         </Text>
                         <AccordionIcon ml={"2pt"} />

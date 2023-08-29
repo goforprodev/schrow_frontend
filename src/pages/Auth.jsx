@@ -142,7 +142,9 @@ function Auth() {
               height={"1pt"}
               bg={"gray.300"}
             />
-            <Text as="p" align={"center"} py={"10pt"} fontSize={"14pt"}>
+
+            {/* Authentication with socials */}
+            {/* <Text as="p" align={"center"} py={"10pt"} fontSize={"14pt"}>
               OR
             </Text>
             <Flex
@@ -192,7 +194,7 @@ function Auth() {
                 />
                 Continue with Facebook
               </Button>
-            </Flex>
+            </Flex> */}
           </Flex>
         </Flex>
       </Flex>
