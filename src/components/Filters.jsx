@@ -42,7 +42,6 @@ function Filters() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(values);
   };
   const handleChange = (e) => {
     const { name, value } = e.target;
