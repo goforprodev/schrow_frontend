@@ -12,6 +12,22 @@ function Stats({ data }) {
       name: `Monthly payment - ${Math.round(data?.estimated_cost / 12)} Naira`,
       icon: <Icon as={AiOutlineHome} boxSize={4} />,
     },
+    {
+      name: `Monthly payment - ${Math.round(data?.estimated_cost / 12)} Naira`,
+      icon: <Icon as={AiOutlineHome} boxSize={4} />,
+    },
+    {
+      name: `Monthly payment - ${Math.round(data?.estimated_cost / 12)} Naira`,
+      icon: <Icon as={AiOutlineHome} boxSize={4} />,
+    },
+    {
+      name: `Monthly payment - ${Math.round(data?.estimated_cost / 12)} Naira`,
+      icon: <Icon as={AiOutlineHome} boxSize={4} />,
+    },
+    {
+      name: `Monthly payment - ${Math.round(data?.estimated_cost / 12)} Naira`,
+      icon: <Icon as={AiOutlineHome} boxSize={4} />,
+    },
   ];
   return (
     <Flex direction={"column"} gap={2} py={"5pt"} fontSize={"10pt"}>

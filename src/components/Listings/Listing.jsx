@@ -5,24 +5,30 @@ import {
   Flex,
   Icon,
   Image,
+  Skeleton,
   Stack,
   Tag,
   TagLabel,
   Text,
-  transition,
   useToast,
 } from "@chakra-ui/react";
 import React from "react";
 import { AiFillEdit, AiFillHeart } from "react-icons/ai";
 import { BsFillTrashFill } from "react-icons/bs";
-import { MdOutlineManageAccounts } from "react-icons/md";
-import { Link } from "react-router-dom";
+import { TbCurrencyNaira } from "react-icons/tb";
+import { Link, useNavigate } from "react-router-dom";
 import { useRecoilValue } from "recoil";
 import { useListingsAction } from "../../actions/listingsActions";
 import { authAtom } from "../../state/auth";
-import { useNavigate } from "react-router-dom";
-import { TbCurrencyNaira } from "react-icons/tb";
 import capitalize from "../../utils/capitalize";
+import bcrypt from "bcryptjs";
+
+// const saltRounds = 10;
+
+// function encryptId(id) {
+//   const encryptedId = bcrypt.hashSync(id.toString(), saltRounds);
+//   return encryptedId;
+// }
 
 function Listing({ data, showDel, showEdit, _class, setSavedListings, save }) {
   const { id } = useRecoilValue(authAtom);
@@ -32,6 +38,7 @@ function Listing({ data, showDel, showEdit, _class, setSavedListings, save }) {
   const navigate = useNavigate();
   const toast = useToast();
   const [selectBtn, setSelectBtn] = React.useState("");
+  // const encId = encryptId(data?.id);
 
   const saveListings = async (authId, listingId) => {
     setLoading(true);
@@ -40,6 +47,7 @@ function Listing({ data, showDel, showEdit, _class, setSavedListings, save }) {
         userId: authId,
         listingId,
       });
+
       setLoading(false);
       toast({
         title: "Success",
@@ -63,122 +71,124 @@ function Listing({ data, showDel, showEdit, _class, setSavedListings, save }) {
 
   return (
     <>
-      <Card maxW="sm" position={"relative"} boxShadow={"md"}>
-        <Button
-          display={showEdit ? "block" : "none"}
-          size="sm"
-          position="absolute"
-          top={-2}
-          right={10}
-          borderRadius="full"
-          // variant={"outline"}
-          zIndex={10}
-          onClick={() => {
-            navigate(`/edit/${data?.id}`);
-            setSelectBtn("edit");
-          }}
-        >
-          <Icon as={AiFillEdit} size={"20pt"} />
-        </Button>
+      <Skeleton isLoaded={!loading}>
+        <Card maxW="sm" position={"relative"} boxShadow={"md"}>
+          <Button
+            display={showEdit ? "block" : "none"}
+            size="sm"
+            position="absolute"
+            top={-2}
+            right={10}
+            borderRadius="full"
+            // variant={"outline"}
+            zIndex={10}
+            onClick={() => {
+              navigate(`/edit/${data?.id}`);
+              setSelectBtn("edit");
+            }}
+          >
+            <Icon as={AiFillEdit} size={"20pt"} />
+          </Button>
 
-        <Button
-          display={save ? "block" : "none"}
-          size="sm"
-          position="absolute"
-          top={-2}
-          right={-2}
-          borderRadius="full"
-          zIndex={10}
-          onClick={() => {
-            saveListings(id, data?.id);
-            setSelectBtn("save");
-          }}
-          bg={selectBtn === "save" ? "red" : "brand.100"}
-        >
-          <Icon as={AiFillHeart} size={"20pt"} />
-        </Button>
-        <Button
-          display={showDel ? "block" : "none"}
-          size="sm"
-          isLoading={loading}
-          onClick={async () => {
-            try {
-              setLoading(true);
-              showEdit
-                ? await listingAction.deleteListing({
-                    id,
-                    listingId: data?.id,
-                  })
-                : await listingAction.deleteSavedListing({
-                    userId: id,
-                    listingId: data?.id,
-                  });
-              setSavedListings((prev) =>
-                prev.filter((item) => item.id !== data?.id)
-              );
-              setLoading(false);
-            } catch (error) {
-              setLoading(false);
-              console.log(error);
-            }
-          }}
-          position="absolute"
-          top={-2}
-          right={-2}
-          borderRadius="full"
-          zIndex={10}
-        >
-          <Icon as={BsFillTrashFill} size={"20pt"} />
-        </Button>
-        <Link to={`/${data.id}`}>
-          <CardBody p={0}>
-            <Flex w={"100%"} h={"150px"} overflow={"hidden"}>
-              <Image
-                src={
-                  imageUrl ||
-                  //add placeholder image url
-                  "https://www.placehold.it/300x200"
-                }
-                alt="Green double couch with wooden legs"
-                borderTopRadius={"lg"}
-                w={"100%"}
-                //scale image on hover
-                _hover={{ transform: "scale(1.1)", transition: "all 0.7s" }}
-              />
-            </Flex>
-            <Stack mt="3" spacing="1" fontSize={"10pt"} px={3} pb={2}>
-              <Text
-                color="gray.600"
-                fontWeight={"bold"}
-                fontSize="lg"
-                display={"flex"}
-                align={"center"}
-              >
-                <Icon as={TbCurrencyNaira} fontSize={"18pt"} />
-                {Math.round(data.estimated_cost / 12)}+/mo
-              </Text>
-              <Flex align={"center"} gap={"5pt"} color={"gray.600"}>
-                {data.mass || "5bds | 4ba | 2,625sqft"}
-                <Tag size={"sm"} variant="subtle" colorScheme="blue">
-                  <TagLabel>
-                    {(data.statuse || "House for sale").toLowerCase()}
-                  </TagLabel>
-                </Tag>
+          <Button
+            display={save ? "block" : "none"}
+            size="sm"
+            position="absolute"
+            top={-2}
+            right={-2}
+            borderRadius="full"
+            zIndex={10}
+            onClick={() => {
+              saveListings(id, data?.id);
+              setSelectBtn("save");
+            }}
+            bg={selectBtn === "save" ? "red.500" : "brand.100"}
+          >
+            <Icon as={AiFillHeart} size={"20pt"} />
+          </Button>
+          <Button
+            display={showDel ? "block" : "none"}
+            size="sm"
+            isLoading={loading}
+            onClick={async () => {
+              try {
+                setLoading(true);
+                showEdit
+                  ? await listingAction.deleteListing({
+                      id,
+                      listingId: data?.id,
+                    })
+                  : await listingAction.deleteSavedListing({
+                      userId: id,
+                      listingId: data?.id,
+                    });
+                setSavedListings((prev) =>
+                  prev.filter((item) => item.id !== data?.id)
+                );
+                setLoading(false);
+              } catch (error) {
+                setLoading(false);
+                console.log(error);
+              }
+            }}
+            position="absolute"
+            top={-2}
+            right={-2}
+            borderRadius="full"
+            zIndex={10}
+          >
+            <Icon as={BsFillTrashFill} size={"20pt"} />
+          </Button>
+          <Link to={`/${data?.id}`}>
+            <CardBody p={0}>
+              <Flex w={"100%"} h={"150px"} overflow={"hidden"}>
+                <Image
+                  src={
+                    imageUrl ||
+                    //add placeholder image url
+                    "https://www.placehold.it/300x200"
+                  }
+                  alt="Green double couch with wooden legs"
+                  borderTopRadius={"lg"}
+                  w={"100%"}
+                  //scale image on hover
+                  _hover={{ transform: "scale(1.1)", transition: "all 0.7s" }}
+                />
               </Flex>
-              <Flex gap={"2pt"} color={"gray.600"}>
-                <Text as={"span"}>{capitalize(data.city)},</Text>
-                <Text as={"span"}>{capitalize(data.statex)},</Text>
-                <Text as={"span"}>{capitalize(data.country)}</Text>
-              </Flex>
-              <Flex justify={"space-between"} color={"gray.600"}>
-                <Text fontWeight={"bold"} color={"gray.500"} fontSize={"7pt"}>
-                  {(data.title || "Bimpe Azeez real estate").toUpperCase()}
+              <Stack mt="3" spacing="1" fontSize={"10pt"} px={3} pb={2}>
+                <Text
+                  color="gray.600"
+                  fontWeight={"bold"}
+                  fontSize="lg"
+                  display={"flex"}
+                  align={"center"}
+                >
+                  <Icon as={TbCurrencyNaira} fontSize={"18pt"} />
+                  {Math.round(data.estimated_cost / 12)}+/mo
                 </Text>
-              </Flex>
-            </Stack>
-          </CardBody>
-        </Link>
-      </Card>
+                <Flex align={"center"} gap={"5pt"} color={"gray.600"}>
+                  {data.mass || "5bds | 4ba |2,625sqft"}
+                  <Tag size={"sm"} variant="subtle" colorScheme="blue">
+                    <TagLabel>
+                      {(data.statuse || "House for sale").toLowerCase()}
+                    </TagLabel>
+                  </Tag>
+                </Flex>
+                <Flex gap={"2pt"} color={"gray.600"}>
+                  <Text as={"span"}>{capitalize(data.city)},</Text>
+                  <Text as={"span"}>{capitalize(data.statex)},</Text>
+                  <Text as={"span"}>{capitalize(data.country)}</Text>
+                </Flex>
+                <Flex justify={"space-between"} color={"gray.600"}>
+                  <Text fontWeight={"bold"} color={"gray.500"} fontSize={"7pt"}>
+                    {(data.title || "Bimpe Azeez real estate").toUpperCase()}
+                  </Text>
+                </Flex>
+              </Stack>
+            </CardBody>
+          </Link>
+        </Card>
+      </Skeleton>
     </>
   );
 }

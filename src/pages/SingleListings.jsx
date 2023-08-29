@@ -1,13 +1,18 @@
 import { Flex } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { useRecoilValue } from "recoil";
 import { useListingsAction } from "../actions/listingsActions";
 import ImageCarousel from "../components/ImageCarousel";
 import ListingInfo from "../components/ListingInfo/ListingInfo";
-import { useRecoilValue } from "recoil";
-import { singleListingAtom } from "../state/lisitings";
 import Loader from "../components/Loader";
 import { authAtom } from "../state/auth";
+import { singleListingAtom } from "../state/lisitings";
+
+// function decryptId(encryptedId, id) {
+//   const isMatch = bcrypt.compareSync(id.toString(), encryptedId);
+//   return isMatch;
+// }
 
 function SingleListings() {
   const { id } = useParams();
@@ -17,6 +22,7 @@ function SingleListings() {
   const listing = useRecoilValue(singleListingAtom);
   const authUser = useRecoilValue(authAtom);
   const STORAGE_KEY = "recentListings";
+  // const decrId = decryptId(id);
 
   const saveRecent = async () => {
     try {
