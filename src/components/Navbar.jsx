@@ -21,13 +21,20 @@ function Navbar() {
   return (
     <>
       <MessageModal open={open} setOpen={setOpen} />
-      <Box as="div" width={{ base: "95%", md: "90%" }} m={"0 auto"}>
+      <Box
+        as="div"
+        w={"100%"}
+        px={{ base: "5%", md: "10%" }}
+        m={"0 auto"}
+        boxShadow={"md"}
+        py={"10pt"}
+      >
         <Flex
-          h={{ base: "7vh", md: "9vh" }}
+          h={{ base: "7vh", md: "5vh" }}
           w="100%"
           align={"center"}
           justify={"space-between"}
-          px={{ base: "5pt" }}
+          mx={"auto"}
         >
           <Link to={"/"}>
             <Image

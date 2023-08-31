@@ -6,28 +6,26 @@ import React, { useEffect, useRef, useState } from "react";
 import { useRecoilState } from "recoil";
 import { listingsAtom } from "../../state/lisitings";
 import Loader from "../Loader";
-import Listing from "./Listing";
 
-const fetchListings = async ({ pageParam }) => {
-  try {
-    const res = await axios.post(
-      `/api/users.php?page=${pageParam}&results_count=15`,
-      { endpoint: "load-listing" }
-    );
-    const { data } = res;
-    if (!data.error) {
-      return data.data.listings;
-    } else {
-      throw new Error(data.data.msg);
-    }
-  } catch (error) {
-    console.log("FetchListings error ", error);
-  }
-};
+// const fetchListings = async ({ pageParam }) => {
+//   try {
+//     const res = await axios.post(
+//       `/api/users.php?page=${pageParam}&results_count=15`,
+//       { endpoint: "load-listing" }
+//     );
+//     const { data } = res;
+//     if (!data.error) {
+//       return data.data.listings;
+//     } else {
+//       throw new Error(data.data.msg);
+//     }
+//   } catch (error) {
+//     console.log("FetchListings error ", error);
+//   }
+// };
 
 function Listings() {
   const [listings, setListings] = useRecoilState(listingsAtom);
-  const [loading, setLoading] = useState(false);
   const {
     isLoading,
     isError,
@@ -38,7 +36,7 @@ function Listings() {
     isFetchingNextPage,
   } = useInfiniteQuery(
     ["listings"],
-    ({ pageParam = 1 }) => fetchListings({ pageParam }),
+    ({ pageParam = 1 }) => listingAction.loadListings({ pageParam }),
     {
       getNextPageParam: (_, pages) => {
         return pages.length + 1;
@@ -65,6 +63,12 @@ function Listings() {
   }
 
   const _data = data.pages.flatMap((page) => page);
+  
+  if(_data.length === 0) return (
+    <Flex w={"100%"} justify={"center"} py={10}>
+      <Empty  text={"No listings found"} />
+    </Flex>
+  )
 
   return (
     <>
@@ -81,6 +85,7 @@ function Listings() {
         mx={"auto"}
         justifyItems={{ base: "stretch", md: "stretch" }}
         pb={10}
+        maxW={"80%"}
       >
         {_data?.map((listing, i) => {
           if (i === _data.length - 1) {

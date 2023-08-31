@@ -10,7 +10,7 @@ function Empty({ text }) {
         <Text fontSize={"18pt"} fontWeight={"500"} pt={"10pt"}>
           {text}
         </Text>
-        <Text>Go to the home page to view projects</Text>
+        {/* <Text>Go to the home page to view projects</Text> */}
       </Flex>
     </>
   );

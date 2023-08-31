@@ -29,9 +29,24 @@ function Filters() {
   ]);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [clicked, setClicked] = useState(null);
+  const [values, setValues] = useState({
+    min_rooms: "",
+    max_rooms: "",
+    min_beds: "",
+    max_beds: "",
+    home_types: "",
+    min_price: "",
+    max_price: "",
 
-  const handleSubmit = (e) => {};
-  const handleChange = () => {};
+  });
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+  };
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setValues((prev) => ({ ...prev, [name]: value }));
+  };
 
   return (
     <>
@@ -190,9 +205,10 @@ function Filters() {
                     <Button
                       key={tag.id}
                       variant={clicked === tag.id ? "solid" : "outline"}
-                      onClick={() =>
+                      onClick={() =>{
                         setClicked((prev) => (prev === tag.id ? null : tag.id))
-                      }
+                        setValues((prev) => ({ ...prev, home_types: tag.id }))
+                      }}
                       isDisabled={clicked !== null && clicked !== tag.id}
                     >
                       {tag.name}

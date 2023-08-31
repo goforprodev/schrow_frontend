@@ -5,6 +5,7 @@ import { useListingsAction } from "../actions/listingsActions";
 import { useRecoilValue } from "recoil";
 import { singleListingAtom } from "../state/lisitings";
 import Loader from "../components/Loader";
+import { Box } from "@chakra-ui/react";
 
 const EditListing = () => {
   const { id } = useParams();
@@ -28,9 +29,9 @@ const EditListing = () => {
   if (loading) return <Loader />;
 
   return (
-    <>
+    <Box minH={"70vh"} mt={"10pt"}>
       <AddListing edit={true} listing={listing} />
-    </>
+    </Box>
   );
 };
 

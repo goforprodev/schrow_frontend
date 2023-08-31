@@ -24,7 +24,7 @@ function Home() {
   const [listings, setListings] = useRecoilState(listingsAtom);
 
   useEffect(() => {
-    if (!authUser) {
+    if (!authUser || !authUser.id) {
       navigate("/auth");
     }
   }, [authUser]);
@@ -43,6 +43,7 @@ function Home() {
       } catch (error) {
         console.log(error);
       }
+      console.log(listings)
     }
   };
 
@@ -56,20 +57,22 @@ function Home() {
         direction="column"
         py={"15pt"}
         px={{ base: "10pt", sm: "20pt" }}
-        bg={"#fbf9ff"}
+        // bg={"#fbf9ff"}
       >
         <Flex
           justify={{ base: "center", sm: "space-between" }}
           align={"center"}
-          py={"10pt"}
+          py={"8pt"}
           gap={3}
           direction={{ base: "column", xl: "row" }}
           w={"95%"}
           mx={"auto"}
+          maxW={"90%"}
         >
           <Heading
             as={"h3"}
             fontSize={{ base: "13pt", sm: "17pt" }}
+            px={{base:"none", sm:"5%"}}
             color={"gray.800"}
           >
             Real Estate & Homes For Sale

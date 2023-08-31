@@ -26,22 +26,21 @@ function Footer() {
         as="div"
         bg={"gray.600"}
         color={"gray.100"}
-        pt={"30pt"}
+        pt={"7pt"}
         width="100%"
         mt={"auto"}
-      >
+        >
+          <Box as="div" maxW={"90%"} mx={"auto"}>
         <Grid
           templateColumns={{
             base: "none",
-            //   md: "repeat(3,1fr)",
+            md: "repeat(2,1fr)",
             xl: "repeat(4,1fr)",
           }}
           gap={{ base: 4, md: 4, sm: 8 }}
           gridGap={8}
-          px={"10pt"}
-          py={"25pt"}
-          mx={"auto"}
-          width={{ base: "100%", md: "90%", sm: "80%" }}
+          py={"10pt"}
+          width={{ base: "100%", md: "90%", sm: "90%" }}
           m={"0 auto"}
         >
           <GridItem py={{ base: "10pt", sm: "0" }}>
@@ -141,6 +140,7 @@ function Footer() {
             <Icon as={AiOutlineLinkedin} w={"20px"} h={"20px"} />
           </Flex>
         </Flex>
+          </Box>
       </Box>
     </>
   );

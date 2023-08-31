@@ -8,13 +8,40 @@ export const useListingsAction = () => {
   const setListings = useSetRecoilState(listingsAtom);
   const setSingleListing = useSetRecoilState(singleListingAtom);
 
-  const loadListings = async ({ endpoint }) => {
+  const _loadListings = async ({ endpoint }) => {
     const res = await fetchNRelease({
       url: `${baseUrl}?page=1`,
       body: { endpoint },
     });
     setListings(() => res.listings);
   };
+
+  const loadListings = async ({
+  pageParam = '',
+  min_beds = '',
+  max_beds = '',
+  home_types = '',
+  min_price = '',
+  max_price = '',
+  min_floors = '',
+  max_floors = '',
+  min_units = '',
+  max_units = '',
+  min_baths = '',
+  max_baths = '',
+  }) => {
+    try {
+      const res = await axios.post(`${baseUrl}?page=${pageParam}&results_count=15&ptype=${home_types}&price=${min_price}-${max_price}&no_of_floors=${min_floors}-${max_floors}&no_of_units=${min_units}-${max_units}&no_of_bed=${min_beds}-${max_beds}&no_of_bath=${min_baths}-${max_baths}`, {endpoint:"load-listing",filter:"all"});
+      const {data} = res;
+      if(!data.error){
+        return data.data.listings;
+      }else{
+        throw new Error(data.data.msg);
+      }
+    } catch (error) {
+    console.log("FetchListings error ", error);
+    }
+  }
 
   const loadListingById = async ({ id }) => {
     const response = await fetchNRelease({

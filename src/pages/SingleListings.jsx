@@ -89,6 +89,8 @@ function SingleListings() {
         py={{ base: "10pt", sm: "15pt" }}
         px={{ base: "unset", md: "30pt" }}
         pb={{ base: "15pt", sm: "0" }}
+        maxW={"80%"}
+        mx={"auto"}
       >
         <ImageCarousel images={images} />
         <ListingInfo listing={listing} />

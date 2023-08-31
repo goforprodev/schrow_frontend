@@ -52,7 +52,7 @@ const Amenities = ({ setAmenities }) => {
               size="md"
               borderRadius="full"
               variant="subtle"
-              colorScheme="teal"
+              colorScheme="blue"
               mr={1}
               fontSize={"8pt"}
             >
