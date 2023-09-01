@@ -57,7 +57,9 @@ function Home() {
         direction="column"
         py={"15pt"}
         px={{ base: "10pt", sm: "20pt" }}
-        // bg={"#fbf9ff"}
+        w={{base:"90vw",sm:"80vw"}}
+        minH={"70vh"}
+        mx={"auto"}
       >
         <Flex
           justify={{ base: "center", sm: "space-between" }}
@@ -65,14 +67,10 @@ function Home() {
           py={"8pt"}
           gap={3}
           direction={{ base: "column", xl: "row" }}
-          w={"95%"}
-          mx={"auto"}
-          maxW={"90%"}
         >
           <Heading
             as={"h3"}
             fontSize={{ base: "13pt", sm: "17pt" }}
-            px={{base:"none", sm:"5%"}}
             color={"gray.800"}
           >
             Real Estate & Homes For Sale
