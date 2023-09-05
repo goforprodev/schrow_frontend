@@ -11,6 +11,17 @@ import Loader from "../Loader";
 import Empty from "../Empty";
 import { useListingsAction } from "../../actions/listingsActions";
 
+  // Fetch listings using React Query with filters
+  const fetchListings = async ({ pageParam = 1 }) => {
+    try {
+      const response = await axios.get(
+        `/api/users.php?page=${pageParam}&results_count=15&no_of_floors=${filters.min_rooms}-${filters.max_rooms}&no_of_units=${filters.min_beds}-${filters.max_beds}&no_of_bed=${filters.min_price}-${filters.max_price}&no_of_bath=${filters.max_price}`
+      );
+      return response.data;
+    } catch (error) {
+      throw new Error('Error fetching listings');
+    }
+  };
 
 function Listings() {
   const [listings, setListings] = useRecoilState(listingsAtom);
@@ -26,7 +37,7 @@ function Listings() {
     isFetchingNextPage,
   } = useInfiniteQuery(
     ["listings"],
-    ({ pageParam = 1 }) => listingAction.loadListings({ pageParam }),
+    fetchListings,
     {
       getNextPageParam: (_, pages) => {
         return pages.length + 1;
