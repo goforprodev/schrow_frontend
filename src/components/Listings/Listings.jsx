@@ -1,15 +1,11 @@
 import { Flex, Grid, GridItem, Spinner } from "@chakra-ui/react";
-import React, { useEffect, useRef } from "react";
-import { useRecoilValue } from "recoil";
-import { listingsAtom } from "../../state/lisitings";
-import Listing from "./Listing";
+import { useIntersection } from "@mantine/hooks";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import axios from "axios";
-import { useIntersection } from "@mantine/hooks";
+import React, { useEffect, useRef, useState } from "react";
 import { useRecoilState } from "recoil";
+import { listingsAtom } from "../../state/lisitings";
 import Loader from "../Loader";
-import Empty from "../Empty";
-import { useListingsAction } from "../../actions/listingsActions";
 
   // Fetch listings using React Query with filters
   const fetchListings = async ({ pageParam = 1 }) => {
@@ -25,8 +21,6 @@ import { useListingsAction } from "../../actions/listingsActions";
 
 function Listings() {
   const [listings, setListings] = useRecoilState(listingsAtom);
-  const listingAction = useListingsAction()
-
   const {
     isLoading,
     isError,

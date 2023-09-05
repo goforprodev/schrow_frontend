@@ -19,6 +19,7 @@
     "@mantine/hooks": "^6.0.15",
     "@tanstack/react-query": "^4.29.19",
     "axios": "^1.4.0",
+    "bcryptjs": "^2.4.3",
     "formik": "^2.4.1",
     "framer-motion": "^10.12.12",
     "react": "^18.2.0",

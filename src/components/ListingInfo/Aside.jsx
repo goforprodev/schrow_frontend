@@ -81,7 +81,7 @@ function Aside({ listingId }) {
 
   const asideButtons = [
     {
-      name: "Save",
+      name: selected ? "Saved" : "Save",
       icon: (
         <Icon
           as={AiFillHeart}

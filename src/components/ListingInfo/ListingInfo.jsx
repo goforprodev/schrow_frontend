@@ -22,6 +22,8 @@ function ListingInfo({ listing }) {
         direction="column"
         py={{ base: "15pt", sm: "0" }}
         px={{ base: "10pt", sm: "0" }}
+        h={"100vh"}
+        overflowY={"auto"}
       >
         <Flex
           //   bg={"gray.100"}

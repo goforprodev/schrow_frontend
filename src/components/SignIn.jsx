@@ -10,11 +10,14 @@ import { useFormik } from "formik";
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import useUserAction from "../actions/userActions";
+import { useSetRecoilState } from "recoil";
+import { activeTabIndexState } from "../state/tabs";
 
 function SignIn() {
   const userAction = useUserAction();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
+  const setTabIndex = useSetRecoilState(activeTabIndexState);
   const toast = useToast();
   const formik = useFormik({
     initialValues: {
@@ -107,8 +110,15 @@ function SignIn() {
       <Button w={{ base: "100%", sm: "50%" }} type="submit" isLoading={loading}>
         Submit
       </Button>
-      <Text as="p" py="3pt" fontSize={"10pt"} color={"brand.100"}>
-        <Link>Forgot your password?</Link>
+      <Text
+        as="p"
+        py="3pt"
+        fontSize={"10pt"}
+        color={"brand.100"}
+        cursor={"pointer"}
+        onClick={() => setTabIndex(2)}
+      >
+        Forgot password?
       </Text>
     </form>
   );

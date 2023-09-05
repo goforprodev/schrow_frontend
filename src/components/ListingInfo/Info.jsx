@@ -15,7 +15,7 @@ function Info({ data }) {
         </Tag>
       </Flex>
       <Text>{`${data?.street} , ${data.city} , ${data?.statex}`} </Text>
-      <Text>{data?.title}</Text>
+      <Text textTransform={"uppercase"}>{data?.title}</Text>
     </Flex>
   );
 }

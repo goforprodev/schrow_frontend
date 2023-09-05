@@ -21,8 +21,13 @@ function Navbar() {
   return (
     <>
       <MessageModal open={open} setOpen={setOpen} />
-      <Box as="div" w={"100%"} px={{base:"5%",md:"10%"}} m={"0 auto"}
-          boxShadow={"md"}
+      <Box
+        as="div"
+        w={"100%"}
+        px={{ base: "5%", md: "10%" }}
+        m={"0 auto"}
+        boxShadow={"md"}
+        py={"10pt"}
       >
         <Flex
           h={{ base: "7vh", md: "5vh" }}

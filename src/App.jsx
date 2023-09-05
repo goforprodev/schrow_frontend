@@ -10,6 +10,7 @@ import EditListing from "./pages/EditListing";
 import ErrorPage from "./pages/ErrorPage";
 import Home from "./pages/Home";
 import SingleListings from "./pages/SingleListings";
+import ForgotPassword from "./components/ForgotPassword";
 
 function App() {
   const Layout = ({ children }) => {
@@ -49,14 +50,7 @@ function App() {
     {
       path: "/auth",
       element: <Auth />,
-      children: [
-        {
-          path: "/auth/signup",
-          element: <SignUp />,
-        },
-      ],
     },
-    
   ]);
 
   return (
