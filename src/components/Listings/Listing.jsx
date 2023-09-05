@@ -21,14 +21,7 @@ import { useRecoilValue } from "recoil";
 import { useListingsAction } from "../../actions/listingsActions";
 import { authAtom } from "../../state/auth";
 import capitalize from "../../utils/capitalize";
-import bcrypt from "bcryptjs";
 
-// const saltRounds = 10;
-
-// function encryptId(id) {
-//   const encryptedId = bcrypt.hashSync(id.toString(), saltRounds);
-//   return encryptedId;
-// }
 
 function Listing({ data, showDel, showEdit, _class, setSavedListings, save }) {
   const { id } = useRecoilValue(authAtom);

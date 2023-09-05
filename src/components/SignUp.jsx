@@ -5,18 +5,75 @@ import {
   FormLabel,
   Input,
   Text,
+  Select,
+  useToast,
 } from "@chakra-ui/react";
 import { useFormik } from "formik";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ErrorText from "./ErrorText";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import useUserAction from "../actions/userActions";
+import { useSecurityQuestionsAction } from "../actions/securityQuestionsActions";
+import { useRecoilValue } from "recoil";
+import { securityQuestionsState } from "../state/securityQuestions";
 
 function SignUp() {
+  // states
   const [loading, setLoading] = useState(false);
+  const [selectedQuestion, setSelectedQuestion] = useState("");
+  const [selectedQuestions, setSelectedQuestions] = useState([]);
+ const [answer, setAnswer] = useState("");
+
   const navigate = useNavigate();
+  const toast = useToast()
+
+  // recoil-states
   const userAction = useUserAction();
+  const securityActions = useSecurityQuestionsAction()
+  const securityQuestions = useRecoilValue(securityQuestionsState)
+   const [selectedSecurityQuestions, setSelectedSecurityQuestions] = useState([]);
+
+  useEffect(() => {
+    securityActions.getSecurityQuestions() 
+  }, []);
+
+  const handleAddQuestion = () => {
+    if (selectedQuestion && answer && selectedQuestions.length < 2) {
+        if (!selectedSecurityQuestions.includes(selectedQuestion)) {
+      setSelectedSecurityQuestions([...selectedSecurityQuestions, selectedQuestion]);
+      setSelectedQuestions((prevQuestions) => [
+        ...prevQuestions,
+        { question: selectedQuestion, answer },
+      ]);
+      setSelectedQuestion("");
+      setAnswer("");
+    } else {
+      // Display an error or message indicating that the question is already selected
+      toast({
+          title: "Error",
+          status: "error",
+          description: "Cannot select the same question twice",
+          isClosable: true,
+          duration: 2000,
+        });
+    }
+    }else{
+      toast({
+          title: "Error",
+          status: "error",
+          description: "Cannot select more than 2 questions",
+          isClosable: true,
+          duration: 2000,
+        });
+    }
+  };
+
+  const handleRemoveQuestion = (index) => {
+    setSelectedQuestions((prevQuestions) =>
+      prevQuestions.filter((_, i) => i !== index)
+    );
+  };
 
   const validate = (values) => {
     const errors = {};
@@ -75,8 +132,19 @@ function SignUp() {
     validate,
     onSubmit: async (values) => {
       setLoading(true);
+      if(selectedQuestions.length < 2){
+        toast({
+          title: "Error",
+          status: "error",
+          description: "Please select 2 security questions",
+          isClosable: true,
+          duration: 2000,
+        });
+        setLoading(false);
+        return;
+      }
       try {
-        await userAction.register(values);
+        await userAction.register(values,selectedQuestions);
         navigate("/");
       } catch (error) {
         alert(error.message);
@@ -227,6 +295,44 @@ function SignUp() {
           {formik.touched.confirmPassword && formik.errors.confirmPassword ? (
             <ErrorText text={formik.errors.confirmPassword} />
           ) : null}
+          
+          <FormLabel>Select Security Question</FormLabel>
+          <Select
+            placeholder="Select a security question"
+            value={selectedQuestion}
+            onChange={(e) => setSelectedQuestion(e.target.value)}
+          >
+            {securityQuestions?.map((question,i) => (
+              <option key={i} value={question}>
+                {question}
+              </option>
+            ))}
+          </Select>
+          <FormLabel>Answer</FormLabel>
+          <Input
+            type="text"
+            value={answer}
+            onChange={(e) => setAnswer(e.target.value)}
+            placeholder="Enter your answer"
+          />
+          <Button colorScheme="blue" onClick={handleAddQuestion}>
+          Add Security Question
+        </Button>
+        {selectedQuestions.map((question, index) => (
+          <div key={index}>
+              <FormLabel>Security Question {index + 1}</FormLabel>
+              <Input type="text" value={question.question} isReadOnly />
+              <FormLabel>Answer</FormLabel>
+              <Input type="text" value={question.answer} isReadOnly />
+            <Button
+              colorScheme="red"
+              onClick={() => handleRemoveQuestion(index)}
+            >
+              Remove
+            </Button>
+          </div>
+        ))}
+
 
           <Checkbox
             py={"3pt"}
