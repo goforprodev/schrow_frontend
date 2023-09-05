@@ -7,22 +7,6 @@ import { useRecoilState } from "recoil";
 import { listingsAtom } from "../../state/lisitings";
 import Loader from "../Loader";
 
-// const fetchListings = async ({ pageParam }) => {
-//   try {
-//     const res = await axios.post(
-//       `/api/users.php?page=${pageParam}&results_count=15`,
-//       { endpoint: "load-listing" }
-//     );
-//     const { data } = res;
-//     if (!data.error) {
-//       return data.data.listings;
-//     } else {
-//       throw new Error(data.data.msg);
-//     }
-//   } catch (error) {
-//     console.log("FetchListings error ", error);
-//   }
-// };
 
 function Listings() {
   const [listings, setListings] = useRecoilState(listingsAtom);
@@ -63,8 +47,9 @@ function Listings() {
   }
 
   const _data = data.pages.flatMap((page) => page);
+
   
-  if(_data.length === 0) return (
+  if(!_data) return (
     <Flex w={"100%"} justify={"center"} py={10}>
       <Empty  text={"No listings found"} />
     </Flex>
@@ -75,20 +60,20 @@ function Listings() {
       <Grid
         templateColumns={{
           base: "repeat(1,1fr)",
-          sm: "repeat(2,1fr)",
           md: "repeat(3,1fr)",
+          sm: "repeat(2,1fr)",
           xl: "repeat(5,1fr)",
         }}
         gap={{ base: 4, md: 3 }}
         py={"10pt"}
-        w={{ base: "100%", sm: "95%" }}
+        w={"100%"}
         mx={"auto"}
         justifyItems={{ base: "stretch", md: "stretch" }}
         pb={10}
-        maxW={"80%"}
+        // maxW={"80%"}
       >
-        {_data?.map((listing, i) => {
-          if (i === _data.length - 1) {
+        {listings?.map((listing, i) => {
+          if (i === listings.length - 1) {
             return (
               <GridItem key={listing?.id} cursor={"pointer"} ref={ref}>
                 <Listing data={listing} />

@@ -17,24 +17,52 @@ export const useListingsAction = () => {
   };
 
   const loadListings = async ({
-  pageParam = '',
-  min_beds = '',
-  max_beds = '',
-  home_types = '',
-  min_price = '',
-  max_price = '',
-  min_floors = '',
-  max_floors = '',
-  min_units = '',
-  max_units = '',
-  min_baths = '',
-  max_baths = '',
+    pageParam = '',
+    min_beds = '',
+    max_beds = '',
+    home_types = '',
+    min_price = '',
+    max_price = '',
+    min_floors = '',
+    max_floors = '',
+    min_units = '',
+    max_units = '',
+    min_baths = '',
+    max_baths = '',
   }) => {
     try {
-      const res = await axios.post(`${baseUrl}?page=${pageParam}&results_count=15&ptype=${home_types}&price=${min_price}-${max_price}&no_of_floors=${min_floors}-${max_floors}&no_of_units=${min_units}-${max_units}&no_of_bed=${min_beds}-${max_beds}&no_of_bath=${min_baths}-${max_baths}`, {endpoint:"load-listing",filter:"all"});
+      let url = `${baseUrl}?page=${pageParam}&results_count=15`;
+  
+      if (home_types) {
+        url += `&ptype=${home_types}`;
+      }
+      if (min_price && max_price) {
+        url += `&price=${min_price}-${max_price}`;
+      }
+      if (min_floors && max_floors) {
+        url += `&no_of_floors=${min_floors}-${max_floors}`;
+      }
+      if (min_units && max_units) {
+        url += `&no_of_units=${min_units}-${max_units}`;
+      }
+      if (min_beds && max_beds) {
+        url += `&no_of_bed=${min_beds}-${max_beds}`;
+      }
+      if (min_baths && max_baths) {
+        url += `&no_of_bath=${min_baths}-${max_baths}`;
+      }
+  
+      const postData = {
+        endpoint: 'load-listing',
+        filter: 'all',
+      };
+
+      const res = await axios.post(url, postData);
+
       const {data} = res;
       if(!data.error){
-        return data.data.listings;
+        setListings(() => data.data.listings);
+        return true
       }else{
         throw new Error(data.data.msg);
       }

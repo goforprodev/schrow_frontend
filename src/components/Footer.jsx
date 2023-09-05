@@ -29,6 +29,7 @@ function Footer() {
         pt={"7pt"}
         width="100%"
         mt={"auto"}
+        minH={"30vh"}
         >
           <Box as="div" maxW={"90%"} mx={"auto"}>
         <Grid
