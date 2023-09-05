@@ -15,7 +15,7 @@ import {
   Text,
 } from "@chakra-ui/react";
 import React, { useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, Outlet, useNavigate } from "react-router-dom";
 import Apple from "../assets/apple.png";
 import Facebook from "../assets/face.png";
 import Google from "../assets/google.png";
@@ -23,11 +23,18 @@ import Logo from "../assets/schrow.png";
 import SignIn from "../components/SignIn";
 import SignUp from "../components/SignUp";
 import { authSelector } from "../state/auth";
-import { useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
+import ForgotPassword from "../components/ForgotPassword";
+import { activeTabIndexState } from "../state/tabs";
 
 function Auth() {
   const user = useRecoilValue(authSelector);
   const navigate = useNavigate();
+  const [tabIndex, setTabIndex] = useRecoilState(activeTabIndexState);
+
+  const handleTabChange = (index) => {
+    setTabIndex(index);
+  };
 
   useEffect(() => {
     if (user) {
@@ -103,17 +110,45 @@ function Auth() {
               >
                 Please use your credentials to create a new account. If you are
                 already a member, please
-                <Text as={"span"} color={"brand.100"}>
-                  <Link to={"/auth"}> Sign in</Link>.
+                <Text
+                  as={"span"}
+                  color={"brand.100"}
+                  pl={"2pt"}
+                  cursor={"pointer"}
+                  onClick={() => handleTabChange(0)}
+                >
+                  Sign in
                 </Text>
               </Text>
             </Flex>
 
             {/* Auth tabs */}
-            <Tabs position="relative" variant="unstyled" pt="10pt">
+            <Tabs
+              position="relative"
+              variant="unstyled"
+              pt="10pt"
+              index={tabIndex}
+              onChange={handleTabChange}
+            >
               <TabList color={"gray.700"}>
-                <Tab fontWeight={"medium"}>Login</Tab>
-                <Tab fontWeight={"medium"}>New Account</Tab>
+                <Tab
+                  fontWeight={"medium"}
+                  display={tabIndex > 1 ? "none" : "block"}
+                >
+                  Login
+                </Tab>
+                <Tab
+                  fontWeight={"medium"}
+                  display={tabIndex > 1 ? "none" : "block"}
+                >
+                  New Account
+                </Tab>
+                <Tab
+                  fontWeight={"medium"}
+                  display={tabIndex > 1 ? "block" : "none"}
+                >
+                  Forgot Password
+                </Tab>
               </TabList>
               <TabIndicator
                 mt="-1.5px"
@@ -128,12 +163,15 @@ function Auth() {
                     <SignIn />
                   </TabPanel>
                   <TabPanel>
-                    {/* <Outlet /> */}
                     <SignUp />
+                  </TabPanel>
+                  <TabPanel>
+                    <ForgotPassword />
                   </TabPanel>
                 </TabPanels>
               </Flex>
             </Tabs>
+
             {/* Auth tabs */}
 
             <Divider
