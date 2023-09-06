@@ -7,6 +7,7 @@ import {
   Text,
   Select,
   useToast,
+  Divider,
 } from "@chakra-ui/react";
 import { useFormik } from "formik";
 import React, { useEffect, useState } from "react";
@@ -23,49 +24,54 @@ function SignUp() {
   const [loading, setLoading] = useState(false);
   const [selectedQuestion, setSelectedQuestion] = useState("");
   const [selectedQuestions, setSelectedQuestions] = useState([]);
- const [answer, setAnswer] = useState("");
+  const [answer, setAnswer] = useState("");
 
   const navigate = useNavigate();
-  const toast = useToast()
+  const toast = useToast();
 
   // recoil-states
   const userAction = useUserAction();
-  const securityActions = useSecurityQuestionsAction()
-  const securityQuestions = useRecoilValue(securityQuestionsState)
-   const [selectedSecurityQuestions, setSelectedSecurityQuestions] = useState([]);
+  const securityActions = useSecurityQuestionsAction();
+  const securityQuestions = useRecoilValue(securityQuestionsState);
+  const [selectedSecurityQuestions, setSelectedSecurityQuestions] = useState(
+    []
+  );
 
   useEffect(() => {
-    securityActions.getSecurityQuestions() 
+    securityActions.getSecurityQuestions();
   }, []);
 
   const handleAddQuestion = () => {
     if (selectedQuestion && answer && selectedQuestions.length < 2) {
-        if (!selectedSecurityQuestions.includes(selectedQuestion)) {
-      setSelectedSecurityQuestions([...selectedSecurityQuestions, selectedQuestion]);
-      setSelectedQuestions((prevQuestions) => [
-        ...prevQuestions,
-        { question: selectedQuestion, answer },
-      ]);
-      setSelectedQuestion("");
-      setAnswer("");
-    } else {
-      // Display an error or message indicating that the question is already selected
-      toast({
+      if (!selectedSecurityQuestions.includes(selectedQuestion)) {
+        setSelectedSecurityQuestions([
+          ...selectedSecurityQuestions,
+          selectedQuestion,
+        ]);
+        setSelectedQuestions((prevQuestions) => [
+          ...prevQuestions,
+          { question: selectedQuestion, answer },
+        ]);
+        setSelectedQuestion("");
+        setAnswer("");
+      } else {
+        // Display an error or message indicating that the question is already selected
+        toast({
           title: "Error",
           status: "error",
           description: "Cannot select the same question twice",
           isClosable: true,
           duration: 2000,
         });
-    }
-    }else{
+      }
+    } else {
       toast({
-          title: "Error",
-          status: "error",
-          description: "Cannot select more than 2 questions",
-          isClosable: true,
-          duration: 2000,
-        });
+        title: "Error",
+        status: "error",
+        description: "Cannot select more than 2 questions",
+        isClosable: true,
+        duration: 2000,
+      });
     }
   };
 
@@ -132,7 +138,7 @@ function SignUp() {
     validate,
     onSubmit: async (values) => {
       setLoading(true);
-      if(selectedQuestions.length < 2){
+      if (selectedQuestions.length < 2) {
         toast({
           title: "Error",
           status: "error",
@@ -144,7 +150,7 @@ function SignUp() {
         return;
       }
       try {
-        await userAction.register(values,selectedQuestions);
+        await userAction.register(values, selectedQuestions);
         navigate("/");
       } catch (error) {
         alert(error.message);
@@ -295,44 +301,65 @@ function SignUp() {
           {formik.touched.confirmPassword && formik.errors.confirmPassword ? (
             <ErrorText text={formik.errors.confirmPassword} />
           ) : null}
-          
-          <FormLabel>Select Security Question</FormLabel>
+
+          <Divider my={"10pt"} />
+
+          <FormLabel fontSize={"10pt"}>Select Two Security Question</FormLabel>
           <Select
             placeholder="Select a security question"
             value={selectedQuestion}
             onChange={(e) => setSelectedQuestion(e.target.value)}
+            size={"sm"}
+            fontSize={"10pt"}
           >
-            {securityQuestions?.map((question,i) => (
+            {securityQuestions?.map((question, i) => (
               <option key={i} value={question}>
                 {question}
               </option>
             ))}
           </Select>
-          <FormLabel>Answer</FormLabel>
+          <FormLabel fontSize={"10pt"} mt={"10pt"}>
+            Answer
+          </FormLabel>
           <Input
             type="text"
             value={answer}
             onChange={(e) => setAnswer(e.target.value)}
             placeholder="Enter your answer"
+            size={"sm"}
+            mb={"10pt"}
           />
-          <Button colorScheme="blue" onClick={handleAddQuestion}>
-          Add Security Question
-        </Button>
-        {selectedQuestions.map((question, index) => (
-          <div key={index}>
-              <FormLabel>Security Question {index + 1}</FormLabel>
-              <Input type="text" value={question.question} isReadOnly />
-              <FormLabel>Answer</FormLabel>
-              <Input type="text" value={question.answer} isReadOnly />
-            <Button
-              colorScheme="red"
-              onClick={() => handleRemoveQuestion(index)}
-            >
-              Remove
-            </Button>
-          </div>
-        ))}
-
+          <Button variant={"outline"} onClick={handleAddQuestion} my={"5pt"}>
+            Add Security Question
+          </Button>
+          {selectedQuestions.map((question, index) => (
+            <div key={index}>
+              <FormLabel fontSize={"10pt"}>
+                Security Question {index + 1}
+              </FormLabel>
+              <Input
+                type="text"
+                value={question.question}
+                isReadOnly
+                size={"sm"}
+              />
+              <FormLabel fontSize={"10pt"}>Answer</FormLabel>
+              <Flex gap={"10pt"} alignItems={"center"}>
+                <Input
+                  type="text"
+                  value={question.answer}
+                  isReadOnly
+                  size={"sm"}
+                />
+                <Button
+                  colorScheme="red"
+                  onClick={() => handleRemoveQuestion(index)}
+                >
+                  X
+                </Button>
+              </Flex>
+            </div>
+          ))}
 
           <Checkbox
             py={"3pt"}

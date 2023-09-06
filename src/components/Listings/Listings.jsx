@@ -7,17 +7,17 @@ import { useRecoilState } from "recoil";
 import { listingsAtom } from "../../state/lisitings";
 import Loader from "../Loader";
 
-  // Fetch listings using React Query with filters
-  const fetchListings = async ({ pageParam = 1 }) => {
-    try {
-      const response = await axios.get(
-        `/api/users.php?page=${pageParam}&results_count=15&no_of_floors=${filters.min_rooms}-${filters.max_rooms}&no_of_units=${filters.min_beds}-${filters.max_beds}&no_of_bed=${filters.min_price}-${filters.max_price}&no_of_bath=${filters.max_price}`
-      );
-      return response.data;
-    } catch (error) {
-      throw new Error('Error fetching listings');
-    }
-  };
+// Fetch listings using React Query with filters
+const fetchListings = async ({ pageParam = 1 }) => {
+  try {
+    const response = await axios.get(`/api/users.php?page=1&results_count=15`);
+
+    console.log(response.data);
+    return response.data;
+  } catch (error) {
+    throw new Error("Error fetching listings");
+  }
+};
 
 function Listings() {
   const [listings, setListings] = useRecoilState(listingsAtom);
@@ -29,15 +29,11 @@ function Listings() {
     fetchNextPage,
     isFetching,
     isFetchingNextPage,
-  } = useInfiniteQuery(
-    ["listings"],
-    fetchListings,
-    {
-      getNextPageParam: (_, pages) => {
-        return pages.length + 1;
-      }, // Assuming the response has a `nextPage` property
-    }
-  );
+  } = useInfiniteQuery(["listings"], fetchListings, {
+    getNextPageParam: (_, pages) => {
+      return pages.length + 1;
+    }, // Assuming the response has a `nextPage` property
+  });
 
   const lastListingRef = useRef(null);
   const { ref, entry } = useIntersection({
@@ -59,12 +55,12 @@ function Listings() {
 
   const _data = data.pages.flatMap((page) => page);
 
-  
-  if(!_data) return (
-    <Flex w={"100%"} justify={"center"} py={10}>
-      <Empty  text={"No listings found"} />
-    </Flex>
-  )
+  if (!_data)
+    return (
+      <Flex w={"100%"} justify={"center"} py={10}>
+        <Empty text={"No listings found"} />
+      </Flex>
+    );
 
   return (
     <>
