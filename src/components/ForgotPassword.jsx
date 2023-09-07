@@ -1,74 +1,74 @@
-import React from "react";
-import { useRecoilValue, useSetRecoilState } from "recoil";
-import { securityQuestionsState } from "../state/securityQuestions";
-import { Flex, FormLabel, Select, Text, Input, Button } from "@chakra-ui/react";
-import { useState } from "react";
+import {
+  Button,
+  Flex,
+  FormControl,
+  FormLabel,
+  Input,
+  Select,
+  Text,
+  VStack,
+  useToast,
+} from "@chakra-ui/react";
 import axios from "axios";
+import React, { useState } from "react";
+import { useSetRecoilState } from "recoil";
 import { activeTabIndexState } from "../state/tabs";
-import { useToast } from "@chakra-ui/react";
 
 export default function ForgotPassword() {
-  const securityQuestions = useRecoilValue(securityQuestionsState);
-  const [selectedQuestion, setSelectedQuestion] = useState("");
-  const [selectedQuestions, setSelectedQuestions] = useState([]);
-  const [selectedSecurityQuestions, setSelectedSecurityQuestions] = useState(
-    []
-  );
-  const [answer, setAnswer] = useState("");
+  const [currentStep, setCurrentStep] = useState(1);
+  const [userId, setUserId] = useState(null);
+  const [securityQuestions, setSecurityQuestions] = useState({});
+  const [answer_1, setAnswer_1] = useState("");
+  const [answer_2, setAnswer_2] = useState("");
   const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [loading, setLoading] = useState(false);
   const toast = useToast();
   const setTabIndex = useSetRecoilState(activeTabIndexState);
 
-  const handleAddQuestion = () => {
-    if (selectedQuestion && answer && selectedQuestions.length < 2) {
-      if (!selectedSecurityQuestions.includes(selectedQuestion)) {
-        setSelectedSecurityQuestions([
-          ...selectedSecurityQuestions,
-          selectedQuestion,
-        ]);
-        setSelectedQuestions((prevQuestions) => [
-          ...prevQuestions,
-          { question: selectedQuestion, answer },
-        ]);
-        setSelectedQuestion("");
-        setAnswer("");
-      } else {
-        // Display an error or message indicating that the question is already selected
-        toast({
-          title: "Error",
-          status: "error",
-          description: "Cannot select the same question twice",
-          isClosable: true,
-          duration: 2000,
-        });
+  const handleNextStep = async () => {
+    if (currentStep === 1) {
+      if (email) {
+        setLoading(true);
+        try {
+          const response = await axios.post("/api/users.php", {
+            email,
+            endpoint: "get-user-questions",
+          });
+          const { data } = response;
+          if (!data.error) {
+            setSecurityQuestions(data.data);
+            setCurrentStep(2);
+          } else {
+            toast({
+              title: "Error",
+              status: "error",
+              description: data.data.msg,
+              isClosable: true,
+              duration: 2000,
+            });
+          }
+        } catch (error) {
+          console.log(error);
+        } finally {
+          setLoading(false);
+        }
       }
-    } else {
-      toast({
-        title: "Error",
-        status: "error",
-        description: "Cannot select more than 2 questions",
-        isClosable: true,
-        duration: 2000,
-      });
     }
   };
 
-  const handleRemoveQuestion = (index) => {
-    setSelectedQuestions((prevQuestions) =>
-      prevQuestions.filter((_, i) => i !== index)
-    );
-  };
-
   const handleSubmit = async () => {
-    if (email && selectedQuestions.length === 2) {
+    if (email && answer_1 && answer_2) {
+      setLoading(true);
       try {
         const response = await axios.post("/api/users.php", {
-          email,
           endpoint: "verify-questions",
-          question_1: selectedQuestions[0].question,
-          answer_1: selectedQuestions[0].answer,
-          question_2: selectedQuestions[1].question,
-          answer_2: selectedQuestions[1].answer,
+          email,
+          question_1: securityQuestions?.question_1,
+          answer_1,
+          question_2: securityQuestions?.question_2,
+          answer_2,
         });
         const { data } = response;
         if (!data.error) {
@@ -79,94 +79,163 @@ export default function ForgotPassword() {
             isClosable: true,
             duration: 2000,
           });
+          setUserId(data.data.id);
+          setCurrentStep(3);
+        } else {
+          toast({
+            title: "Error",
+            status: "error",
+            description: data.data.msg,
+            isClosable: true,
+            duration: 2000,
+          });
         }
-      } catch (error) {}
+      } catch (error) {
+        console.log(error);
+      } finally {
+        setLoading(false);
+      }
     } else {
       toast({
         title: "Error",
         status: "error",
-        description: "Please select two security questions",
+        description: "Please fill in all fields",
         isClosable: true,
         duration: 2000,
       });
     }
   };
 
+  const resetPassword = async () => {
+    if (password && confirmPassword && userId && password === confirmPassword) {
+      setLoading(true);
+      try {
+        const response = await axios.post("/api/users.php", {
+          endpoint: "reset-password",
+          id: userId,
+          password,
+        });
+        const { data } = response;
+        if (!data.error) {
+          setTabIndex(0);
+        } else {
+          toast({
+            title: "Error",
+            status: "error",
+            description: data.data.msg,
+            isClosable: true,
+            duration: 2000,
+          });
+        }
+      } catch (error) {
+        console.log(error);
+      } finally {
+        setLoading(false);
+      }
+    } else {
+      toast({
+        title: "Error",
+        status: "error",
+        description: "Fill in all fields correctly",
+        isClosable: true,
+        duration: 2000,
+      });
+    }
+  };
   return (
     <>
       <Flex direction={"column"}>
-        <Text fontSize={"12pt"} pb={"5pt"}>
-          Answer the following security questions
+        <VStack spacing={4} align={"stretch"}>
+          {currentStep === 1 && (
+            <FormControl>
+              <FormLabel fontSize={"10pt"}>Email</FormLabel>
+              <Input
+                type="email"
+                required
+                size={"sm"}
+                fontSize={"10pt"}
+                mb={"5pt"}
+                placeholder="JohnDoe@email.com"
+                onChange={(e) => setEmail(e.target.value)}
+              />
+            </FormControl>
+          )}
+
+          {currentStep === 2 && (
+            <FormControl>
+              <Text fontSize={"12pt"} color={"gray.500"}>
+                Answer the following security questions
+              </Text>
+              <Input
+                type="text"
+                placeholder={securityQuestions?.question_1}
+                onChange={(e) => setAnswer_1(e.target.value)}
+                my={3}
+                fontSize={"10pt"}
+                id="answer_1"
+              />
+              <Input
+                type="text"
+                id="answer_2"
+                placeholder={securityQuestions?.question_2}
+                onChange={(e) => setAnswer_2(e.target.value)}
+                mb={"5pt"}
+                fontSize={"10pt"}
+              />
+            </FormControl>
+          )}
+
+          {currentStep === 3 && (
+            <FormControl>
+              <Text fontSize={"12pt"} color={"gray.500"}>
+                Enter new password
+              </Text>
+              <Input
+                type="text"
+                placeholder="New Password"
+                fontSize={"10pt"}
+                onChange={(e) => setPassword(e.target.value)}
+                my={3}
+              />
+              <Input
+                type="text"
+                placeholder="Confirm New Password"
+                fontSize={"10pt"}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                mb={"5pt"}
+              />
+            </FormControl>
+          )}
+        </VStack>
+        <Flex>
+          <Button
+            colorScheme="blue"
+            onClick={
+              (currentStep === 3 && resetPassword) ||
+              (currentStep === 2 && handleSubmit) ||
+              (currentStep === 1 && handleNextStep)
+            }
+            isLoading={loading}
+            isDisabled={
+              (currentStep === 1 && !email) ||
+              (currentStep === 2 && (!securityQuestions || loading))
+            }
+          >
+            {currentStep === 1 ? "Next" : "Submit"}
+          </Button>
+        </Flex>
+        <Text fontSize={"10pt"} color={"gray.500"} mt={3}>
+          Dont have an account?{" "}
+          <Text
+            as={"span"}
+            color={"brand.100"}
+            cursor={"pointer"}
+            onClick={() => setTabIndex(1)}
+          >
+            signup
+          </Text>
         </Text>
-
-        <FormLabel fontSize={"10pt"}>Email</FormLabel>
-        <Input
-          type="email"
-          required
-          size={"sm"}
-          fontSize={"10pt"}
-          mb={"5pt"}
-          placeholder="JohnDoe@email.com"
-          onChange={(e) => setEmail(e.target.value)}
-        />
-
-        <FormLabel fontSize={"10pt"}>Select Two Security Questions</FormLabel>
-        <Select
-          placeholder="Select a security question"
-          value={selectedQuestion}
-          onChange={(e) => setSelectedQuestion(e.target.value)}
-          size={"sm"}
-          fontSize={"10pt"}
-        >
-          {securityQuestions?.map((question, i) => (
-            <option key={i} value={question}>
-              {question}
-            </option>
-          ))}
-        </Select>
-        <FormLabel fontSize={"10pt"} mt={"10pt"}>
-          Answer
-        </FormLabel>
-        <Input
-          type="text"
-          value={answer}
-          onChange={(e) => setAnswer(e.target.value)}
-          placeholder="Enter your answer"
-          size={"sm"}
-          mb={"10pt"}
-        />
       </Flex>
-      <Button variant={"outline"} onClick={handleAddQuestion} my={"5pt"}>
-        Add Security Question
-      </Button>
-      {selectedQuestions.map((question, index) => (
-        <div key={index}>
-          <FormLabel fontSize={"10pt"}>Security Question {index + 1}</FormLabel>
-          <Input type="text" value={question.question} isReadOnly size={"sm"} />
-          <FormLabel fontSize={"10pt"}>Answer</FormLabel>
-          <Flex gap={"10pt"} alignItems={"center"}>
-            <Input type="text" value={question.answer} isReadOnly size={"sm"} />
-            <Button
-              colorScheme="red"
-              onClick={() => handleRemoveQuestion(index)}
-            >
-              X
-            </Button>
-          </Flex>
-        </div>
-      ))}
-      <Flex>
-        <Button onClick={handleSubmit}>Submit</Button>
-      </Flex>
-      Dont have an account?{" "}
-      <Text
-        as={"span"}
-        color={"brand.100"}
-        cursor={"pointer"}
-        onClick={() => setTabIndex(1)}
-      >
-        signup
-      </Text>
     </>
   );
 }

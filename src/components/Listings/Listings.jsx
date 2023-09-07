@@ -6,16 +6,24 @@ import React, { useEffect, useRef, useState } from "react";
 import { useRecoilState } from "recoil";
 import { listingsAtom } from "../../state/lisitings";
 import Loader from "../Loader";
+import Listing from "./Listing";
 
 // Fetch listings using React Query with filters
 const fetchListings = async ({ pageParam = 1 }) => {
   try {
-    const response = await axios.get(`/api/users.php?page=1&results_count=15`);
-
+    const response = await axios.post(
+      `/api/users.php?page=${pageParam}&results_count=15`,
+      { endpoint: "load-listing" }
+    );
     console.log(response.data);
-    return response.data;
+    const { data } = response;
+    if (!data.error) {
+      return data.data.listings;
+    } else {
+      throw new Error("Error fetching listings", data.data.msg);
+    }
   } catch (error) {
-    throw new Error("Error fetching listings");
+    console.log(error);
   }
 };
 
@@ -55,7 +63,7 @@ function Listings() {
 
   const _data = data.pages.flatMap((page) => page);
 
-  if (!_data)
+  if (_data.length === 0 && !isFetching && !isFetchingNextPage)
     return (
       <Flex w={"100%"} justify={"center"} py={10}>
         <Empty text={"No listings found"} />
@@ -79,8 +87,8 @@ function Listings() {
         pb={10}
         // maxW={"80%"}
       >
-        {listings?.map((listing, i) => {
-          if (i === listings.length - 1) {
+        {_data?.map((listing, i) => {
+          if (i === _data.length - 1) {
             return (
               <GridItem key={listing?.id} cursor={"pointer"} ref={ref}>
                 <Listing data={listing} />
