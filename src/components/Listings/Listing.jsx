@@ -22,7 +22,6 @@ import { useListingsAction } from "../../actions/listingsActions";
 import { authAtom } from "../../state/auth";
 import capitalize from "../../utils/capitalize";
 
-
 function Listing({ data, showDel, showEdit, _class, setSavedListings, save }) {
   const { id } = useRecoilValue(authAtom);
   const listingAction = useListingsAction();
@@ -95,7 +94,8 @@ function Listing({ data, showDel, showEdit, _class, setSavedListings, save }) {
               saveListings(id, data?.id);
               setSelectBtn("save");
             }}
-            bg={selectBtn === "save" ? "red.500" : "brand.100"}
+            hidden={selectBtn === "save"}
+            // bg={selectBtn === "save" ? "red.500" : "brand.100"}
           >
             <Icon as={AiFillHeart} size={"20pt"} />
           </Button>
@@ -160,7 +160,9 @@ function Listing({ data, showDel, showEdit, _class, setSavedListings, save }) {
                   {Math.round(data.estimated_cost / 12)}+/mo
                 </Text>
                 <Flex align={"center"} gap={"5pt"} color={"gray.600"}>
-                  {data.mass || "5bds | 4ba |2,625sqft"}
+                  <Text isTruncated>
+                    {data.mass || "5bds | 4ba |2,625sqft"}
+                  </Text>
                   <Tag size={"sm"} variant="subtle" colorScheme="blue">
                     <TagLabel>
                       {(data.statuse || "House for sale").toLowerCase()}

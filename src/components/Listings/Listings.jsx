@@ -1,4 +1,4 @@
-import { Flex, Grid, GridItem, Spinner } from "@chakra-ui/react";
+import { Flex, Grid, GridItem, Skeleton, Spinner } from "@chakra-ui/react";
 import { useIntersection } from "@mantine/hooks";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import axios from "axios";
@@ -15,7 +15,6 @@ const fetchListings = async ({ pageParam = 1 }) => {
       `/api/users.php?page=${pageParam}&results_count=15`,
       { endpoint: "load-listing" }
     );
-    console.log(response.data);
     const { data } = response;
     if (!data.error) {
       return data.data.listings;
@@ -80,7 +79,7 @@ function Listings() {
           xl: "repeat(5,1fr)",
         }}
         gap={{ base: 4, md: 3 }}
-        py={"10pt"}
+        py={"15pt"}
         w={"100%"}
         mx={"auto"}
         justifyItems={{ base: "stretch", md: "stretch" }}
@@ -90,9 +89,11 @@ function Listings() {
         {_data?.map((listing, i) => {
           if (i === _data.length - 1) {
             return (
-              <GridItem key={listing?.id} cursor={"pointer"} ref={ref}>
-                <Listing data={listing} />
-              </GridItem>
+              <Skeleton isLoaded={!isLoading} key={listing?.id}>
+                <GridItem cursor={"pointer"} ref={ref}>
+                  <Listing data={listing} />
+                </GridItem>
+              </Skeleton>
             );
           }
           return (
