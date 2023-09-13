@@ -152,14 +152,19 @@ function Listing({ data, showDel, showEdit, _class, setSavedListings, save }) {
                 <Text
                   color="gray.600"
                   fontWeight={"bold"}
-                  fontSize="lg"
+                  fontSize="xl"
                   display={"flex"}
                   align={"center"}
                 >
                   <Icon as={TbCurrencyNaira} fontSize={"18pt"} />
                   {Math.round(data.estimated_cost / 12)}+/mo
                 </Text>
-                <Flex align={"center"} gap={"5pt"} color={"gray.600"}>
+                <Flex
+                  align={"center"}
+                  justify={"between"}
+                  gap={"5pt"}
+                  color={"gray.600"}
+                >
                   <Text isTruncated>
                     {data.mass || "5bds | 4ba |2,625sqft"}
                   </Text>

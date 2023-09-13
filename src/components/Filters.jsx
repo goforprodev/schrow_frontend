@@ -14,8 +14,10 @@ import {
   TagLabel,
   useDisclosure,
 } from "@chakra-ui/react";
+import { useQueryClient } from "@tanstack/react-query";
 import React, { useState, forwardRef } from "react";
 import { BsFilter } from "react-icons/bs";
+import { useListingsAction } from "../actions/listingsActions";
 
 const ForwardedBsFilter = forwardRef((props, ref) => (
   <BsFilter {...props} ref={ref} />
@@ -39,25 +41,18 @@ function Filters() {
     max_price: "",
     min_floor: "",
     max_floor: "",
-    min_units: "",  
+    min_units: "",
     max_units: "",
     min_baths: "",
     max_baths: "",
   });
+  const listingAction = useListingsAction();
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const { min_rooms, max_rooms, min_beds, max_beds, home_types, min_price, max_price, min_floor, max_floor, min_units, max_units, min_baths, max_baths } = values;
-    const price_range = `${min_price}-${max_price}`;
-    const rooms_range = `${min_rooms}-${max_rooms}`;
-    const beds_range = `${min_beds}-${max_beds}`;
-    const floor_range = `${min_floor}-${max_floor}`;
-    const units_range = `${min_units}-${max_units}`;
-    const baths_range = `${min_baths}-${max_baths}`;
-  console.log({ price_range, rooms_range, beds_range, floor_range, units_range, baths_range, home_types });
-
-
+    listingAction.loadListings({ pageParam: 1, ...values });
   };
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setValues((prev) => ({ ...prev, [name]: value }));
@@ -101,7 +96,6 @@ function Filters() {
                     type="number"
                     placeholder="Min"
                     mb={2}
-                    required
                     onChange={handleChange}
                     fontSize={"10pt"}
                     _placeholder={{
@@ -125,7 +119,6 @@ function Filters() {
                     type="number"
                     placeholder="Max"
                     mb={2}
-                    required
                     onChange={handleChange}
                     fontSize={"10pt"}
                     _placeholder={{
@@ -146,8 +139,8 @@ function Filters() {
                   />
                 </Flex>
               </Flex>
-                    
-            {/* Number of floors */}
+
+              {/* Number of floors */}
               <Flex direction={"column"} pb={"15pt"} color={"gray.700"}>
                 <FormLabel fontSize={"11pt"} fontWeight={"medium"}>
                   Number of Floors
@@ -158,7 +151,6 @@ function Filters() {
                     type="number"
                     placeholder="Min"
                     mb={2}
-                    required
                     onChange={handleChange}
                     fontSize={"10pt"}
                     _placeholder={{
@@ -182,7 +174,6 @@ function Filters() {
                     type="number"
                     placeholder="Max"
                     mb={2}
-                    required
                     onChange={handleChange}
                     fontSize={"10pt"}
                     _placeholder={{
@@ -215,7 +206,6 @@ function Filters() {
                     type="number"
                     placeholder="Min"
                     mb={2}
-                    required
                     onChange={handleChange}
                     fontSize={"10pt"}
                     _placeholder={{
@@ -239,7 +229,6 @@ function Filters() {
                     type="number"
                     placeholder="Max"
                     mb={2}
-                    required
                     onChange={handleChange}
                     fontSize={"10pt"}
                     _placeholder={{
@@ -261,7 +250,7 @@ function Filters() {
                 </Flex>
               </Flex>
 
-            {/* Number of bathrooms*/}
+              {/* Number of bathrooms*/}
               <Flex direction={"column"} pb={"15pt"} color={"gray.700"}>
                 <FormLabel fontSize={"11pt"} fontWeight={"medium"}>
                   Number of Bathrooms
@@ -272,7 +261,6 @@ function Filters() {
                     type="number"
                     placeholder="Min"
                     mb={2}
-                    required
                     onChange={handleChange}
                     fontSize={"10pt"}
                     _placeholder={{
@@ -296,7 +284,6 @@ function Filters() {
                     type="number"
                     placeholder="Max"
                     mb={2}
-                    required
                     onChange={handleChange}
                     fontSize={"10pt"}
                     _placeholder={{
@@ -318,10 +305,10 @@ function Filters() {
                 </Flex>
               </Flex>
 
-            {/* Number of Units*/}
+              {/* Number of Units*/}
               <Flex direction={"column"} pb={"15pt"} color={"gray.700"}>
                 <FormLabel fontSize={"11pt"} fontWeight={"medium"}>
-                  Number of Units 
+                  Number of Units
                 </FormLabel>
                 <Flex gap={6}>
                   <Input
@@ -329,7 +316,6 @@ function Filters() {
                     type="number"
                     placeholder="Min"
                     mb={2}
-                    required
                     onChange={handleChange}
                     fontSize={"10pt"}
                     _placeholder={{
@@ -353,7 +339,6 @@ function Filters() {
                     type="number"
                     placeholder="Max"
                     mb={2}
-                    required
                     onChange={handleChange}
                     fontSize={"10pt"}
                     _placeholder={{
@@ -391,9 +376,9 @@ function Filters() {
                     <Button
                       key={tag.id}
                       variant={clicked === tag.id ? "solid" : "outline"}
-                      onClick={() =>{
-                        setClicked((prev) => (prev === tag.id ? null : tag.id))
-                        setValues((prev) => ({ ...prev, home_types: tag.id }))
+                      onClick={() => {
+                        setClicked((prev) => (prev === tag.id ? null : tag.id));
+                        setValues((prev) => ({ ...prev, home_types: tag.id }));
                       }}
                       isDisabled={clicked !== null && clicked !== tag.id}
                     >
@@ -414,7 +399,6 @@ function Filters() {
                     type="number"
                     placeholder="Min"
                     mb={2}
-                    required
                     onChange={handleChange}
                     fontSize={"10pt"}
                     _placeholder={{
@@ -438,7 +422,6 @@ function Filters() {
                     type="number"
                     placeholder="Max"
                     mb={2}
-                    required
                     onChange={handleChange}
                     fontSize={"10pt"}
                     _placeholder={{
