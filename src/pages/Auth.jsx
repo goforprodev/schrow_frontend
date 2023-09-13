@@ -90,7 +90,9 @@ function Auth() {
                 height={"65px"}
                 ml={"-10pt"}
               />
-              <CloseIcon cursor={"pointer"} fontSize={"10pt"} />
+              <a href="https://www.schrow.com">
+                <CloseIcon cursor={"pointer"} fontSize={"10pt"} />
+              </a>
             </Flex>
             <Flex
               as={"div"}
